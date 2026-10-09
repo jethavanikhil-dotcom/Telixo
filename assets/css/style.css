@@ -74,3 +74,26 @@ a { color: var(--accent); }
   .nav-links.open { display: flex; }
   .nav-links a { padding: 14px 16px; }
 }
+
+/* Hero layout with animation */
+.hero { text-align: left; }
+.hero-grid { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 40px; }
+.hero .lead { margin-left: 0; }
+.hero-anim { width: 100%; max-width: 420px; aspect-ratio: 1; justify-self: center; }
+
+@media (max-width: 720px) {
+  .hero { padding: 64px 0; text-align: center; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero .lead { margin-left: auto; }
+  .hero-anim { max-width: 280px; grid-row: 1; }
+}
+
+/* Preloader */
+.preloader {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center;
+  background: var(--bg);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.preloader.hidden { opacity: 0; visibility: hidden; }
+.preloader-anim { width: 160px; height: 80px; }
