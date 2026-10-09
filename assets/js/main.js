@@ -1,18 +1,29 @@
-// Mobile menu toggle
-const toggle = document.querySelector('.nav-toggle');
-const links = document.querySelector('.nav-links');
+import { initUI } from './ui.js';
+import { initHero, initFinale } from './circuit.js';
+import { initStory } from './story.js';
+import { initChannels } from './channels.js';
+import { initInbox } from './inbox.js';
+import { initWorkflow } from './workflow.js';
+import { initNetwork } from './network.js';
+import { initImpact } from './impact.js';
 
-toggle.addEventListener('click', () => {
-  const open = links.classList.toggle('open');
-  toggle.setAttribute('aria-expanded', open);
-});
+gsap.registerPlugin(ScrollTrigger);
 
-links.addEventListener('click', (e) => {
-  if (e.target.tagName === 'A') {
-    links.classList.remove('open');
-    toggle.setAttribute('aria-expanded', false);
-  }
-});
+const load = (name) => fetch(`assets/data/${name}.json`).then((r) => r.json());
+const $ = (s) => document.querySelector(s);
 
-// Footer year
-document.getElementById('year').textContent = new Date().getFullYear();
+initUI();
+initHero($('#top'));
+initStory($('#platform'));
+
+const [channels, inbox, workflow] = await Promise.all([load('channels'), load('inbox'), load('workflow')]);
+initChannels($('#channels'), channels);
+initInbox($('#inbox'), inbox);
+initWorkflow($('#workflow'), workflow);
+initNetwork($('#system'));
+initImpact($('#impact'));
+initFinale($('#demo'));
+
+ScrollTrigger.sort();
+ScrollTrigger.refresh();
+document.fonts?.ready.then(() => ScrollTrigger.refresh());

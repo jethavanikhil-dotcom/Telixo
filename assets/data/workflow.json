@@ -1,0 +1,22 @@
+{
+  "nodes": [
+    { "id": "in", "col": 0, "row": 0, "index": "01", "title": "Incoming message", "detail": "WhatsApp · Elena Ruiz",
+      "caption": "A customer message arrives on WhatsApp and joins the customer's existing timeline." },
+    { "id": "intent", "col": 1, "row": 0, "index": "02", "title": "Intent identified", "detail": "Reschedule delivery",
+      "caption": "The request is classified using the whole conversation history as context." },
+    { "id": "route", "col": 2, "row": 0, "index": "03", "title": "Intelligent routing", "detail": "Policy + confidence",
+      "caption": "Routine and within policy, so it goes to an AI agent. Anything else goes to your team." },
+    { "id": "ai", "col": 3, "row": -1, "index": "04", "title": "AI agent", "detail": "Routine requests",
+      "caption": "The AI agent checks availability and replies on the same channel. No queue, no wait." },
+    { "id": "human", "col": 3, "row": 1, "index": "04", "title": "Human team", "detail": "Complex cases" },
+    { "id": "action", "col": 4, "row": 0, "index": "05", "title": "Action executed", "detail": "Delivery moved",
+      "caption": "The order is updated in the connected system and the customer gets a confirmation." },
+    { "id": "done", "col": 5, "row": 0, "index": "06", "title": "Resolution", "detail": "Follow-up scheduled",
+      "caption": "Resolved on first contact. Sales gets a follow-up task with the full context attached." }
+  ],
+  "edges": [
+    ["in", "intent"], ["intent", "route"], ["route", "ai"], ["route", "human", "alt"],
+    ["ai", "action"], ["human", "action", "alt"], ["action", "done"]
+  ],
+  "path": ["in", "intent", "route", "ai", "action", "done"]
+}

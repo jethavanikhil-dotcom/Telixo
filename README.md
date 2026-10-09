@@ -1,41 +1,68 @@
 # Telixo
 
-Static website for Telixo — plain HTML, CSS and JavaScript, no build step.
+Landing page for Telixo — one autonomous platform for Calls, SMS, WhatsApp and AI Agents.
+
+Static site: HTML, CSS and JavaScript modules. No build step.
+
+## Concept: The Communication Circuit
+
+One artwork evolves down the page. Four channel signals each have their own motion
+(waveform, SMS pulses, message bubbles, branching AI paths). They start fragmented,
+connect to one hub, route to an AI agent or a human team, and come back fully
+connected in the final section.
+
+| Section | What moves |
+| --- | --- |
+| Hero | Circuit draws in, signals travel to the core, cursor tilt; scatters on scroll |
+| Story (`#platform`) | Sticky, scroll-scrubbed: fragmented → connected → routed (turns navy) |
+| Channels | Tabbed channel map; the active channel's path and context light up |
+| Inbox | Product UI; one customer's call → SMS → WhatsApp → AI agent story advances with scroll |
+| Workflow | A request travels through intent, routing, action and resolution |
+| Intelligence layer | Dark section; many simulated conversations route through the network |
+| Impact | Outcome rows with small explanatory diagrams |
+| Final CTA | The hero circuit reassembles and runs on one shared beat |
 
 ## Structure
 
 ```
-index.html                Main page
-assets/css/style.css      Styles
-assets/js/main.js         Mobile menu, footer year
-assets/js/animations.js   Lottie players, preloader, GSAP intro + scroll reveals
-assets/animations/*.json  Lottie (JSON) animations
-assets/vendor/            lottie-web 5.12.2, GSAP 3.12.5 + ScrollTrigger (local copies)
-assets/img/               Images
-tools/build_animations.py Generates the JSON files in assets/animations/
+index.html
+assets/css/style.css     Design tokens, typography, layout, artwork styles
+assets/js/main.js        Entry point
+assets/js/svg.js         SVG helpers, shared ticker, particle flows
+assets/js/glyphs.js      The four channel signal glyphs
+assets/js/circuit.js     Signature artwork (hero + final CTA)
+assets/js/story.js       Scroll story
+assets/js/channels.js    Channel map
+assets/js/inbox.js       Unified inbox UI
+assets/js/workflow.js    Workflow graph
+assets/js/network.js     Dark interlude network
+assets/js/impact.js      Impact diagrams
+assets/js/ui.js          Nav, menu, demo dialog, headline reveals
+assets/data/*.json       Channel copy, inbox story, workflow graph
+assets/vendor/           GSAP 3.12.5 + ScrollTrigger (local copies)
 ```
 
-## Animations
+Edit copy in `index.html` and `assets/data/*.json`.
 
-- **Lottie (JSON):** add `data-lottie="assets/animations/<file>.json"` to any
-  element and it becomes a player. Add `data-loop` to loop it, or
-  `data-autoplay="false"` to start paused. Animations exported from After
-  Effects (Bodymovin) or downloaded from LottieFiles drop straight into
-  `assets/animations/`.
-- **Scroll reveal:** add `data-reveal` to any element to fade it up as it
-  scrolls into view (GSAP ScrollTrigger).
-- Visitors with "reduce motion" turned on get static frames instead.
+## Before publishing
 
-To regenerate the built-in hero and loader animations:
+- **10x claim:** “up to 10x faster” appears in the hero and the Impact section, with a
+  visible placeholder footnote (`#fn-10x`). Back it with Telixo product data, or remove it.
+- **Demo requests:** “Book a Demo” opens a form that pre-fills an email. Set the address
+  in `DEMO_EMAIL` in `assets/js/ui.js` (currently `demo@example.com`).
+- **Product claims:** the channel descriptions and inbox story are written for the design.
+  Check that they match what the product actually does.
 
-```
-python3 tools/build_animations.py
-```
+## Motion and accessibility
+
+- Animation loops only run while their section is on screen.
+- With “reduce motion” turned on: no autoplay loops, parallax or intro animation.
+  Scroll-linked states still follow the scroll position, and all content stays visible.
+- On screens under 900px: simplified layouts, vertical graphs and no sticky inbox or workflow.
 
 ## Run locally
 
-Lottie loads its JSON files over HTTP, so serve the folder instead of opening
-`index.html` directly:
+The page loads JavaScript modules and JSON, so serve the folder instead of opening the file:
 
 ```
 python3 -m http.server 8000

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "calls",
+    "name": "Calls",
+    "role": "Voice, with full context",
+    "description": "Every inbound and outbound call is logged, summarised and attached to the customer record, so the next conversation starts where the last one ended.",
+    "points": ["Click-to-call from any conversation", "Call summaries on the shared timeline", "Routing to the right team or agent"]
+  },
+  {
+    "id": "sms",
+    "name": "SMS",
+    "role": "Fast, direct follow-up",
+    "description": "Send confirmations, reminders and quotes by text, and keep every reply in the same thread as the call that started it.",
+    "points": ["Templates and scheduled follow-ups", "Two-way replies in the unified inbox", "Delivery status on every message"]
+  },
+  {
+    "id": "whatsapp",
+    "name": "WhatsApp",
+    "role": "Where customers already are",
+    "description": "Meet customers in the app they use every day. Messages, media and approvals stay connected to their full history.",
+    "points": ["Rich messages and quick replies", "Hand-off between AI agent and team", "One history across every channel"]
+  },
+  {
+    "id": "ai",
+    "name": "AI Agents",
+    "role": "Autonomous, within your rules",
+    "description": "AI agents resolve routine requests on any channel and pass complex conversations to your team with the context already written up.",
+    "points": ["Intent detection and routing", "Actions in your connected systems", "Human hand-off with full context"]
+  }
+]

@@ -1,0 +1,78 @@
+{
+  "customer": {
+    "name": "Elena Ruiz",
+    "initials": "ER",
+    "role": "Operations Manager",
+    "company": "Larkspur Home",
+    "phone": "+1 (555) 014-2290",
+    "whatsapp": "Verified",
+    "deal": "Bulk order · 120 units",
+    "tags": ["Wholesale", "Priority"]
+  },
+  "conversations": [
+    { "name": "Elena Ruiz", "initials": "ER", "channel": "whatsapp", "time": "11:31", "active": true },
+    { "name": "Marcus Lee", "initials": "ML", "channel": "sms", "preview": "Thanks — got the tracking link.", "time": "11:12" },
+    { "name": "Priya Shah", "initials": "PS", "channel": "whatsapp", "preview": "Can you resend the invoice?", "time": "10:48" },
+    { "name": "Tom Becker", "initials": "TB", "channel": "calls", "preview": "Missed call · callback requested", "time": "10:20" },
+    { "name": "Ana Costa", "initials": "AC", "channel": "ai", "preview": "Return label sent by AI agent", "time": "09:57" },
+    { "name": "Jonas Weber", "initials": "JW", "channel": "sms", "preview": "Perfect, see you Tuesday.", "time": "09:31" }
+  ],
+  "steps": [
+    {
+      "label": "Call",
+      "event": {
+        "channel": "calls", "direction": "in", "time": "10:02", "actor": "Elena Ruiz", "to": "Sam Carter",
+        "title": "Inbound call · 4m 12s",
+        "body": "Asked about delivery windows and pricing for a 120-unit bulk order.",
+        "meta": "Call summary added to timeline"
+      },
+      "status": "Open", "owner": "Sam Carter", "stage": "Qualified",
+      "summary": "Evaluating a 120-unit bulk order. Needs a quote and delivery options.",
+      "preview": "Inbound call · 4m 12s"
+    },
+    {
+      "label": "SMS",
+      "event": {
+        "channel": "sms", "direction": "out", "time": "10:09", "actor": "Sam Carter",
+        "body": "Hi Elena — here's the quote we discussed, plus the delivery slots for next week. Reply here or on WhatsApp. — Sam",
+        "meta": "Delivered"
+      },
+      "status": "Waiting on customer", "owner": "Sam Carter", "stage": "Proposal",
+      "summary": "Quote sent by SMS with delivery slots. Waiting for Elena's reply.",
+      "preview": "You: Hi Elena — here's the quote…"
+    },
+    {
+      "label": "WhatsApp",
+      "event": {
+        "channel": "whatsapp", "direction": "in", "time": "11:31", "actor": "Elena Ruiz",
+        "body": "Quote looks good. Can we move the delivery to Thursday instead?",
+        "meta": "Same thread · replied on WhatsApp"
+      },
+      "status": "Open", "owner": "AI agent", "stage": "Proposal",
+      "summary": "Accepted the quote. Wants delivery moved to Thursday.",
+      "preview": "Quote looks good. Can we move…"
+    },
+    {
+      "label": "AI agent",
+      "event": {
+        "channel": "ai", "direction": "out", "time": "11:31", "actor": "AI agent",
+        "title": "Intent: reschedule delivery",
+        "body": "Done — your delivery is now Thursday between 9:00 and 12:00. Anything else I can help with?",
+        "meta": "Checked warehouse capacity · Updated order · Replied on WhatsApp"
+      },
+      "status": "Resolved by AI agent", "owner": "AI agent", "stage": "Negotiation",
+      "summary": "Delivery moved to Thursday 9:00–12:00 by the AI agent. Order updated.",
+      "preview": "AI agent: Done — your delivery is now…"
+    },
+    {
+      "label": "One timeline",
+      "event": {
+        "channel": "system", "time": "11:32", "actor": "Telixo",
+        "body": "Conversation resolved · Follow-up task created for Sam: confirm the order on Friday"
+      },
+      "status": "Resolved", "owner": "Sam Carter", "stage": "Negotiation",
+      "summary": "Resolved across call, SMS, WhatsApp and AI agent. Sam follows up Friday.",
+      "preview": "Resolved · follow-up Friday"
+    }
+  ]
+}
