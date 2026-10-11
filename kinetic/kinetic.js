@@ -76,8 +76,10 @@
 
   // Smooth scroll (motion only); anchor links go through it.
   let lenis = null;
+  let wheelGate = null;
   if (motion && window.Lenis) {
-    lenis = new Lenis({ lerp: 0.1 });
+    // wheelGate lets a pinned section take over wheel/trackpad input (set below).
+    lenis = new Lenis({ lerp: 0.1, virtualScroll: (e) => (wheelGate ? wheelGate(e) : true) });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -389,7 +391,9 @@
     },
   });
   const stepY = (k) => wf.start + (wf.end - wf.start) * (LEAD + (1 - 2 * LEAD) * k / (STEPS.length - 1));
+  // Touch and keyboard scrolling: settle on the nearest word when scrolling stops.
   ScrollTrigger.addEventListener('scrollEnd', () => {
+    if (gateBusy()) return;
     const y = window.scrollY;
     if (y <= stepY(0) || y >= stepY(STEPS.length - 1)) return;
     const ty = stepY(Math.round(posOf((y - wf.start) / (wf.end - wf.start))));
@@ -397,6 +401,46 @@
     if (lenis) lenis.scrollTo(ty, { duration: 0.7 });
     else window.scrollTo({ top: ty, behavior: 'smooth' });
   });
+
+  // Wheel and trackpad: inside the section, one gesture = one word. A fast
+  // flick or trackpad momentum can no longer fly past the middle words; the
+  // next word only comes once the current one has been on screen and the
+  // gesture has paused (or after a beat, for continuous wheeling).
+  let stepping = false;
+  let stepAt = 0;
+  let lastWheel = 0;
+  const gateBusy = () => stepping || performance.now() - stepAt < 600;
+  const goTo = (y) => {
+    stepping = true;
+    stepAt = performance.now();
+    lenis.scrollTo(y, { duration: 0.9, lock: true, force: true, onComplete: () => { stepping = false; } });
+  };
+  wheelGate = (e) => {
+    if (!e.event.type.includes('wheel') || !e.deltaY) return true;
+    const now = performance.now();
+    const quiet = now - lastWheel > 160;
+    lastWheel = now;
+    const dir = Math.sign(e.deltaY);
+    const cur = lenis.targetScroll;
+    const first = stepY(0);
+    const last = stepY(STEPS.length - 1);
+    const inside = cur > first - 2 && cur < last + 2;
+    const block = () => { e.event.preventDefault(); return false; };
+    if (!inside) {
+      // Don't let one big flick jump over the whole section: stop at its edge.
+      if (dir > 0 && cur < first && cur + e.deltaY > first) { if (!stepping) goTo(first); return block(); }
+      if (dir < 0 && cur > last && cur + e.deltaY < last) { if (!stepping) goTo(last); return block(); }
+      return true;
+    }
+    const k = Math.round(posOf((cur - wf.start) / (wf.end - wf.start)));
+    // Leaving at either end is normal scrolling, once the end word has been seen.
+    if ((dir > 0 && k === STEPS.length - 1) || (dir < 0 && k === 0)) {
+      return gateBusy() || (!quiet && now - stepAt < 1200) ? block() : true;
+    }
+    if (stepping || !(quiet || now - stepAt > 1300) || now - stepAt < 600) return block();
+    goTo(stepY(k + dir));
+    return block();
+  };
   gsap.from('.wf-word', { yPercent: 40, autoAlpha: 0, scrollTrigger: { trigger: '.workflow', start: 'top 70%', end: 'top top', scrub: 0.6 } });
 
   // ---------------------------------------------------------------- marquee: speed follows scroll
