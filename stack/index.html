@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Telixo — Every Conversation. One Intelligent System.</title>
+  <meta name="description" content="Unify calls, SMS, WhatsApp and AI agents in one autonomous communication platform. Close more deals and resolve customer tickets faster.">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="stack.css">
+  <script src="../assets/vendor/gsap.min.js" defer></script>
+  <script src="../assets/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="stack.js" defer></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z" fill="currentColor"/></symbol>
+      <symbol id="i-sms" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-4.5 3.5V17H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M7 9h10M7 12.5h6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+      <symbol id="i-wa" viewBox="0 0 24 24"><path d="M12 2.8a9.2 9.2 0 0 0-7.9 13.9L3 21l4.4-1.1A9.2 9.2 0 1 0 12 2.8z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9.2 7.8c.3 0 .6 0 .8.5l.8 1.9c.1.3 0 .6-.2.8l-.6.7c.6 1.2 1.6 2.2 2.8 2.8l.7-.6c.2-.2.5-.3.8-.2l1.9.8c.4.2.5.5.5.8 0 1.3-1.1 2.2-2.3 2.1-3.4-.3-6.3-3.2-6.6-6.6-.1-1.2.8-2.3 2.1-2.3z" fill="currentColor"/></symbol>
+      <symbol id="i-ai" viewBox="0 0 24 24"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9z" fill="currentColor"/><path d="M18.5 15l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" fill="currentColor"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="mark" viewBox="0 0 32 32"><rect x="1" y="1" width="30" height="30" rx="9" fill="#425BFF"/><path d="M9 11.5h10a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3h-4l-3.5 3v-3H9a3 3 0 0 1-3-3v-3a3 3 0 0 1 3-3z" fill="#fff"/><circle cx="11.5" cy="16" r="1.3" fill="#425BFF"/><circle cx="15.5" cy="16" r="1.3" fill="#425BFF"/><circle cx="19.5" cy="16" r="1.3" fill="#425BFF"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="nav-pill">
+      <a class="brand" href="#top" aria-label="Telixo home"><svg aria-hidden="true"><use href="#mark"/></svg>Telixo</a>
+      <nav class="nav-links" id="nav-links" aria-label="Primary">
+        <a href="#story">Platform</a>
+        <a href="#channels">Channels</a>
+        <a href="#inbox">Inbox</a>
+        <a href="#workflow">Automation</a>
+        <a href="#impact">Impact</a>
+      </nav>
+      <button class="btn btn-sm" type="button" data-demo>Book a Demo</button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="pill"><span class="pill-dots"><i></i><i></i><i></i><i></i></span>One platform. Every conversation.</p>
+        <h1 class="h1">Every Conversation.<br><span class="soft">One Intelligent System.</span></h1>
+        <p class="lede">Unify calls, SMS, WhatsApp, and AI agents in one autonomous ecosystem. Close more deals and resolve customer tickets up to 10x faster.<a class="fn" href="#fn">*</a></p>
+        <div class="cta-row">
+          <button class="btn" type="button" data-demo>Book a Demo <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <a class="btn btn-ghost" href="#story">Explore the Platform</a>
+        </div>
+      </div>
+
+      <div class="stage" aria-label="Animated illustration: a customer's call, SMS, WhatsApp message and AI agent reply come together on one timeline" role="img">
+        <div class="iso">
+          <div class="pad"></div>
+
+          <article class="dev dev-call" style="--x:0;--y:0">
+            <header><span class="ic ic-blue"><svg><use href="#i-phone"/></svg></span>Call</header>
+            <div class="call-face">
+              <span class="avatar-lg">ER</span>
+              <strong>Elena Ruiz</strong>
+              <span class="muted">Inbound · <b data-timer>00:00</b></span>
+              <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+          </article>
+
+          <article class="dev dev-sms" style="--x:1;--y:0">
+            <header><span class="ic ic-sky"><svg><use href="#i-sms"/></svg></span>SMS</header>
+            <div class="thread">
+              <p class="b b-out" data-step="1">Here's your quote and delivery slots for next week. — Sam</p>
+              <p class="tick" data-step="1">Delivered</p>
+            </div>
+          </article>
+
+          <article class="dev dev-wa" style="--x:0;--y:1">
+            <header><span class="ic ic-green"><svg><use href="#i-wa"/></svg></span>WhatsApp</header>
+            <div class="thread">
+              <p class="typing" data-step="2"><i></i><i></i><i></i></p>
+              <p class="b b-in" data-step="2b">Quote looks good! Can we move delivery to Thursday?</p>
+            </div>
+          </article>
+
+          <article class="dev dev-ai" style="--x:1;--y:1">
+            <header><span class="ic ic-amber"><svg><use href="#i-ai"/></svg></span>AI agent</header>
+            <div class="thread">
+              <p class="chip" data-step="3">Intent · Reschedule delivery</p>
+              <p class="b b-ai" data-step="3b">Done — Thursday, 9:00–12:00 is booked. Anything else?</p>
+            </div>
+          </article>
+
+          <article class="dev dev-one">
+            <header><span class="ic ic-blue"><svg><use href="#i-check"/></svg></span>One timeline · Elena Ruiz</header>
+            <ol class="rows">
+              <li><span class="dot d-blue"></span>Call · 4m 12s<em>10:02</em></li>
+              <li><span class="dot d-sky"></span>Quote sent by SMS<em>10:09</em></li>
+              <li><span class="dot d-green"></span>WhatsApp reply<em>11:31</em></li>
+              <li><span class="dot d-amber"></span>AI agent rescheduled<em>11:31</em></li>
+              <li class="done"><svg><use href="#i-check"/></svg>Resolved · follow-up Friday</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <section class="marquee" aria-label="What Telixo connects">
+      <div class="mq-row"><div class="mq-track">
+        <span><svg><use href="#i-phone"/></svg>Inbound calls</span><span><svg><use href="#i-sms"/></svg>Two-way SMS</span><span><svg><use href="#i-wa"/></svg>WhatsApp chats</span><span><svg><use href="#i-ai"/></svg>AI agents</span><span>Smart routing</span><span>Human hand-off</span><span>Call summaries</span><span>One timeline</span><span>Follow-ups</span>
+      </div></div>
+      <div class="mq-row rev"><div class="mq-track">
+        <span>Quick replies</span><span><svg><use href="#i-check"/></svg>Resolution</span><span>Reminders</span><span>Customer context</span><span><svg><use href="#i-ai"/></svg>Intent detection</span><span>Ownership</span><span>Order updates</span><span><svg><use href="#i-wa"/></svg>Media &amp; approvals</span><span>Sales pipeline</span>
+      </div></div>
+    </section>
+
+    <!-- STACKING STORY -->
+    <section class="story" id="story">
+      <div class="wrap section-head">
+        <p class="kicker">The story</p>
+        <h2 class="h2">From scattered threads<br><span class="soft">to one system.</span></h2>
+      </div>
+
+      <div class="cards wrap">
+        <article class="card c-sky">
+          <div class="card-copy">
+            <span class="num">01 · Fragmented</span>
+            <h3>Your Customers Are Everywhere.</h3>
+            <p>Conversations spread across channels. Context gets lost. Opportunities slip away.</p>
+          </div>
+          <svg class="art art-scatter" viewBox="0 0 520 400" aria-hidden="true">
+            <g class="win w1"><rect x="34" y="40" width="190" height="120" rx="16" class="win-bg"/><rect x="34" y="40" width="190" height="34" rx="16" class="wb-blue"/><circle cx="56" cy="57" r="8" class="f-white"/><rect x="72" y="52" width="80" height="10" rx="5" class="f-white"/><rect x="54" y="92" width="150" height="10" rx="5" class="f-line"/><rect x="54" y="114" width="110" height="10" rx="5" class="f-line"/><circle cx="216" cy="44" r="15" class="f-red"/><text x="216" y="49" class="badge">3</text></g>
+            <g class="win w2"><rect x="290" y="26" width="196" height="132" rx="16" class="win-bg"/><rect x="290" y="26" width="196" height="34" rx="16" class="wb-sky"/><rect x="306" y="38" width="70" height="10" rx="5" class="f-white"/><rect x="306" y="78" width="130" height="24" rx="12" class="f-skyt"/><rect x="340" y="112" width="130" height="24" rx="12" class="f-line"/><circle cx="478" cy="30" r="15" class="f-red"/><text x="478" y="35" class="badge">5</text></g>
+            <g class="win w3"><rect x="60" y="214" width="184" height="140" rx="16" class="win-bg"/><rect x="60" y="214" width="184" height="34" rx="16" class="wb-green"/><rect x="76" y="226" width="80" height="10" rx="5" class="f-white"/><rect x="76" y="266" width="120" height="26" rx="13" class="f-greent"/><rect x="104" y="302" width="124" height="26" rx="13" class="f-line"/><circle cx="236" cy="218" r="15" class="f-red"/><text x="236" y="223" class="badge">2</text></g>
+            <g class="win w4"><rect x="300" y="210" width="186" height="140" rx="16" class="win-bg"/><rect x="300" y="210" width="186" height="34" rx="16" class="wb-amber"/><rect x="316" y="222" width="70" height="10" rx="5" class="f-white"/><rect x="316" y="262" width="150" height="10" rx="5" class="f-line"/><rect x="316" y="284" width="96" height="10" rx="5" class="f-line"/><rect x="316" y="306" width="124" height="10" rx="5" class="f-line"/></g>
+            <g class="q"><circle cx="262" cy="190" r="26" class="f-white s-line"/><text x="262" y="200" class="qmark">?</text></g>
+          </svg>
+        </article>
+
+        <article class="card c-blue">
+          <div class="card-copy">
+            <span class="num">02 · Connected</span>
+            <h3>Every Channel, Connected.</h3>
+            <p>Bring every customer interaction into one connected communication layer.</p>
+          </div>
+          <svg class="art art-connect" viewBox="0 0 520 400" aria-hidden="true">
+            <rect x="150" y="30" width="250" height="340" rx="22" class="win-bg big"/>
+            <circle cx="186" cy="68" r="16" class="f-bluet"/><text x="186" y="73" class="ini">ER</text>
+            <rect x="212" y="58" width="96" height="10" rx="5" class="f-ink"/><rect x="212" y="74" width="66" height="8" rx="4" class="f-line"/>
+            <g class="row r1"><rect x="172" y="112" width="206" height="46" rx="14" class="f-bluet"/><circle cx="196" cy="135" r="10" class="f-blue"/><rect x="216" y="128" width="110" height="9" rx="4.5" class="f-blue o6"/><rect x="216" y="142" width="70" height="7" rx="3.5" class="f-blue o3"/></g>
+            <g class="row r2"><rect x="172" y="168" width="206" height="46" rx="14" class="f-skyt"/><circle cx="196" cy="191" r="10" class="f-sky"/><rect x="216" y="184" width="124" height="9" rx="4.5" class="f-sky o6"/><rect x="216" y="198" width="80" height="7" rx="3.5" class="f-sky o3"/></g>
+            <g class="row r3"><rect x="172" y="224" width="206" height="46" rx="14" class="f-greent"/><circle cx="196" cy="247" r="10" class="f-green"/><rect x="216" y="240" width="100" height="9" rx="4.5" class="f-green o6"/><rect x="216" y="254" width="120" height="7" rx="3.5" class="f-green o3"/></g>
+            <g class="row r4"><rect x="172" y="280" width="206" height="46" rx="14" class="f-ambert"/><circle cx="196" cy="303" r="10" class="f-amber"/><rect x="216" y="296" width="132" height="9" rx="4.5" class="f-amber o6"/><rect x="216" y="310" width="60" height="7" rx="3.5" class="f-amber o3"/></g>
+            <g class="fly f1"><rect x="30" y="80" width="80" height="54" rx="12" class="win-bg"/><rect x="30" y="80" width="80" height="16" rx="8" class="wb-blue"/></g>
+            <g class="fly f2"><rect x="420" y="120" width="80" height="54" rx="12" class="win-bg"/><rect x="420" y="120" width="80" height="16" rx="8" class="wb-sky"/></g>
+            <g class="fly f3"><rect x="24" y="250" width="80" height="54" rx="12" class="win-bg"/><rect x="24" y="250" width="80" height="16" rx="8" class="wb-green"/></g>
+            <g class="fly f4"><rect x="426" y="270" width="80" height="54" rx="12" class="win-bg"/><rect x="426" y="270" width="80" height="16" rx="8" class="wb-amber"/></g>
+          </svg>
+        </article>
+
+        <article class="card c-green">
+          <div class="card-copy">
+            <span class="num">03 · Intelligent</span>
+            <h3>From Conversations to Outcomes.</h3>
+            <p>Route, automate, and manage customer interactions with the right context at the right time.</p>
+          </div>
+          <svg class="art art-outcome" viewBox="0 0 520 400" aria-hidden="true">
+            <rect x="24" y="110" width="150" height="180" rx="18" class="win-bg"/>
+            <rect x="42" y="132" width="114" height="22" rx="11" class="f-bluet"/><rect x="42" y="162" width="114" height="22" rx="11" class="f-skyt"/><rect x="42" y="192" width="114" height="22" rx="11" class="f-greent"/><rect x="42" y="222" width="114" height="22" rx="11" class="f-ambert"/><rect x="42" y="256" width="70" height="10" rx="5" class="f-line"/>
+            <path d="M174 200 C214 200 214 120 254 120" class="route r-a"/>
+            <path d="M174 200 C214 200 214 280 254 280" class="route r-b"/>
+            <g class="pill-ai"><rect x="254" y="98" width="128" height="44" rx="22" class="f-ambert s-amber"/><text x="318" y="125" class="pl">AI agent</text></g>
+            <g class="pill-team"><rect x="254" y="258" width="128" height="44" rx="22" class="f-bluet s-blue"/><text x="318" y="285" class="pl">Your team</text></g>
+            <path d="M382 120 C420 120 420 200 444 200" class="route r-c"/>
+            <path d="M382 280 C420 280 420 200 444 200" class="route r-d"/>
+            <g class="receipt"><rect x="424" y="146" width="80" height="108" rx="16" class="win-bg"/><circle cx="464" cy="186" r="20" class="f-green"/><path d="M455 186l6 6 12-13" class="ck"/><rect x="440" y="218" width="48" height="8" rx="4" class="f-line"/><rect x="446" y="232" width="36" height="8" rx="4" class="f-line"/></g>
+          </svg>
+        </article>
+      </div>
+    </section>
+
+    <!-- CHANNELS: horizontal -->
+    <section class="channels" id="channels">
+      <div class="h-pin">
+        <div class="wrap h-head">
+          <p class="kicker">Channels</p>
+          <h2 class="h2">Every Channel Has a Role.<br><span class="soft">Every Conversation Has Context.</span></h2>
+        </div>
+        <div class="h-track">
+
+          <article class="panel p-blue">
+            <div class="panel-copy">
+              <span class="num">01</span>
+              <h3>Calls</h3>
+              <p class="role">Voice, with full context</p>
+              <p>Every inbound and outbound call is logged, summarised and attached to the customer record, so the next conversation starts where the last one ended.</p>
+              <ul><li>Click-to-call from any conversation</li><li>Call summaries on the shared timeline</li><li>Routing to the right team or agent</li></ul>
+            </div>
+            <svg class="panel-art art-call" viewBox="0 0 360 360" aria-hidden="true">
+              <circle cx="180" cy="160" r="120" class="ring rg1"/><circle cx="180" cy="160" r="120" class="ring rg2"/><circle cx="180" cy="160" r="120" class="ring rg3"/>
+              <circle cx="180" cy="160" r="64" class="f-blue"/>
+              <use href="#i-phone" x="150" y="130" width="60" height="60" class="f-white-c"/>
+              <g class="wave">
+                <rect x="96" y="300" width="8" height="24" rx="4"/><rect x="112" y="294" width="8" height="36" rx="4"/><rect x="128" y="286" width="8" height="52" rx="4"/><rect x="144" y="296" width="8" height="32" rx="4"/><rect x="160" y="282" width="8" height="60" rx="4"/><rect x="176" y="290" width="8" height="44" rx="4"/><rect x="192" y="280" width="8" height="64" rx="4"/><rect x="208" y="292" width="8" height="40" rx="4"/><rect x="224" y="286" width="8" height="52" rx="4"/><rect x="240" y="296" width="8" height="32" rx="4"/><rect x="256" y="300" width="8" height="24" rx="4"/>
+              </g>
+            </svg>
+          </article>
+
+          <article class="panel p-sky">
+            <div class="panel-copy">
+              <span class="num">02</span>
+              <h3>SMS</h3>
+              <p class="role">Fast, direct follow-up</p>
+              <p>Send confirmations, reminders and quotes by text, and keep every reply in the same thread as the call that started it.</p>
+              <ul><li>Templates and scheduled follow-ups</li><li>Two-way replies in the unified inbox</li><li>Delivery status on every message</li></ul>
+            </div>
+            <svg class="panel-art art-sms" viewBox="0 0 360 360" aria-hidden="true">
+              <rect x="100" y="20" width="160" height="320" rx="30" class="win-bg big"/>
+              <rect x="150" y="34" width="60" height="8" rx="4" class="f-line"/>
+              <g class="sb sb1"><rect x="116" y="232" width="110" height="34" rx="17" class="f-skyt"/></g>
+              <g class="sb sb2"><rect x="134" y="186" width="110" height="34" rx="17" class="f-sky"/></g>
+              <g class="sb sb3"><rect x="116" y="140" width="92" height="34" rx="17" class="f-skyt"/></g>
+              <g class="sb sb4"><rect x="140" y="94" width="104" height="34" rx="17" class="f-sky"/></g>
+              <rect x="116" y="290" width="128" height="30" rx="15" class="f-tint"/>
+            </svg>
+          </article>
+
+          <article class="panel p-green">
+            <div class="panel-copy">
+              <span class="num">03</span>
+              <h3>WhatsApp</h3>
+              <p class="role">Where customers already are</p>
+              <p>Meet customers in the app they use every day. Messages, media and approvals stay connected to their full history.</p>
+              <ul><li>Rich messages and quick replies</li><li>Hand-off between AI agent and team</li><li>One history across every channel</li></ul>
+            </div>
+            <svg class="panel-art art-wa" viewBox="0 0 360 360" aria-hidden="true">
+              <rect x="40" y="40" width="280" height="280" rx="30" class="win-bg big"/>
+              <rect x="40" y="40" width="280" height="56" rx="28" class="wb-green"/>
+              <circle cx="74" cy="68" r="14" class="f-white"/><rect x="96" y="62" width="80" height="12" rx="6" class="f-white"/>
+              <g class="wb wb1"><rect x="62" y="120" width="170" height="44" rx="18" class="f-tint"/><rect x="78" y="136" width="110" height="10" rx="5" class="f-line"/></g>
+              <g class="wb wb2"><rect x="128" y="180" width="170" height="44" rx="18" class="f-greent"/><rect x="144" y="196" width="100" height="10" rx="5" class="f-green o5"/><path d="M262 206l5 5 9-10M272 206l5 5 9-10" class="ticks"/></g>
+              <g class="wb wb3"><rect x="62" y="240" width="140" height="44" rx="18" class="f-tint"/><circle cx="92" cy="262" r="5" class="tdot td1"/><circle cx="110" cy="262" r="5" class="tdot td2"/><circle cx="128" cy="262" r="5" class="tdot td3"/></g>
+            </svg>
+          </article>
+
+          <article class="panel p-amber">
+            <div class="panel-copy">
+              <span class="num">04</span>
+              <h3>AI Agents</h3>
+              <p class="role">Autonomous, within your rules</p>
+              <p>AI agents resolve routine requests on any channel and pass complex conversations to your team with the context already written up.</p>
+              <ul><li>Intent detection and routing</li><li>Actions in your connected systems</li><li>Human hand-off with full context</li></ul>
+            </div>
+            <svg class="panel-art art-ai" viewBox="0 0 360 360" aria-hidden="true">
+              <circle cx="180" cy="130" r="74" class="f-ambert"/>
+              <g class="spark"><use href="#i-ai" x="134" y="84" width="92" height="92" class="f-amber-c"/></g>
+              <g class="ichip c1"><rect x="40" y="226" width="130" height="34" rx="17" class="f-white s-line"/><text x="105" y="248" class="ct">Reschedule</text></g>
+              <g class="ichip c2"><rect x="186" y="226" width="134" height="34" rx="17" class="f-white s-line"/><text x="253" y="248" class="ct">Order status</text></g>
+              <g class="ichip c3"><rect x="86" y="274" width="188" height="40" rx="20" class="f-green"/><path d="M110 294l6 6 11-12" class="ck"/><text x="196" y="299" class="ct w">Resolved by AI</text></g>
+            </svg>
+          </article>
+
+        </div>
+        <div class="wrap h-progress" aria-hidden="true"><span><i></i></span></div>
+      </div>
+    </section>
+
+    <!-- INBOX: bento -->
+    <section class="inbox" id="inbox">
+      <div class="wrap section-head">
+        <p class="kicker">Unified inbox</p>
+        <h2 class="h2">One Customer.<br><span class="soft">One Timeline.</span></h2>
+        <p class="lede">Follow Elena from a phone call to a text, a WhatsApp reply and a request the AI agent resolves — without switching tools.</p>
+      </div>
+      <div class="wrap bento">
+        <article class="tile t-timeline">
+          <header>
+            <div><strong>Elena Ruiz</strong><span class="muted">Larkspur Home</span></div>
+            <div class="filters" role="group" aria-label="Filter timeline by channel">
+              <button type="button" class="is-on" data-filter="all">All</button>
+              <button type="button" data-filter="calls">Calls</button>
+              <button type="button" data-filter="sms">SMS</button>
+              <button type="button" data-filter="whatsapp">WhatsApp</button>
+              <button type="button" data-filter="ai">AI</button>
+            </div>
+          </header>
+          <ol class="tl">
+            <li data-ch="calls"><span class="ic ic-blue"><svg><use href="#i-phone"/></svg></span><div><p><b>Inbound call</b> · 4m 12s <em>10:02</em></p><p class="muted">Asked about delivery windows and pricing for a 120-unit order.</p></div></li>
+            <li data-ch="sms"><span class="ic ic-sky"><svg><use href="#i-sms"/></svg></span><div><p><b>Sam Carter</b> sent a quote <em>10:09</em></p><p class="bubble b-sky">Here's the quote and the delivery slots for next week.</p></div></li>
+            <li data-ch="whatsapp"><span class="ic ic-green"><svg><use href="#i-wa"/></svg></span><div><p><b>Elena</b> replied on WhatsApp <em>11:31</em></p><p class="bubble b-green">Quote looks good. Can we move delivery to Thursday?</p></div></li>
+            <li data-ch="ai"><span class="ic ic-amber"><svg><use href="#i-ai"/></svg></span><div><p><b>AI agent</b> · Intent: reschedule <em>11:31</em></p><p class="bubble b-amber">Done — Thursday 9:00–12:00. Anything else I can help with?</p></div></li>
+          </ol>
+        </article>
+        <article class="tile t-profile">
+          <span class="avatar-lg">ER</span>
+          <div><strong>Elena Ruiz</strong><span class="muted">Operations Manager</span></div>
+          <dl><div><dt>Deal</dt><dd>Bulk order · 120 units</dd></div><div><dt>Stage</dt><dd>Negotiation</dd></div><div><dt>Owner</dt><dd>Sam Carter</dd></div></dl>
+        </article>
+        <article class="tile t-summary">
+          <p class="kicker">AI summary</p>
+          <p class="typed" data-text="Accepted the quote. Delivery moved to Thursday by the AI agent. Sam to confirm the order on Friday."></p>
+        </article>
+        <article class="tile t-status">
+          <svg class="big-check" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" class="f-greent"/><path d="M20 33l8 8 16-17" class="ck-big"/></svg>
+          <div><strong>Resolved</strong><span class="muted">On first contact · 11:32</span></div>
+        </article>
+        <article class="tile t-follow">
+          <p class="kicker">Follow-up</p>
+          <p><strong>Confirm order with Elena</strong></p>
+          <p class="muted">Friday · assigned to Sam</p>
+          <span class="chips"><span class="c-b">Calls</span><span class="c-s">SMS</span><span class="c-g">WhatsApp</span><span class="c-a">AI</span></span>
+        </article>
+      </div>
+    </section>
+
+    <!-- WORKFLOW: steps + sticky card -->
+    <section class="workflow" id="workflow">
+      <div class="wrap section-head">
+        <p class="kicker">Autonomous workflow</p>
+        <h2 class="h2">Less Manual Work.<br><span class="soft">More Meaningful Conversations.</span></h2>
+        <p class="lede">Automate repetitive interactions and help your team focus on the conversations that require human attention.</p>
+      </div>
+      <div class="wrap wf">
+        <ol class="wf-steps">
+          <li data-s="0"><span class="num">01</span><h3>Incoming message</h3><p>A customer message arrives on WhatsApp and joins their existing timeline.</p></li>
+          <li data-s="1"><span class="num">02</span><h3>Intent identified</h3><p>The request is classified using the whole conversation history as context.</p></li>
+          <li data-s="2"><span class="num">03</span><h3>Intelligent routing</h3><p>Routine and within policy, so it goes to an AI agent. Anything else goes to your team.</p></li>
+          <li data-s="3"><span class="num">04</span><h3>Action executed</h3><p>The order is updated in the connected system and the customer gets a confirmation.</p></li>
+          <li data-s="4"><span class="num">05</span><h3>Resolved and followed up</h3><p>Resolved on first contact. Sales gets a follow-up task with the full context attached.</p></li>
+        </ol>
+        <div class="wf-card-wrap">
+          <article class="wf-card" aria-live="polite">
+            <header><span class="ic ic-green"><svg><use href="#i-wa"/></svg></span><div><strong>Elena Ruiz</strong><span class="muted">WhatsApp</span></div><span class="state" data-state>New</span></header>
+            <p class="bubble b-green">Can we move the delivery to Thursday instead?</p>
+            <div class="wf-layer" data-l="1"><span class="tag t-amber"><svg><use href="#i-ai"/></svg>Intent · Reschedule delivery</span></div>
+            <div class="wf-layer choose" data-l="2"><span class="opt on"><svg><use href="#i-ai"/></svg>AI agent</span><span class="opt">Your team</span></div>
+            <div class="wf-layer cal" data-l="3"><div class="cal-day"><small>THU</small><b>14</b></div><div><b>Delivery moved</b><span class="muted">9:00–12:00 · confirmation sent</span></div></div>
+            <div class="wf-layer done" data-l="4"><svg><use href="#i-check"/></svg><div><b>Resolved</b><span class="muted">Follow-up for Sam · Friday</span></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section class="impact" id="impact">
+      <div class="wrap section-head">
+        <p class="kicker">Business impact</p>
+        <h2 class="h2">Turn Better Communication<br><span class="soft">Into Better Outcomes.</span></h2>
+      </div>
+      <div class="wrap compare">
+        <div class="switch" role="tablist" aria-label="Compare">
+          <button role="tab" type="button" aria-selected="true" data-view="before">Without Telixo</button>
+          <button role="tab" type="button" aria-selected="false" data-view="after">With Telixo</button>
+          <span class="switch-knob" aria-hidden="true"></span>
+        </div>
+        <div class="compare-stage">
+          <figure class="view v-before is-on" aria-label="Without Telixo: four separate tools, repeated questions and lost context">
+            <div class="mini m1"><span class="ic ic-blue"><svg><use href="#i-phone"/></svg></span><p>Call notes in a spreadsheet</p></div>
+            <div class="mini m2"><span class="ic ic-sky"><svg><use href="#i-sms"/></svg></span><p>SMS on a shared phone</p></div>
+            <div class="mini m3"><span class="ic ic-green"><svg><use href="#i-wa"/></svg></span><p>WhatsApp on someone's laptop</p></div>
+            <div class="mini m4"><span class="ic ic-amber"><svg><use href="#i-ai"/></svg></span><p>Bot with no customer history</p></div>
+            <p class="sticky-note">“Where's the quote we sent?”</p>
+          </figure>
+          <figure class="view v-after" aria-label="With Telixo: one timeline with every channel and the outcome">
+            <div class="one">
+              <p class="one-head"><span class="avatar-sm">ER</span><b>Elena Ruiz</b><span class="muted">· every channel</span></p>
+              <p class="one-row"><span class="dot d-blue"></span>Call summary attached</p>
+              <p class="one-row"><span class="dot d-sky"></span>Quote sent by SMS</p>
+              <p class="one-row"><span class="dot d-green"></span>Reply on WhatsApp</p>
+              <p class="one-row"><span class="dot d-amber"></span>AI agent rescheduled delivery</p>
+              <p class="one-row ok"><svg><use href="#i-check"/></svg>Resolved · follow-up booked</p>
+            </div>
+          </figure>
+        </div>
+      </div>
+      <div class="wrap outcomes">
+        <article class="oc oc-big">
+          <p class="kicker">Speed</p>
+          <p class="ten"><small>Up to</small> <span data-count>10</span>x</p>
+          <p>faster ticket resolution<a class="fn" href="#fn">*</a></p>
+        </article>
+        <article class="oc"><span class="ic ic-blue"><svg><use href="#i-check"/></svg></span><h3>Faster customer support</h3><p>AI agents resolve routine requests; complex cases reach the right person with context attached.</p></article>
+        <article class="oc"><span class="ic ic-sky"><svg><use href="#i-sms"/></svg></span><h3>Better sales follow-up</h3><p>Every call, text and message lands on one timeline, so follow-ups come from real conversations.</p></article>
+        <article class="oc"><span class="ic ic-green"><svg><use href="#i-wa"/></svg></span><h3>Fewer disconnected conversations</h3><p>One customer record across Calls, SMS, WhatsApp and AI Agents.</p></article>
+        <article class="oc"><span class="ic ic-amber"><svg><use href="#i-ai"/></svg></span><h3>More efficient workflows</h3><p>Routing, updates and confirmations run automatically; people handle the judgement calls.</p></article>
+      </div>
+      <p class="wrap footnote" id="fn">* Placeholder claim. Before publishing, back “up to 10x faster” with Telixo product data and state the source and method — or remove it.</p>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="demo">
+      <div class="orbit" aria-hidden="true">
+        <span class="o o1 ic ic-blue"><svg><use href="#i-phone"/></svg></span>
+        <span class="o o2 ic ic-sky"><svg><use href="#i-sms"/></svg></span>
+        <span class="o o3 ic ic-green"><svg><use href="#i-wa"/></svg></span>
+        <span class="o o4 ic ic-amber"><svg><use href="#i-ai"/></svg></span>
+        <span class="o o5 bubble b-green">Thursday works!</span>
+        <span class="o o6 bubble b-sky">Quote sent ✓</span>
+      </div>
+      <div class="wrap cta-inner">
+        <p class="kicker">Every signal, one system</p>
+        <h2 class="h1">Every Channel.<br><span class="soft">One Intelligent Conversation.</span></h2>
+        <p class="lede">Bring your customer communication together and create a better experience for every customer.</p>
+        <div class="cta-row">
+          <button class="btn" type="button" data-demo>Book a Demo <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <a class="btn btn-ghost" href="#story">Explore the Platform</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <a class="brand" href="#top"><svg aria-hidden="true"><use href="#mark"/></svg>Telixo</a>
+    <nav aria-label="Footer"><a href="#story">Platform</a><a href="#channels">Channels</a><a href="#inbox">Inbox</a><a href="#workflow">Automation</a><a href="#impact">Impact</a></nav>
+    <p class="muted">© <span id="year"></span> Telixo</p>
+  </footer>
+
+  <dialog class="demo" id="demo-dialog" aria-labelledby="demo-title">
+    <form novalidate>
+      <button type="button" class="close" data-close aria-label="Close">×</button>
+      <p class="kicker">Book a Demo</p>
+      <h2 id="demo-title">See Telixo with your own channels.</h2>
+      <label>Full name<input id="f-name" name="name" autocomplete="name" required></label>
+      <label>Work email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+      <label>Company<input id="f-company" name="company" autocomplete="organization" required></label>
+      <button class="btn" type="submit">Request demo <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+    </form>
+  </dialog>
+</body>
+</html>

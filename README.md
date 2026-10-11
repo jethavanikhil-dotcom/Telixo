@@ -97,3 +97,12 @@ points and a click sends a ripple; white sections get a cursor-reactive dot grid
 and buttons lean towards the cursor. It is the main page with
 `<html data-engine="morph">`, so content changes in `index.html` should be copied
 into `vector/index.html` (paths there point to `../assets/`).
+
+## Conversation Stack (new direction)
+
+`stack/` is a completely new design with no shared code or visuals: white base with
+soft channel tints (blue, sky, green, amber), Bricolage Grotesque + Geist type,
+a floating pill nav, a centred hero over an isometric stage where the customer
+story plays out live, a channel marquee, stacking story cards, a horizontal
+channel gallery, a bento inbox with working filters, a workflow with a sticky
+request card, a before/after switch and a light CTA. Only GSAP + ScrollTrigger.
