@@ -106,3 +106,23 @@ a floating pill nav, a centred hero over an isometric stage where the customer
 story plays out live, a channel marquee, stacking story cards, a horizontal
 channel gallery, a bento inbox with working filters, a workflow with a sticky
 request card, a before/after switch and a light CTA. Only GSAP + ScrollTrigger.
+
+## Kinetic (Awwwards-style experimental)
+
+`kinetic/` is built from scratch with no shared visuals. The typography is the artwork:
+off-white paper, near-black ink and one electric blue, set in Archivo's variable width
+and weight axes.
+
+- **Hero:** each headline line is sized to span the page. Letters near the cursor widen
+  and get heavier; on scroll the lines slide apart and lean with scroll speed.
+- **Story:** the three story lines assemble from scattered letters, blow apart, rise in
+  and compress together. The channel tags merge into one "Outcome".
+- **Channels:** a giant hover list with rolling names and a floating preview card that
+  follows the cursor. Click opens the details.
+- **Inbox:** Elena's timeline as a horizontal parade of giant speech bubbles.
+- **Workflow:** one word scrambles through Message → Intent → Routing → Action → Resolved.
+- **Intelligence:** a marquee whose speed and direction follow your scroll.
+- **Impact:** the outlined 10x fills with blue as you scroll (the claim is still a placeholder).
+
+Uses `assets/vendor/lenis.min.js` for smooth scrolling. With reduced motion, every
+section is static and readable in place.

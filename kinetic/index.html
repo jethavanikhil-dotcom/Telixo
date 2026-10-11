@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Telixo — Every Conversation. One Intelligent System.</title>
+  <meta name="description" content="Unify calls, SMS, WhatsApp and AI agents in one autonomous communication platform. Close more deals and resolve customer tickets faster.">
+  <meta name="theme-color" content="#FAFAF7">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/vendor/lenis.css">
+  <link rel="stylesheet" href="kinetic.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="../assets/vendor/gsap.min.js" defer></script>
+  <script src="../assets/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="../assets/vendor/lenis.min.js" defer></script>
+  <script src="kinetic.js" defer></script>
+</head>
+<body>
+  <div class="loader" aria-hidden="true">
+    <p class="loader-label mono">Telixo — connecting every conversation</p>
+    <p class="loader-count"><span data-count>000</span></p>
+  </div>
+
+  <div class="cursor" aria-hidden="true"><span class="cursor-label"></span></div>
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="bar">
+    <a class="logo" href="#top" data-cursor="Top">TELIXO</a>
+    <nav class="bar-links" id="bar-links" aria-label="Primary">
+      <a href="#story" data-cursor="Go">Platform</a>
+      <a href="#channels" data-cursor="Go">Channels</a>
+      <a href="#inbox" data-cursor="Go">Inbox</a>
+      <a href="#workflow" data-cursor="Go">Automation</a>
+      <a href="#impact" data-cursor="Go">Impact</a>
+    </nav>
+    <button class="bar-cta" type="button" data-demo data-cursor="Book">Book a Demo</button>
+    <button class="bar-toggle" type="button" aria-expanded="false" aria-controls="bar-links">Menu</button>
+  </header>
+
+  <main id="main">
+
+    <!-- 01 HERO -->
+    <section class="hero" id="top">
+      <div class="meta-row mono">
+        <span>(01)</span><span>One platform. Every conversation.</span><span class="hide-sm">Calls · SMS · WhatsApp · AI Agents</span>
+      </div>
+      <h1 class="kin" aria-label="Every Conversation. One Intelligent System.">
+        <span class="kin-line l1" aria-hidden="true">Every</span>
+        <span class="kin-line l2" aria-hidden="true">Conversation.</span>
+        <span class="kin-line l3 outline" aria-hidden="true">One Intelligent</span>
+        <span class="kin-line l4 blue" aria-hidden="true">System.</span>
+      </h1>
+      <div class="hero-foot">
+        <p class="lede">Unify calls, SMS, WhatsApp, and AI agents in one autonomous ecosystem. Close more deals and resolve customer tickets up to 10x faster.<a class="fn" href="#fn">*</a></p>
+        <div class="hero-ctas">
+          <button class="pill-btn" type="button" data-demo data-cursor="Book">Book a Demo <span aria-hidden="true">→</span></button>
+          <a class="pill-btn ghost" href="#story" data-cursor="Go">Explore the Platform</a>
+        </div>
+        <a class="badge" href="#story" aria-label="Scroll to the platform story" data-cursor="Go">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs><path id="circ" d="M60 60 m-46 0 a46 46 0 1 1 92 0 a46 46 0 1 1 -92 0"/></defs>
+            <text><textPath href="#circ">SCROLL TO CONNECT · SCROLL TO CONNECT · </textPath></text>
+          </svg>
+          <span>↓</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 02 STORY: letters scatter and assemble -->
+    <section class="story" id="story" aria-label="From fragmented to intelligent">
+      <div class="story-pin">
+        <div class="meta-row mono"><span>(02)</span><span class="story-count"><b data-phase-n>01</b> / 03</span><span class="hide-sm">The story</span></div>
+        <div class="phrases">
+          <div class="phrase" data-phase="0">
+            <p class="phrase-text">Your customers are everywhere.</p>
+            <p class="phrase-sub">Conversations spread across channels. Context gets lost. Opportunities slip away.</p>
+          </div>
+          <div class="phrase" data-phase="1">
+            <p class="phrase-text">Every channel, connected.</p>
+            <p class="phrase-sub">Bring every customer interaction into one connected communication layer.</p>
+          </div>
+          <div class="phrase" data-phase="2">
+            <p class="phrase-text">From conversations to outcomes.</p>
+            <p class="phrase-sub">Route, automate, and manage customer interactions with the right context at the right time.</p>
+          </div>
+        </div>
+        <div class="tags mono" aria-hidden="true">
+          <span class="tag" style="--c:#3341FF">Calls</span>
+          <span class="tag" style="--c:#0BA5EC">SMS</span>
+          <span class="tag" style="--c:#16B364">WhatsApp</span>
+          <span class="tag" style="--c:#0B0B0C">AI Agents</span>
+          <span class="tag tag-out">Outcome ✓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 CHANNELS: giant hover list -->
+    <section class="channels" id="channels">
+      <div class="meta-row mono"><span>(03)</span><span>Channels</span><span class="hide-sm">Hover or tap a channel</span></div>
+      <h2 class="h2">Every channel has a role. <em>Every conversation has context.</em></h2>
+      <ul class="ch-list">
+        <li>
+          <button class="ch-row" type="button" aria-expanded="false" aria-controls="ch-d1" data-ch="calls" data-cursor="Open">
+            <span class="ch-n mono">01</span>
+            <span class="ch-name"><span class="roll" data-text="Calls">Calls</span></span>
+            <span class="ch-role mono">Voice, with full context</span>
+          </button>
+          <div class="ch-detail" id="ch-d1"><div><p>Every inbound and outbound call is logged, summarised and attached to the customer record, so the next conversation starts where the last one ended.</p><p class="mono">Click-to-call · Call summaries on the timeline · Routing to the right team</p></div></div>
+        </li>
+        <li>
+          <button class="ch-row" type="button" aria-expanded="false" aria-controls="ch-d2" data-ch="sms" data-cursor="Open">
+            <span class="ch-n mono">02</span>
+            <span class="ch-name"><span class="roll" data-text="SMS">SMS</span></span>
+            <span class="ch-role mono">Fast, direct follow-up</span>
+          </button>
+          <div class="ch-detail" id="ch-d2"><div><p>Send confirmations, reminders and quotes by text, and keep every reply in the same thread as the call that started it.</p><p class="mono">Templates · Two-way replies · Delivery status</p></div></div>
+        </li>
+        <li>
+          <button class="ch-row" type="button" aria-expanded="false" aria-controls="ch-d3" data-ch="whatsapp" data-cursor="Open">
+            <span class="ch-n mono">03</span>
+            <span class="ch-name"><span class="roll" data-text="WhatsApp">WhatsApp</span></span>
+            <span class="ch-role mono">Where customers already are</span>
+          </button>
+          <div class="ch-detail" id="ch-d3"><div><p>Meet customers in the app they use every day. Messages, media and approvals stay connected to their full history.</p><p class="mono">Rich messages · AI-to-team hand-off · One history</p></div></div>
+        </li>
+        <li>
+          <button class="ch-row" type="button" aria-expanded="false" aria-controls="ch-d4" data-ch="ai" data-cursor="Open">
+            <span class="ch-n mono">04</span>
+            <span class="ch-name"><span class="roll" data-text="AI Agents">AI Agents</span></span>
+            <span class="ch-role mono">Autonomous, within your rules</span>
+          </button>
+          <div class="ch-detail" id="ch-d4"><div><p>AI agents resolve routine requests on any channel and pass complex conversations to your team with the context already written up.</p><p class="mono">Intent detection · Actions in your systems · Human hand-off</p></div></div>
+        </li>
+      </ul>
+      <div class="preview" aria-hidden="true">
+        <div class="pv" data-pv="calls">
+          <svg viewBox="0 0 200 140"><circle cx="100" cy="62" r="34" class="pv-fill-blue"/><circle cx="100" cy="62" r="34" class="pv-ring"/><circle cx="100" cy="62" r="34" class="pv-ring r2"/><path d="M88 52c2 9 9 16 18 18l4-4c1-1 2-1 3-1l7 3c1 0 1 1 1 2v6c0 1-1 2-2 2-17-1-30-14-31-31 0-1 1-2 2-2h6c1 0 2 1 2 1l3 7c0 1 0 2-1 3z" fill="#fff"/><g class="pv-bars"><rect x="58" y="112" width="6" height="14" rx="3"/><rect x="70" y="106" width="6" height="26" rx="3"/><rect x="82" y="100" width="6" height="38" rx="3"/><rect x="94" y="108" width="6" height="22" rx="3"/><rect x="106" y="98" width="6" height="42" rx="3"/><rect x="118" y="106" width="6" height="26" rx="3"/><rect x="130" y="112" width="6" height="14" rx="3"/></g></svg>
+          <p class="mono">10:02 · Inbound call · 4m 12s</p>
+        </div>
+        <div class="pv" data-pv="sms">
+          <svg viewBox="0 0 200 140"><rect x="40" y="24" width="96" height="30" rx="15" class="pv-soft"/><rect x="64" y="62" width="104" height="30" rx="15" class="pv-fill-sky"/><rect x="40" y="100" width="70" height="30" rx="15" class="pv-soft"/></svg>
+          <p class="mono">10:09 · Quote sent · Delivered</p>
+        </div>
+        <div class="pv" data-pv="whatsapp">
+          <svg viewBox="0 0 200 140"><rect x="30" y="26" width="110" height="34" rx="17" class="pv-soft"/><rect x="62" y="72" width="110" height="34" rx="17" class="pv-fill-green"/><path d="M140 90l4 4 8-9M148 90l4 4 8-9" class="pv-ticks"/></svg>
+          <p class="mono">11:31 · “Can we move delivery to Thursday?”</p>
+        </div>
+        <div class="pv" data-pv="ai">
+          <svg viewBox="0 0 200 140"><path d="M100 20l9 26 26 9-26 9-9 26-9-26-26-9 26-9z" class="pv-spark"/><rect x="40" y="104" width="120" height="26" rx="13" class="pv-ink"/><text x="100" y="121" class="pv-t">Resolved by AI</text></svg>
+          <p class="mono">11:31 · Intent: reschedule · Done</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 INBOX: horizontal parade of giant bubbles -->
+    <section class="inbox" id="inbox">
+      <div class="inbox-pin">
+        <div class="meta-row mono"><span>(04)</span><span>Unified inbox</span><span class="hide-sm">Elena Ruiz · Larkspur Home</span></div>
+        <div class="parade">
+          <div class="parade-intro">
+            <h2 class="h2">One customer.<br><em>One timeline.</em></h2>
+            <p class="lede">Follow Elena from a phone call to a text, a WhatsApp reply and a request the AI agent resolves — without switching tools.</p>
+          </div>
+          <article class="bub b-call"><p class="mono">10:02 — Call · 4m 12s</p><p class="bub-t">“What are the delivery windows for 120 units?”</p></article>
+          <article class="bub b-sms"><p class="mono">10:09 — SMS · Sam Carter</p><p class="bub-t">Here's your quote and next week's slots.</p></article>
+          <article class="bub b-wa"><p class="mono">11:31 — WhatsApp · Elena</p><p class="bub-t">Quote looks good. Can we move delivery to Thursday?</p></article>
+          <article class="bub b-ai"><p class="mono">11:31 — AI agent · Intent: reschedule</p><p class="bub-t">Done — Thursday, 9:00–12:00.</p></article>
+          <article class="bub b-end"><p class="mono">11:32 — One timeline</p><p class="bub-t">Resolved. Sam follows up Friday. ✓</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 WORKFLOW: one word rewrites itself -->
+    <section class="workflow" id="workflow">
+      <div class="wf-pin">
+        <div class="meta-row mono"><span>(05)</span><span>Autonomous workflow</span><span class="wf-count"><b data-step-n>01</b> / 05</span></div>
+        <div class="wf-copy">
+          <h2 class="h2 small">Less manual work. <em>More meaningful conversations.</em></h2>
+          <p class="lede">Automate repetitive interactions and help your team focus on the conversations that require human attention.</p>
+        </div>
+        <p class="wf-word" aria-live="polite" data-word>Message</p>
+        <div class="wf-foot">
+          <ol class="wf-ticks mono" aria-hidden="true"><li class="on">Message</li><li>Intent</li><li>Routing</li><li>Action</li><li>Resolved</li></ol>
+          <p class="wf-cap" data-cap>A customer message arrives on WhatsApp and joins the customer's existing timeline.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 INTELLIGENCE: velocity marquee -->
+    <section class="motion-band" aria-label="One system, always in motion">
+      <div class="meta-row mono"><span>(06)</span><span>The intelligence layer</span><span class="hide-sm">One system. Always in motion.</span></div>
+      <div class="mq" aria-hidden="true">
+        <div class="mq-row"><div class="mq-in"><span>Calls</span><i>✦</i><span>SMS</span><i>✦</i><span>WhatsApp</span><i>✦</i><span>AI Agents</span><i>✦</i><span class="blue">One System</span><i>✦</i></div></div>
+        <div class="mq-row rev"><div class="mq-in outline"><span>Routing</span><i>✦</i><span>Context</span><i>✦</i><span>Hand-off</span><i>✦</i><span>Resolution</span><i>✦</i><span>Always in motion</span><i>✦</i></div></div>
+      </div>
+      <p class="lede band-lede">An autonomous communication layer designed to connect customer interactions with business outcomes.</p>
+    </section>
+
+    <!-- 07 IMPACT -->
+    <section class="impact" id="impact">
+      <div class="meta-row mono"><span>(07)</span><span>Business impact</span><span class="hide-sm">No invented numbers</span></div>
+      <h2 class="h2">Turn better communication <em>into better outcomes.</em></h2>
+      <div class="ten-wrap">
+        <p class="mono ten-up">Up to</p>
+        <p class="ten" data-ten>10x</p>
+        <p class="mono ten-cap">faster ticket resolution<a class="fn" href="#fn">*</a></p>
+      </div>
+      <ol class="outcomes">
+        <li><span class="mono">01</span><h3>Faster customer support</h3><p>AI agents resolve routine requests; complex cases reach the right person with context attached.</p></li>
+        <li><span class="mono">02</span><h3>Better sales follow-up</h3><p>Every call, text and message lands on one timeline, so follow-ups come from real conversations.</p></li>
+        <li><span class="mono">03</span><h3>Fewer disconnected conversations</h3><p>One customer record across Calls, SMS, WhatsApp and AI Agents.</p></li>
+        <li><span class="mono">04</span><h3>More efficient workflows</h3><p>Routing, updates and confirmations run automatically; people handle the judgement calls.</p></li>
+      </ol>
+      <p class="footnote mono" id="fn">* Placeholder claim. Before publishing, back “up to 10x faster” with Telixo product data and state the source and method — or remove it.</p>
+    </section>
+
+    <!-- 08 CTA -->
+    <section class="cta" id="demo">
+      <div class="meta-row mono"><span>(08)</span><span>Every signal, one system</span><span class="hide-sm">Let's talk</span></div>
+      <h2 class="h2">Every channel. <em>One intelligent conversation.</em></h2>
+      <p class="lede">Bring your customer communication together and create a better experience for every customer.</p>
+      <button class="mega" type="button" data-demo data-cursor="Book"><span class="mega-in" data-text="Book a Demo →">Book a Demo →</span></button>
+      <a class="mono explore" href="#story" data-cursor="Go">Explore the Platform ↑</a>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-row mono">
+      <span>© <span id="year"></span> Telixo</span>
+      <nav aria-label="Footer"><a href="#story">Platform</a><a href="#channels">Channels</a><a href="#inbox">Inbox</a><a href="#workflow">Automation</a><a href="#impact">Impact</a></nav>
+      <a href="#top">Back to top ↑</a>
+    </div>
+    <p class="foot-word" aria-hidden="true">Telixo</p>
+  </footer>
+
+  <dialog class="demo" id="demo-dialog" aria-labelledby="demo-title">
+    <form novalidate>
+      <button type="button" class="close" data-close aria-label="Close">×</button>
+      <p class="mono">Book a Demo</p>
+      <h2 id="demo-title">See Telixo with your own channels.</h2>
+      <label>Full name<input id="f-name" name="name" autocomplete="name" required></label>
+      <label>Work email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+      <label>Company<input id="f-company" name="company" autocomplete="organization" required></label>
+      <button class="pill-btn" type="submit">Request demo →</button>
+    </form>
+  </dialog>
+</body>
+</html>
