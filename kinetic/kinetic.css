@@ -225,8 +225,10 @@ svg { display: block; }
   font-size: clamp(64px, 15vw, 300px); line-height: .82; text-transform: uppercase; letter-spacing: -.03em;
   font-variation-settings: "wdth" 80, "wght" 900; perspective: 800px;
 }
+.wf-word { display: grid; }
+.wf-line { grid-area: 1 / 1; display: block; }
+.wf-line.is-last { color: var(--blue); }
 .wf-word .wl { display: inline-block; transform-origin: 50% 50% -.3em; font-variation-settings: "wdth" var(--lw, 80), "wght" 900; will-change: transform; }
-.wf-word.is-last { color: var(--blue); }
 .wf-foot { position: relative; }
 .wf-foot::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px; background: var(--blue); transform: scaleX(var(--p, 0)); transform-origin: left; }
 .wf-foot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: end; margin: 0 var(--pad) 28px; padding-top: 14px; border-top: 1px solid var(--line); }
