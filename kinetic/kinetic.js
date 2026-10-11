@@ -374,15 +374,28 @@
   };
   drawReel(0);
   setStep(0);
-  ScrollTrigger.create({
+  // Each word gets an equal share of the pinned scroll (a short lead-in and
+  // lead-out either side), and when scrolling stops mid-change the page
+  // settles on the nearest word, so no step is skipped with a fast wheel.
+  const LEAD = 0.05;
+  const posOf = (p) => gsap.utils.clamp(0, 1, (p - LEAD) / (1 - 2 * LEAD)) * (STEPS.length - 1);
+  const wf = ScrollTrigger.create({
     trigger: '.workflow', start: 'top top', end: 'bottom bottom',
     onUpdate: (s) => {
-      // The five words fill the first 90%; the rest is a short hold before release.
-      const pos = Math.min(1, s.progress / 0.9) * (STEPS.length - 1);
+      const pos = posOf(s.progress);
       drawReel(pos);
       setStep(Math.round(pos));
       foot.style.setProperty('--p', s.progress.toFixed(4));
     },
+  });
+  const stepY = (k) => wf.start + (wf.end - wf.start) * (LEAD + (1 - 2 * LEAD) * k / (STEPS.length - 1));
+  ScrollTrigger.addEventListener('scrollEnd', () => {
+    const y = window.scrollY;
+    if (y <= stepY(0) || y >= stepY(STEPS.length - 1)) return;
+    const ty = stepY(Math.round(posOf((y - wf.start) / (wf.end - wf.start))));
+    if (Math.abs(ty - y) < 3) return;
+    if (lenis) lenis.scrollTo(ty, { duration: 0.7 });
+    else window.scrollTo({ top: ty, behavior: 'smooth' });
   });
   gsap.from('.wf-word', { yPercent: 40, autoAlpha: 0, scrollTrigger: { trigger: '.workflow', start: 'top 70%', end: 'top top', scrub: 0.6 } });
 

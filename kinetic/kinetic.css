@@ -215,7 +215,7 @@ svg { display: block; }
 /* ==========================================================================
    05 Workflow — one word rewrites itself
    ========================================================================== */
-.workflow { position: relative; height: 300vh; }
+.workflow { position: relative; height: 400vh; }
 .wf-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; grid-template-rows: auto auto 1fr auto; padding-top: 74px; }
 .wf-count b { color: var(--blue); font-weight: 500; }
 .wf-copy { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: end; padding: 0 var(--pad); }
@@ -335,7 +335,7 @@ svg { display: block; }
   .parade { flex-direction: column; align-items: stretch; width: auto; padding-block: 32px; transform: none !important; }
   .parade-intro { width: auto; }
   .bub { width: 100%; min-height: 0; border-radius: 36px; }
-  .workflow { height: 260vh; }
+  .workflow { height: 340vh; }
   .wf-copy, .wf-foot { grid-template-columns: 1fr; }
   .wf-cap { justify-self: start; }
   .outcomes { grid-template-columns: 1fr; }
