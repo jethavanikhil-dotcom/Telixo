@@ -327,42 +327,61 @@
   });
 
   // ---------------------------------------------------------------- workflow: the word rewrites itself
+  // Each step, the old word's letters flip out and the new word's letters
+  // scramble in one by one. Between steps the letters ripple in width with
+  // the scroll, and a blue line tracks progress through the five steps.
   const ticks = $$('.wf-ticks li');
   const stepN = $('[data-step-n]');
+  const foot = $('.wf-foot');
   const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#%/+=';
+  const renderWord = (txt, last) => {
+    word.textContent = '';
+    word.classList.toggle('is-last', last);
+    return [...txt].map((c) => {
+      const s = document.createElement('span');
+      s.className = 'wl';
+      s.textContent = c;
+      word.appendChild(s);
+      return s;
+    });
+  };
+  let wl = renderWord(STEPS[0][0], false);
   let step = 0;
-  let scramble = null;
+  let swap = null;
   const setStep = (i) => {
     if (i === step) return;
+    const down = i > step;
     step = i;
-    const target = STEPS[i][0];
-    ticks.forEach((li, k) => li.classList.toggle('on', k === i));
+    const [target] = STEPS[i];
+    ticks.forEach((li, k) => { li.classList.toggle('on', k <= i); li.classList.toggle('cur', k === i); });
     stepN.textContent = `0${i + 1}`;
     cap.textContent = STEPS[i][1];
-    gsap.fromTo(cap, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out', overwrite: true });
-    if (scramble) scramble.kill();
-    const from = word.textContent;
-    const len = Math.max(from.length, target.length);
-    const o = { p: 0 };
-    scramble = gsap.to(o, {
-      p: 1, duration: 0.7, ease: 'none',
-      onUpdate: () => {
-        let out = '';
-        for (let k = 0; k < len; k++) {
-          if (k < o.p * len) out += target[k] || '';
-          else out += GLYPHS[(Math.random() * GLYPHS.length) | 0];
-        }
-        word.textContent = out;
-      },
-      onComplete: () => { word.innerHTML = i === STEPS.length - 1 ? `<span class="blue">${target}</span>` : target; },
-    });
+    gsap.fromTo(cap, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out', overwrite: true });
+    if (swap) swap.progress(1).kill();
+    const old = wl;
+    swap = gsap.timeline()
+      .to(old, { yPercent: down ? -105 : 105, rotateX: down ? 70 : -70, duration: 0.26, ease: 'power2.in', stagger: 0.015 })
+      .add(() => {
+        wl = renderWord(target, i === STEPS.length - 1);
+        gsap.set(wl, { yPercent: down ? 105 : -105, rotateX: down ? -70 : 70 });
+        wl.forEach((el, k) => {
+          const o = { n: 0 };
+          gsap.to(el, { yPercent: 0, rotateX: 0, duration: 0.6, ease: 'expo.out', delay: k * 0.045 });
+          gsap.to(o, {
+            n: 1, duration: 0.45, delay: k * 0.045, ease: 'none',
+            onUpdate: () => { el.textContent = o.n < 1 ? GLYPHS[(Math.random() * GLYPHS.length) | 0] : target[k]; },
+          });
+        });
+      });
   };
   ScrollTrigger.create({
     trigger: '.workflow', start: 'top top', end: 'bottom bottom',
     onUpdate: (s) => {
       const p = s.progress * STEPS.length;
       setStep(Math.min(STEPS.length - 1, Math.floor(p)));
-      word.style.setProperty('--ww', (64 + 34 * Math.sin((p % 1) * Math.PI)).toFixed(1));
+      foot.style.setProperty('--p', s.progress.toFixed(4));
+      const local = p % 1;
+      wl.forEach((el, k) => el.style.setProperty('--lw', (78 + 22 * Math.sin(local * Math.PI * 2 + k * 0.8)).toFixed(1)));
     },
   });
   gsap.from('.wf-word', { yPercent: 40, autoAlpha: 0, scrollTrigger: { trigger: '.workflow', start: 'top 70%', end: 'top top', scrub: 0.6 } });
