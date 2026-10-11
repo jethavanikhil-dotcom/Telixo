@@ -676,3 +676,10 @@ svg { display: block; }
 @media (min-width: 900px) {
   .webgl .hero-copy .lede, .webgl .cta-copy .lede { max-width: 25em; }
 }
+
+/* Interactive dot field (Vector Morph variant) */
+.channels, .workflow, .impact, .cta { position: relative; }
+.dotfield { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.channels > .wrap, .workflow > .wrap, .workflow > .wf-scroll, .impact > .wrap, .cta > .wrap { position: relative; z-index: 1; }
+.nav-dark .gl-label.is-panel strong { color: var(--night-ink); }
+.nav-dark .gl-label.is-panel span { color: #98A2B3; }

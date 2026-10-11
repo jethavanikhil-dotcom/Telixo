@@ -10,15 +10,18 @@ import { initDepth } from './depth.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const load = (name) => fetch(`assets/data/${name}.json`).then((r) => r.json());
+const load = (name) => fetch(new URL(`../data/${name}.json`, import.meta.url)).then((r) => r.json());
 const $ = (s) => document.querySelector(s);
 
 initUI();
 
 // Real 3D when the browser supports WebGL; the SVG artwork stays as the fallback.
+// <html data-engine="morph"> uses the particle morph instead of the 3D circuit.
+const engine = document.documentElement.dataset.engine;
 let webgl = false;
 try {
-  const { supportsWebGL, initScene } = await import('./scene3d.js');
+  const { supportsWebGL } = await import('./scene3d.js');
+  const { initScene } = engine === 'morph' ? { initScene: (await import('./morph.js')).initMorph } : await import('./scene3d.js');
   if (supportsWebGL()) {
     webgl = initScene({
       canvas: $('.gl'), labels: $('.gl-labels'),
@@ -41,6 +44,11 @@ initNetwork($('#system'));
 initImpact($('#impact'));
 if (!webgl) initFinale($('#demo'));
 initDepth();
+if (engine === 'morph') {
+  const { initDotFields, initMagnetic } = await import('./interact.js');
+  initDotFields('.channels, .workflow, .impact, .cta');
+  initMagnetic('.btn, .btn-link');
+}
 
 ScrollTrigger.sort();
 ScrollTrigger.refresh();

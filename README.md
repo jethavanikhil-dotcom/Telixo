@@ -83,3 +83,13 @@ Fragments, Channels, Inbox, Workflow, Intelligence, Impact, Connect). The inbox 
 the real HTML product UI placed in 3D with CSS3D. It reuses the shared data,
 styles and 3D parts from `assets/`. Open `/signal-room/` on the local server.
 Without WebGL it falls back to a plain, readable page.
+
+## Vector Morph (experimental)
+
+`vector/` is the same page with a different signature artwork: one cloud of
+~6,000 3D points that morphs between vector shapes (signal globe → four channel
+icons → connected ring → routed outcomes → Telixo mark). The cursor scatters
+points and a click sends a ripple; white sections get a cursor-reactive dot grid
+and buttons lean towards the cursor. It is the main page with
+`<html data-engine="morph">`, so content changes in `index.html` should be copied
+into `vector/index.html` (paths there point to `../assets/`).
