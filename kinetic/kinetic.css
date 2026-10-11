@@ -119,7 +119,7 @@ svg { display: block; }
 /* ==========================================================================
    02 Story — letters scatter and assemble
    ========================================================================== */
-.story { position: relative; height: 420vh; }
+.story { position: relative; height: 330vh; }
 .story-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; grid-template-rows: auto 1fr; padding-top: 74px; }
 .story-count b { color: var(--blue); font-weight: 500; }
 .phrases { position: relative; }
@@ -215,7 +215,7 @@ svg { display: block; }
 /* ==========================================================================
    05 Workflow — one word rewrites itself
    ========================================================================== */
-.workflow { position: relative; height: 460vh; }
+.workflow { position: relative; height: 300vh; }
 .wf-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; grid-template-rows: auto auto 1fr auto; padding-top: 74px; }
 .wf-count b { color: var(--blue); font-weight: 500; }
 .wf-copy { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: end; padding: 0 var(--pad); }
@@ -323,7 +323,7 @@ svg { display: block; }
   .bar-cta { display: none; }
   .hero-foot { grid-template-columns: 1fr; }
   .badge { display: none; }
-  .story { height: 320vh; }
+  .story { height: 280vh; }
   .ch-row { grid-template-columns: 34px minmax(0, 1fr); }
   .ch-role { grid-column: 2; text-align: left; padding-bottom: 6px; }
   .ch-detail > div { grid-template-columns: 1fr; }
@@ -333,7 +333,7 @@ svg { display: block; }
   .parade { flex-direction: column; align-items: stretch; width: auto; padding-block: 32px; transform: none !important; }
   .parade-intro { width: auto; }
   .bub { width: 100%; min-height: 0; border-radius: 36px; }
-  .workflow { height: 360vh; }
+  .workflow { height: 260vh; }
   .wf-copy, .wf-foot { grid-template-columns: 1fr; }
   .wf-cap { justify-self: start; }
   .outcomes { grid-template-columns: 1fr; }

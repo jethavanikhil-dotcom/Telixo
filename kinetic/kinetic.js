@@ -377,7 +377,8 @@
   ScrollTrigger.create({
     trigger: '.workflow', start: 'top top', end: 'bottom bottom',
     onUpdate: (s) => {
-      const p = s.progress * STEPS.length;
+      // The five steps fill the first 90%; the rest is a short hold before release.
+      const p = Math.min(s.progress / 0.9, 0.9999) * STEPS.length;
       setStep(Math.min(STEPS.length - 1, Math.floor(p)));
       foot.style.setProperty('--p', s.progress.toFixed(4));
       const local = p % 1;
