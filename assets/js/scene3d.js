@@ -32,7 +32,7 @@ const LAYOUT = {
   ai: V(4.2, 2.2, 0), human: V(4.2, -2.2, 0), outcome: V(8.6, 0, 0),
 };
 // [width, height, centre x] of each composition, used to fit it into its slot.
-const DESIGN = { hero: [14.2, 10.8, 0.2], story: [21.4, 10.4, 0.4] };
+const DESIGN = { hero: [12.8, 9.6, -0.5], heroNarrow: [14.8, 11.2, 0.2], story: [19.6, 9.4, 0.4] };
 
 // ---------------------------------------------------------------- materials
 const ACCENT = new THREE.Color('#425BFF');
@@ -51,6 +51,8 @@ const M = {
   waSoft: new THREE.MeshStandardMaterial({ color: '#E2F8EA', roughness: 0.5 }),
   wire: new THREE.LineBasicMaterial({ color: '#8E9CFF', transparent: true, opacity: 0.85 }),
   wireStrong: new THREE.LineBasicMaterial({ color: ACCENT }),
+  trail1: new THREE.MeshBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.38, depthWrite: false }),
+  trail2: new THREE.MeshBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.16, depthWrite: false }),
 };
 
 const GEO = {
@@ -186,7 +188,7 @@ function makeEmitter(kind) {
   const port = new THREE.Mesh(GEO.port, M.accent);
   port.position.set(1.4, 0, 0);
   g.add(tile, port);
-  return { g, update: BUILD[kind](g) };
+  return { g, tile, update: BUILD[kind](g) };
 }
 
 // --------------------------------------------------------------------- core
@@ -221,6 +223,12 @@ function makeCore() {
     ticks.setMatrixAt(i, d.matrix);
   }
   ring.add(ticks);
+  const sats = [0, 1, 2].map((k) => {
+    const m = new THREE.Mesh(GEO.node, k === 0 ? M.accent : M.ink);
+    m.scale.setScalar(1.5);
+    ring.add(m);
+    return m;
+  });
   const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.42, 48, 32), M.gloss);
   sphere.castShadow = true;
   const inletY = [0.78, 0.26, -0.26, -0.78];
@@ -241,6 +249,10 @@ function makeCore() {
       mid.rotation.set(t * 0.35, t * 0.18, 0);
       inner.rotation.set(0, -t * 0.5, t * 0.2);
       ring.rotation.set(1.15 + Math.sin(t * 0.3) * 0.12, 0, t * 0.08);
+      sats.forEach((m, k) => {
+        const a = t * (0.7 + k * 0.15) + k * 2.094;
+        m.position.set(Math.cos(a) * 2.05, Math.sin(a) * 2.05, 0);
+      });
       sphere.scale.setScalar(1 + 0.2 * bump);
       M.gloss.emissiveIntensity = 0.2 + 0.7 * bump;
     },
@@ -297,14 +309,18 @@ function bowed(a, b, off) {
   return cubic(a.clone(), a.clone().add(V(d, off * 1.6, off)), b.clone().add(V(-d, off * 1.6, -off)), b.clone());
 }
 
-function particleMesh(kind) {
-  switch (kind) {
-    case 0: return new THREE.Mesh(new THREE.SphereGeometry(0.1, 16, 10), M.accent);
-    case 1: return new THREE.Mesh(new RoundedBoxGeometry(0.2, 0.13, 0.1, 2, 0.03), M.accent);
-    case 2: return new THREE.Mesh(new RoundedBoxGeometry(0.22, 0.16, 0.1, 2, 0.05), M.wa);
-    case 3: return new THREE.Mesh(new THREE.OctahedronGeometry(0.12), M.ink);
-    default: return new THREE.Mesh(new THREE.SphereGeometry(0.075, 12, 8), M.accent);
-  }
+// Geometry is shared so a long visit never piles up GPU buffers.
+const PGEO = [
+  new THREE.SphereGeometry(0.1, 16, 10),
+  new RoundedBoxGeometry(0.2, 0.13, 0.1, 2, 0.03),
+  new RoundedBoxGeometry(0.22, 0.16, 0.1, 2, 0.05),
+  new THREE.OctahedronGeometry(0.12),
+  new THREE.SphereGeometry(0.075, 12, 8),
+];
+const PMAT = [M.accent, M.accent, M.wa, M.ink, M.accent];
+function particleMesh(kind, mat) {
+  const k = kind > 3 ? 4 : kind;
+  return new THREE.Mesh(PGEO[k], mat || PMAT[k]);
 }
 
 class Particles {
@@ -314,8 +330,14 @@ class Particles {
   add({ kind, legs, speed = 7, duration, wait = 0, onLeg, onDone }) {
     const mesh = particleMesh(kind);
     mesh.visible = false;
-    this.parent.add(mesh);
-    this.items.push({ mesh, legs, speed, duration, wait, leg: 0, u: 0, onLeg, onDone });
+    const trail = [M.trail1, M.trail2].map((mat, k) => {
+      const g = particleMesh(kind, mat);
+      g.scale.setScalar(0.8 - k * 0.22);
+      g.visible = false;
+      return g;
+    });
+    this.parent.add(mesh, ...trail);
+    this.items.push({ mesh, trail, legs, speed, duration, wait, leg: 0, u: 0, onLeg, onDone });
   }
 
   update(dt) {
@@ -330,20 +352,26 @@ class Particles {
         p.leg += 1;
         p.u = 0;
         if (p.leg >= p.legs.length) {
-          this.parent.remove(p.mesh);
+          this.parent.remove(p.mesh, ...p.trail);
           this.items.splice(i, 1);
           p.onDone?.();
           continue;
         }
       }
+      const curve = p.legs[p.leg]().curve;
       p.mesh.visible = true;
-      p.mesh.position.copy(p.legs[p.leg]().curve.getPoint(p.u));
+      p.mesh.position.copy(curve.getPoint(p.u));
       p.mesh.rotation.y += dt * 2;
+      p.trail.forEach((g, k) => {
+        const u = p.u - 0.035 * (k + 1);
+        g.visible = u > 0;
+        if (u > 0) g.position.copy(curve.getPoint(u));
+      });
     }
   }
 
   clear() {
-    this.items.forEach((p) => this.parent.remove(p.mesh));
+    this.items.forEach((p) => this.parent.remove(p.mesh, ...p.trail));
     this.items = [];
   }
 }
@@ -416,13 +444,38 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
   // Pings: expanding rings where a signal lands.
   const pings = [];
   const ringGeo = new THREE.TorusGeometry(0.12, 0.012, 6, 32);
-  function ping(pos) {
+  const waveGeo = new THREE.TorusGeometry(0.5, 0.006, 6, 96);
+  function ping(pos, size = 1) {
     if (!motionOK()) return;
-    const m = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: ACCENT, transparent: true }));
+    const wave = size > 1;
+    const m = new THREE.Mesh(wave ? waveGeo : ringGeo, new THREE.MeshBasicMaterial({ color: ACCENT, transparent: true, depthWrite: false }));
     m.position.copy(pos);
     stage.add(m);
-    pings.push({ m, life: 0 });
+    pings.push({ m, life: 0, size: wave ? size / 4.5 : size, wave });
   }
+
+  // Depth dust: sparse motes far behind the installation, drifting with scroll.
+  const DUST = 170;
+  const dustBase = new Float32Array(DUST * 3);
+  for (let i = 0; i < DUST; i++) {
+    dustBase[i * 3] = (Math.random() - 0.5) * 34;
+    dustBase[i * 3 + 1] = Math.random() * 20;
+    dustBase[i * 3 + 2] = -4 - Math.random() * 14;
+  }
+  const dustPos = dustBase.slice();
+  const dustGeo = new THREE.BufferGeometry();
+  dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+  const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: ACCENT, size: 0.075, transparent: true, opacity: 0.32, depthWrite: false }));
+  dust.frustumCulled = false;
+  scene.add(dust);
+
+  // Hover picking for the channel tiles.
+  const raycaster = new THREE.Raycaster();
+  const ndc = new THREE.Vector2();
+  const tiles = emitters.map((e) => e.tile);
+  const hover = [0, 0, 0, 0];
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  let beatAt = -10;
 
   // DOM labels for the 3D objects (crisp text at any scale).
   const mkLabel = (html, cls) => {
@@ -505,11 +558,12 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
       kind: i, legs: [() => w], speed: 5 + Math.random() * 2,
       onDone: () => {
         core.pulse(0.7);
-        ping(core.g.position.clone().add(core.inlet(i)));
+        ping(core.g.position.clone().add(core.inlet(i).multiplyScalar(core.g.scale.x)));
+        if (Math.random() < 0.35) ping(core.g.position, 4);
         if (Math.random() < 0.6) particles.add({ kind: 9, legs: [() => heroOutWire], speed: 6 });
       },
     });
-    next[i] = t + 1.2 + Math.random() * 1.8;
+    next[i] = t + (hover[i] > 0.5 ? 0.35 : 0.8 + Math.random() * 1.4);
   }
 
   function emitStory(routed) {
@@ -522,17 +576,19 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
     }
     particles.add({
       kind: i, legs, speed: 9,
-      onLeg: (leg) => { if (leg === 0) { core.pulse(0.5); ping(core.g.position.clone().add(core.inlet(i))); } },
+      onLeg: (leg) => { if (leg === 0) { core.pulse(0.5); ping(core.g.position.clone().add(core.inlet(i).multiplyScalar(core.g.scale.x))); } },
     });
   }
 
-  function emitBeat() {
+  function emitBeat(t) {
+    beatAt = t;
     KINDS.forEach((_, i) => {
       const w = i === 3 ? wires[3][1] : wires[i][0];
       particles.add({
         kind: i, legs: [() => w], duration: 1.5,
         onDone: i === 0 ? () => {
           core.pulse(1.3);
+          ping(core.g.position, 7);
           for (let k = 0; k < 3; k++) particles.add({ kind: 9, legs: [() => heroOutWire], speed: 6, wait: k * 0.16 });
         } : undefined,
       });
@@ -585,6 +641,7 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
     // ---- layout state for this frame
     let anchor;
     let alpha = 1, link1 = 1, coreVis = 1, heroOut = 1, route = 0, sync = 0, interact = 1;
+    let tiltX = 0.04, turnY = 0;
     const it = ease(intro.t);
     const pos = [], rot = [];
     let corePos = LAYOUT.heroCore;
@@ -605,6 +662,8 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
         coreVis = 1 - smooth(0, 0.6, leave);
         link1 = 1 - smooth(0, 0.45, leave);
         heroOut = 1 - smooth(0, 0.35, leave);
+        tiltX = lerp(0.04, 0.34, k);
+        turnY = lerp(0, 0.14, k);
       } else {
         KINDS.forEach((_, i) => {
           const m = smooth(0.4 + i * 0.06, 1.25 + i * 0.06, storyP);
@@ -619,10 +678,15 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
         heroOut = 0;
         sync = smooth(1.0, 1.6, storyP);
         route = storyP;
+        // Camera: looking down on the scattered pieces, levelling as they connect,
+        // then turning towards the outcomes.
+        const level = smooth(0.2, 1.3, storyP);
+        tiltX = lerp(0.34, 0.05, level);
+        turnY = lerp(0.14, 0, level) - 0.16 * smooth(2.0, 2.8, storyP);
       }
     } else {
       const area = mode === 'cta' ? cR : hR;
-      anchor = fit(area, DESIGN.hero);
+      anchor = fit(area, wide ? DESIGN.hero : DESIGN.heroNarrow);
       let spread;
       if (mode === 'cta') {
         const a = clamp((vh - cS.top) / (vh * 0.8));
@@ -653,18 +717,36 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
     }
 
     // ---- apply
+    const intro1 = mode === 'cta' ? 1 : it;
     rig.position.set(anchor.x, anchor.y, 0);
-    rig.scale.setScalar(anchor.s);
+    rig.scale.setScalar(anchor.s * (0.84 + 0.16 * intro1));
+    stage.position.y = moving ? Math.sin(t * 0.55) * 0.1 : 0;
+
+    // Hover: the tile under the cursor lifts towards the viewer.
+    let hovered = -1;
+    if (finePointer && interact > 0.5 && moving) {
+      ndc.set(pointer.tx * 2, -pointer.ty * 2);
+      raycaster.setFromCamera(ndc, camera);
+      const hit = raycaster.intersectObjects(tiles, false)[0];
+      hovered = hit ? tiles.indexOf(hit.object) : -1;
+    }
+    hover.forEach((h, i) => { hover[i] += ((i === hovered ? 1 : 0) - h) * 0.14; });
+    pos.forEach((p, i) => {
+      if (moving) p.y += Math.sin(t * 0.9 + i * 1.3) * 0.07;
+      p.z += hover[i] * 0.9;
+      const ph = (t - beatAt - i * 0.12) / 0.6;
+      if (mode === 'cta' && ph > 0 && ph < 1) p.y += Math.sin(ph * Math.PI) * 0.35;
+    });
     pointer.x += (pointer.tx - pointer.x) * 0.06;
     pointer.y += (pointer.ty - pointer.y) * 0.06;
     if (!drag.on) { drag.yaw *= 0.95; }
-    stage.rotation.y = (drag.yaw + pointer.x * 0.35) * interact;
-    stage.rotation.x = (pointer.y * 0.18 + 0.04) * interact;
+    stage.rotation.y = (drag.yaw + pointer.x * 0.35) * interact + turnY - (1 - intro1) * 0.8;
+    stage.rotation.x = pointer.y * 0.18 * interact + tiltX + (1 - intro1) * 0.3;
 
     emitters.forEach((e, i) => {
       e.g.position.copy(pos[i]);
       e.g.rotation.set(...rot[i]);
-      e.g.scale.setScalar(it < 1 && mode !== 'cta' ? 0.85 + 0.15 * smooth(i * 0.08, 0.6 + i * 0.08, it) : 1);
+      e.g.scale.setScalar((it < 1 && mode !== 'cta' ? 0.85 + 0.15 * smooth(i * 0.08, 0.6 + i * 0.08, it) : 1) * (1 + 0.07 * hover[i]));
       const c = lerp(t * RATE[i] + OFFSET[i], t * BEAT, sync);
       e.update(c);
     });
@@ -694,7 +776,8 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
       const vis = name === 'outcome' ? pOut : pIn;
       g.visible = showRoute && vis > 0.01;
       g.position.copy(LAYOUT[name]);
-      g.scale.setScalar(0.7 + 0.3 * vis);
+      g.scale.setScalar(0.85 + 0.15 * vis);
+      g.rotation.y = (1 - vis) * -1.5;
     });
     if (showRoute) {
       outWires.ai.set(link(outA, LAYOUT.ai.clone().add(V(-1.45, 0, 0))), pIn);
@@ -713,7 +796,7 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
         emitStory(storyP > 2.6);
         nextStory = t + (storyP > 2.6 ? 0.3 : 0.45);
       } else if (mode === 'cta' && link1 > 0.98 && t > nextBeat) {
-        emitBeat();
+        emitBeat(t);
         nextBeat = t + 2.4;
       }
       if (mode === 'main' && leave > 0.05 && storyP < 1.5 && particles.items.length) particles.clear();
@@ -721,11 +804,20 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
       for (let i = pings.length - 1; i >= 0; i--) {
         const p = pings[i];
         p.life += dt / 0.8;
-        p.m.scale.setScalar(1 + p.life * 3.5);
-        p.m.material.opacity = 1 - p.life;
-        if (p.life >= 1) { stage.remove(p.m); pings.splice(i, 1); }
+        p.m.scale.setScalar((1 + p.life * 3.5) * p.size);
+        p.m.material.opacity = (1 - p.life) * (p.wave ? 0.55 : 1);
+        if (p.life >= 1) { stage.remove(p.m); p.m.material.dispose(); pings.splice(i, 1); }
       }
     }
+
+    const drift = (y / vh) * 2.2;
+    for (let i = 0; i < DUST; i++) {
+      const by = dustBase[i * 3 + 1] + (moving ? t * 0.12 : 0) + drift * (0.6 + (i % 5) * 0.12);
+      dustPos[i * 3 + 1] = (by % 20) - 10;
+      dustPos[i * 3] = dustBase[i * 3] + (moving ? Math.sin(t * 0.2 + i) * 0.3 : 0);
+    }
+    dustGeo.attributes.position.needsUpdate = true;
+    dust.material.opacity = 0.32 * alpha;
 
     renderer.render(scene, camera);
     canvas.style.opacity = alpha;

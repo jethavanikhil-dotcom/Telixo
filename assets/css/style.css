@@ -660,3 +660,19 @@ svg { display: block; }
 @media (max-width: 899px) {
   .webgl .hero-art, .webgl .cta-art { min-height: 0; aspect-ratio: 14 / 11; }
 }
+
+/* Larger 3D stage on wide screens */
+@media (min-width: 900px) {
+  .webgl .hero-grid, .webgl .cta-grid { grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.3fr); gap: 16px; }
+  .webgl .hero-art { min-height: min(76svh, 720px); margin-right: calc(var(--gutter) * -1); }
+  .webgl .cta-art { min-height: min(72svh, 680px); margin-right: calc(var(--gutter) * -1); }
+  .webgl .hero .h1 { font-size: clamp(46px, 6vw, 96px); }
+}
+@media (min-width: 900px) {
+  .webgl .cta .h1 { font-size: clamp(42px, 5vw, 80px); }
+}
+/* Copy stays above the 3D layer where the sculpture comes close. */
+.webgl .hero-copy, .webgl .cta-copy { position: relative; z-index: 45; }
+@media (min-width: 900px) {
+  .webgl .hero-copy .lede, .webgl .cta-copy .lede { max-width: 25em; }
+}
