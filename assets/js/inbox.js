@@ -77,12 +77,11 @@ function build(app, data) {
     </div>`;
 }
 
-export function initInbox(section, data) {
-  const app = section.querySelector('.app');
+// Builds the inbox UI into `app` and returns controls for stepping through the story.
+export function createInbox(app, data, steps = []) {
   build(app, data);
 
   const events = [...app.querySelectorAll('.ev')];
-  const steps = [...section.querySelectorAll('.inbox-steps li')];
   const q = (s) => app.querySelector(s);
   const status = q('[data-status]');
   let current = -1;
@@ -116,10 +115,22 @@ export function initInbox(section, data) {
     current = n;
   }
 
+  return {
+    events,
+    setStep,
+    showAll() { events.forEach((ev) => { ev.hidden = false; }); current = data.steps.length - 1; apply(current, false); },
+    hideAll() { events.forEach((ev) => { ev.hidden = true; }); current = -1; },
+  };
+}
+
+export function initInbox(section, data) {
+  const app = section.querySelector('.app');
+  const inbox = createInbox(app, data, [...section.querySelectorAll('.inbox-steps li')]);
+  const { events, setStep } = inbox;
+
   gsap.matchMedia().add({ wide: '(min-width: 900px)', narrow: '(max-width: 899px)' }, (ctx) => {
     if (ctx.conditions.wide) {
-      events.forEach((ev) => { ev.hidden = true; });
-      current = -1;
+      inbox.hideAll();
       setStep(0);
       ScrollTrigger.create({
         trigger: section.querySelector('.inbox-scroll'),
@@ -129,9 +140,7 @@ export function initInbox(section, data) {
       });
       return () => { events.forEach((ev) => { ev.hidden = false; gsap.set(ev, { clearProps: 'all' }); }); };
     }
-    events.forEach((ev) => { ev.hidden = false; });
-    current = data.steps.length - 1;
-    apply(current, false);
+    inbox.showAll();
     if (motionOK()) {
       events.forEach((ev) => gsap.from(ev, { autoAlpha: 0, y: 20, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: ev, start: 'top 90%', once: true } }));
     }

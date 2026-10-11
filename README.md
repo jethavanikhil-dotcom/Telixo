@@ -74,3 +74,12 @@ python3 -m http.server 8000
 ```
 
 then visit http://localhost:8000.
+
+## Signal Room (experimental)
+
+`signal-room/` is an alternative, fully immersive version of the landing page: one
+continuous 3D room where scrolling moves the camera through eight stops (Arrival,
+Fragments, Channels, Inbox, Workflow, Intelligence, Impact, Connect). The inbox is
+the real HTML product UI placed in 3D with CSS3D. It reuses the shared data,
+styles and 3D parts from `assets/`. Open `/signal-room/` on the local server.
+Without WebGL it falls back to a plain, readable page.

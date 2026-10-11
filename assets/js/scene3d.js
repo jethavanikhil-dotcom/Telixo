@@ -834,3 +834,6 @@ export function initScene({ canvas, labels, heroArt, story, storyArt, cta, ctaAr
   document.documentElement.classList.add('webgl');
   return true;
 }
+
+// Building blocks shared with the Signal Room page.
+export { KINDS, LABELS, RATE, OFFSET, BEAT, LAYOUT, M, GEO, EDGES, makeEmitter, makeCore, makePanel, Wire, Particles, link, bowed };

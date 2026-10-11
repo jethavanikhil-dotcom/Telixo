@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Telixo Signal Room</title>
+  <meta name="description" content="Step inside the Telixo Signal Room: calls, SMS, WhatsApp and AI agents connected in one autonomous communication system.">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="room.css">
+  <script>document.documentElement.classList.add('js', 'is-ready');</script>
+  <script src="../assets/vendor/gsap.min.js" defer></script>
+  <script src="../assets/vendor/ScrollTrigger.min.js" defer></script>
+  <script type="importmap">{ "imports": { "three": "../assets/vendor/three/three.module.min.js" } }</script>
+  <script type="module" src="room.js"></script>
+</head>
+<body class="room">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="mark" viewBox="0 0 32 32">
+      <path d="M2 7c7 0 8 9 13 9M2 13c5 0 7 3 13 3M2 19c5 0 7-3 13-3M2 25c7 0 8-9 13-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="22" cy="16" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="22" cy="16" r="2.6" fill="#425BFF"/>
+    </symbol>
+  </svg>
+
+  <div class="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <svg viewBox="0 0 32 32"><use href="#mark"/></svg>
+      <p class="mono">Entering the Signal Room</p>
+      <span class="loader-bar"><i></i></span>
+    </div>
+  </div>
+
+  <a class="skip" href="#stops">Skip to content</a>
+
+  <header class="nav">
+    <div class="nav-inner wrap">
+      <a class="brand" href="#arrival" data-stop-link="arrival" aria-label="Telixo — back to the start">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#mark"/></svg>Telixo
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Primary">
+        <a href="#fragments" data-stop-link="fragments">Platform</a>
+        <a href="#channels" data-stop-link="channels">Channels</a>
+        <a href="#inbox" data-stop-link="inbox">Inbox</a>
+        <a href="#workflow" data-stop-link="workflow">Automation</a>
+        <a href="#impact" data-stop-link="impact">Impact</a>
+        <button class="btn nav-menu-cta" type="button" data-demo>Book a Demo</button>
+      </nav>
+      <button class="btn btn-sm nav-cta" type="button" data-demo>Book a Demo</button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <canvas class="room-gl" aria-hidden="true"></canvas>
+  <div class="room-css3d" aria-hidden="true"></div>
+  <div class="room-labels" aria-hidden="true"></div>
+
+  <nav class="rail" aria-label="Rooms">
+    <ol>
+      <li><button type="button" data-stop-link="arrival"><span>Arrival</span></button></li>
+      <li><button type="button" data-stop-link="fragments"><span>Fragments</span></button></li>
+      <li><button type="button" data-stop-link="channels"><span>Channels</span></button></li>
+      <li><button type="button" data-stop-link="inbox"><span>Inbox</span></button></li>
+      <li><button type="button" data-stop-link="workflow"><span>Workflow</span></button></li>
+      <li><button type="button" data-stop-link="intelligence"><span>Intelligence</span></button></li>
+      <li><button type="button" data-stop-link="impact"><span>Impact</span></button></li>
+      <li><button type="button" data-stop-link="connect"><span>Connect</span></button></li>
+    </ol>
+  </nav>
+
+  <main class="stops" id="stops">
+
+    <section class="stop" id="arrival" data-stop="arrival">
+      <div class="stop-copy">
+        <p class="eyebrow">One platform. Every conversation.</p>
+        <h1 class="display h1">
+          <span class="line"><span>Every Conversation.</span></span>
+          <span class="line light"><span>One Intelligent System.</span></span>
+        </h1>
+        <p class="lede">Unify calls, SMS, WhatsApp, and AI agents in one autonomous ecosystem. Close more deals and resolve customer tickets up to 10x faster.<a class="fn-ref" href="#fn-10x" data-stop-link="impact" aria-label="See note on the 10x figure">*</a></p>
+        <div class="cta-row">
+          <button class="btn" type="button" data-demo>Book a Demo <span class="arrow" aria-hidden="true">→</span></button>
+          <a class="btn-link" href="#fragments" data-stop-link="fragments">Explore the Platform <span class="arrow" aria-hidden="true">↓</span></a>
+        </div>
+        <p class="mono scroll-cue">Scroll to enter the room</p>
+      </div>
+    </section>
+
+    <section class="stop" id="fragments" data-stop="fragments">
+      <div class="stop-copy">
+        <ol class="phase-marks mono" aria-hidden="true">
+          <li class="is-on"><span>01</span>Fragmented</li>
+          <li><span>02</span>Connected</li>
+          <li><span>03</span>Intelligent</li>
+        </ol>
+        <div class="phases">
+          <article class="phase is-on">
+            <h2 class="display h2">Your Customers Are Everywhere.</h2>
+            <p class="lede">Conversations spread across channels. Context gets lost. Opportunities slip away.</p>
+          </article>
+          <article class="phase">
+            <h2 class="display h2">Every Channel, Connected.</h2>
+            <p class="lede">Bring every customer interaction into one connected communication layer.</p>
+          </article>
+          <article class="phase">
+            <h2 class="display h2">From Conversations to Outcomes.</h2>
+            <p class="lede">Route, automate, and manage customer interactions with the right context at the right time.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="stop" id="channels" data-stop="channels">
+      <div class="stop-copy">
+        <p class="eyebrow">Channels</p>
+        <h2 class="display h2 small">Every Channel Has a Role. <span class="light">Every Conversation Has Context.</span></h2>
+        <div class="room-tabs" role="tablist" aria-label="Communication channels">
+          <button role="tab" type="button" aria-selected="true"><span class="mono">01</span>Calls</button>
+          <button role="tab" type="button" aria-selected="false" tabindex="-1"><span class="mono">02</span>SMS</button>
+          <button role="tab" type="button" aria-selected="false" tabindex="-1"><span class="mono">03</span>WhatsApp</button>
+          <button role="tab" type="button" aria-selected="false" tabindex="-1"><span class="mono">04</span>AI Agents</button>
+        </div>
+        <div class="room-panel" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="stop" id="inbox" data-stop="inbox">
+      <div class="stop-copy">
+        <p class="eyebrow">Unified inbox</p>
+        <h2 class="display h2 small">One Customer. <span class="light">One Timeline.</span></h2>
+        <p class="lede">Follow Elena from a phone call to a text, a WhatsApp reply and a request the AI agent resolves — all on one timeline.</p>
+        <ol class="room-steps mono">
+          <li><span>01</span>Call</li>
+          <li><span>02</span>SMS</li>
+          <li><span>03</span>WhatsApp</li>
+          <li><span>04</span>AI agent</li>
+          <li><span>05</span>One timeline</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="stop" id="workflow" data-stop="workflow">
+      <div class="stop-copy">
+        <p class="eyebrow">Autonomous workflow</p>
+        <h2 class="display h2 small">Less Manual Work. <span class="light">More Meaningful Conversations.</span></h2>
+        <p class="lede">Automate repetitive interactions and help your team focus on the conversations that require human attention.</p>
+        <p class="wf-caption room-caption" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="stop" id="intelligence" data-stop="intelligence">
+      <div class="stop-copy">
+        <p class="eyebrow">The intelligence layer</p>
+        <h2 class="display h2">One System. <span class="light">Always in Motion.</span></h2>
+        <p class="lede">An autonomous communication layer designed to connect customer interactions with business outcomes.</p>
+      </div>
+      <aside class="feed room-feed" aria-label="Example routing activity">
+        <p class="mono feed-head"><span class="live"></span>Routing activity · simulated</p>
+        <ol class="feed-list"></ol>
+      </aside>
+    </section>
+
+    <section class="stop" id="impact" data-stop="impact">
+      <div class="stop-copy">
+        <p class="eyebrow">Business impact</p>
+        <h2 class="display h2 small">Turn Better Communication <span class="light">Into Better Outcomes.</span></h2>
+        <ol class="room-outcomes">
+          <li><span class="mono">01</span><div><h3>Faster customer support</h3><p>AI agents resolve routine requests; complex cases reach the right person with context attached.</p></div></li>
+          <li><span class="mono">02</span><div><h3>Better sales follow-up</h3><p>Every call, text and message lands on one timeline, so follow-ups come from real conversations.</p></div></li>
+          <li><span class="mono">03</span><div><h3>Fewer disconnected conversations</h3><p>One customer record across Calls, SMS, WhatsApp and AI Agents.</p></div></li>
+          <li><span class="mono">04</span><div><h3>More efficient workflows</h3><p>Routing, updates and confirmations run automatically; people handle the judgement calls.</p></div></li>
+        </ol>
+        <p class="footnote" id="fn-10x">* Placeholder claim. Before publishing, back “up to 10x faster” with Telixo product data and state the source and method — or remove it.</p>
+      </div>
+    </section>
+
+    <section class="stop" id="connect" data-stop="connect">
+      <div class="stop-copy">
+        <p class="eyebrow">Every signal, one system</p>
+        <h2 class="display h1">
+          <span class="line"><span>Every Channel.</span></span>
+          <span class="line light"><span>One Intelligent Conversation.</span></span>
+        </h2>
+        <p class="lede">Bring your customer communication together and create a better experience for every customer.</p>
+        <div class="cta-row">
+          <button class="btn" type="button" data-demo>Book a Demo <span class="arrow" aria-hidden="true">→</span></button>
+          <a class="btn-link" href="#fragments" data-stop-link="fragments">Explore the Platform <span class="arrow" aria-hidden="true">↑</span></a>
+        </div>
+        <p class="room-foot">© <span id="year"></span> Telixo · <a href="../index.html">Standard site</a></p>
+      </div>
+    </section>
+  </main>
+
+  <div class="room-scroll" aria-hidden="true"></div>
+
+  <dialog class="demo-dialog" id="demo-dialog" aria-labelledby="demo-title">
+    <form method="dialog" novalidate>
+      <header>
+        <p class="eyebrow">Book a Demo</p>
+        <h2 id="demo-title">See Telixo with your own channels.</h2>
+        <button type="button" class="close" data-close aria-label="Close">×</button>
+      </header>
+      <label>Full name<input name="name" autocomplete="name" required></label>
+      <label>Work email<input name="email" type="email" autocomplete="email" required></label>
+      <label>Company<input name="company" autocomplete="organization" required></label>
+      <fieldset>
+        <legend>Channels you use today</legend>
+        <label class="check"><input type="checkbox" name="channels" value="Calls">Calls</label>
+        <label class="check"><input type="checkbox" name="channels" value="SMS">SMS</label>
+        <label class="check"><input type="checkbox" name="channels" value="WhatsApp">WhatsApp</label>
+        <label class="check"><input type="checkbox" name="channels" value="AI Agents">AI Agents</label>
+      </fieldset>
+      <button class="btn" type="submit">Request demo <span class="arrow" aria-hidden="true">→</span></button>
+    </form>
+  </dialog>
+</body>
+</html>
