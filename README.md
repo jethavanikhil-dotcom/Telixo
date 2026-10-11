@@ -4,6 +4,9 @@ Landing page for Telixo — one autonomous platform for Calls, SMS, WhatsApp and
 
 Static site: HTML, CSS and JavaScript modules. No build step.
 
+The signature artwork is a real 3D scene (Three.js, WebGL). If a browser has no WebGL,
+the page falls back to the SVG version of the same artwork automatically.
+
 ## Concept: The Communication Circuit
 
 One artwork evolves down the page. Four channel signals each have their own motion
@@ -30,7 +33,9 @@ assets/css/style.css     Design tokens, typography, layout, artwork styles
 assets/js/main.js        Entry point
 assets/js/svg.js         SVG helpers, shared ticker, particle flows
 assets/js/glyphs.js      The four channel signal glyphs
-assets/js/circuit.js     Signature artwork (hero + final CTA)
+assets/js/scene3d.js     3D Communication Circuit (hero, story, final CTA)
+assets/js/depth.js       Perspective effects for inbox, workflow, channel map, network
+assets/js/circuit.js     SVG fallback of the signature artwork (hero + final CTA)
 assets/js/story.js       Scroll story
 assets/js/channels.js    Channel map
 assets/js/inbox.js       Unified inbox UI
@@ -39,7 +44,7 @@ assets/js/network.js     Dark interlude network
 assets/js/impact.js      Impact diagrams
 assets/js/ui.js          Nav, menu, demo dialog, headline reveals
 assets/data/*.json       Channel copy, inbox story, workflow graph
-assets/vendor/           GSAP 3.12.5 + ScrollTrigger (local copies)
+assets/vendor/           GSAP 3.12.5 + ScrollTrigger, Three.js 0.160.0 (local copies)
 ```
 
 Edit copy in `index.html` and `assets/data/*.json`.

@@ -208,8 +208,8 @@ export function createCircuit(svg, { mode = 'hero' } = {}) {
   };
 }
 
-export function initHero(section) {
-  const art = createCircuit(section.querySelector('.circuit'), { mode: 'hero' });
+export function initHero(section, { art: withArt = true } = {}) {
+  const art = withArt ? createCircuit(section.querySelector('.circuit'), { mode: 'hero' }) : null;
   const root = document.documentElement;
 
   if (!motionOK()) {
@@ -220,8 +220,9 @@ export function initHero(section) {
   gsap.timeline({ delay: 0.1 })
     .from(section.querySelectorAll('.h1 .line > span'), { yPercent: 108, duration: 1.1, ease: 'power4.out', stagger: 0.08 }, 0)
     .from(section.querySelectorAll('[data-hero-in]'), { autoAlpha: 0, y: 14, duration: 0.8, ease: 'power3.out', stagger: 0.08 }, 0.4)
-    .add(art.intro(), 0.25);
+    .add(art ? art.intro() : () => {}, 0.25);
   root.classList.add('is-ready');
+  if (!art) return;
 
   art.parallax(section);
 

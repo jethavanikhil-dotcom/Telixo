@@ -627,3 +627,36 @@ svg { display: block; }
   .footer-links { gap: 48px; }
   .footer-base { flex-direction: column; }
 }
+
+/* ==========================================================================
+   3D layer (WebGL). Canvas sits above the page but never takes pointer input;
+   the artwork slots keep their size so the scene can pin itself to them.
+   ========================================================================== */
+
+.gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 40; pointer-events: none; opacity: 0; }
+.gl-labels { position: fixed; inset: 0; z-index: 41; pointer-events: none; overflow: hidden; }
+.gl-label { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform; }
+.gl-label.is-chan { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--ink-2); translate: 0 -130%; }
+.gl-label.is-panel { display: grid; gap: 2px; }
+.gl-label.is-panel strong { font-size: 17px; font-weight: 600; letter-spacing: -.02em; color: var(--ink); }
+.gl-label.is-panel span { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--ink-2); }
+.nav-dark .gl-label.is-chan { color: #98A2B3; }
+
+.webgl .hero-art .circuit, .webgl .cta-art .circuit { visibility: hidden; }
+.webgl .hero-art, .webgl .cta-art { cursor: grab; }
+.webgl .is-dragging { cursor: grabbing; }
+.story-art.is-idle { visibility: hidden; }
+.webgl .hero-art { min-height: min(62svh, 560px); }
+.webgl .cta-art { min-height: min(60svh, 540px); }
+
+/* Extruded 10x */
+.figure strong {
+  text-shadow: 1px 1px 0 #C9D2FF, 2px 2px 0 #BCC7FF, 3px 3px 0 #AFBCFF, 4px 4px 0 #A3B1FF,
+    5px 5px 0 #97A7FF, 6px 6px 0 #8B9DFF, 14px 18px 28px rgba(66, 91, 255, .18);
+}
+
+.channel-visual, .wf-graph { will-change: transform; }
+.app { will-change: transform; }
+@media (max-width: 899px) {
+  .webgl .hero-art, .webgl .cta-art { min-height: 0; aspect-ratio: 14 / 11; }
+}

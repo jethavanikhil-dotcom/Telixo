@@ -40,7 +40,7 @@ function nodeBox(parent, [x, y, w, h], title, sub, fontScale) {
   return { g, pts: { left: [x, y + h / 2], right: [x + w, y + h / 2], top: [x + w / 2, y], bottom: [x + w / 2, y + h] } };
 }
 
-export function initStory(section) {
+export function initStory(section, { art3d = false } = {}) {
   const sticky = section.querySelector('.story-sticky');
   const svg = section.querySelector('.story-art');
   const stages = [...section.querySelectorAll('[data-stage]')];
@@ -57,6 +57,9 @@ export function initStory(section) {
 
   gsap.matchMedia().add({ wide: '(min-width: 900px)', tall: '(max-width: 899px)' }, (ctx) => {
     const L = LAYOUTS[ctx.conditions.wide ? 'wide' : 'tall'];
+    // On wide screens with WebGL the 3D scene draws the story; the SVG is built but stays idle.
+    const idle = art3d && ctx.conditions.wide;
+    svg.classList.toggle('is-idle', idle);
     svg.replaceChildren();
     svg.setAttribute('viewBox', `0 0 ${L.vb}`);
     svg.classList.toggle('is-tall', !ctx.conditions.wide);
@@ -159,7 +162,7 @@ export function initStory(section) {
 
     // --- live signals -----------------------------------------------------
     let nextEmit = 0;
-    const stop = loop(svg, (t, dt) => {
+    const stop = idle ? () => {} : loop(svg, (t, dt) => {
       glyphs.forEach((g) => g.update(t, st.sync));
       hub.spin(t);
       const p = tl.progress() * 3;
