@@ -67,19 +67,21 @@ export function initImpact(section) {
 
   const counter = section.querySelector('[data-count]');
   if (counter && motionOK()) {
+    // The figure counts up as it scrolls into view (and back down if you scroll back).
     const n = { v: 1 };
     gsap.to(n, {
-      v: 10, duration: 1.6, ease: 'power3.out',
-      scrollTrigger: { trigger: counter, start: 'top 80%', once: true },
+      v: 10, ease: 'none',
+      scrollTrigger: { trigger: counter, start: 'top 90%', end: 'top 45%', scrub: 0.4 },
       onUpdate: () => { counter.textContent = Math.round(n.v); },
     });
   }
 
   if (motionOK()) {
+    // Each outcome row slides in with the scroll, parts staggered.
     section.querySelectorAll('.outcome').forEach((row) => {
       gsap.from(row.children, {
-        autoAlpha: 0, y: 24, duration: 0.8, ease: 'power3.out', stagger: 0.06,
-        scrollTrigger: { trigger: row, start: 'top 85%', once: true },
+        x: (i) => 60 + i * 30, autoAlpha: 0, ease: 'none', stagger: 0.08,
+        scrollTrigger: { trigger: row, start: 'top 98%', end: 'top 62%', scrub: 0.5 },
       });
     });
   }

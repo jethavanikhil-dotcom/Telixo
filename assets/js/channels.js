@@ -14,7 +14,7 @@ const SPOTS = {
   ai: { at: [325, 530], port: 'top', inlet: 'bottom' },
 };
 
-export function initChannels(section, data) {
+export function initChannels(section, data, { onUserSelect } = {}) {
   const svg = section.querySelector('.channel-map');
   const tabs = [...section.querySelectorAll('[role="tab"]')];
   const panel = section.querySelector('.channel-panel');
@@ -85,14 +85,16 @@ export function initChannels(section, data) {
   }
 
   tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => select(i, { user: true }));
+    tab.addEventListener('click', () => { select(i, { user: true }); onUserSelect?.(i); });
     tab.addEventListener('mouseenter', () => items[i].path.classList.add('is-hover'));
     tab.addEventListener('mouseleave', () => items[i].path.classList.remove('is-hover'));
     tab.addEventListener('keydown', (e) => {
       const keys = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
       if (e.key in keys) {
         e.preventDefault();
-        select((i + keys[e.key] + tabs.length) % tabs.length, { focus: true, user: true });
+        const j = (i + keys[e.key] + tabs.length) % tabs.length;
+        select(j, { focus: true, user: true });
+        onUserSelect?.(j);
       } else if (e.key === 'Home') { e.preventDefault(); select(0, { focus: true, user: true }); }
       else if (e.key === 'End') { e.preventDefault(); select(tabs.length - 1, { focus: true, user: true }); }
     });
@@ -127,4 +129,11 @@ export function initChannels(section, data) {
       if (autoTimer > 6) { autoTimer = 0; select((active + 1) % items.length); }
     }
   });
+
+  return {
+    select: (i) => { if (i !== active) select(i); },
+    // Scroll now drives the selection, so stop the automatic cycling.
+    takeOver: () => { interacted = true; },
+    count: items.length,
+  };
 }

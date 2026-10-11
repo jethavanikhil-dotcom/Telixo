@@ -37,18 +37,20 @@ initHero($('#top'), { art: !webgl });
 initStory($('#platform'), { art3d: webgl });
 
 const [channels, inbox, workflow] = await Promise.all([load('channels'), load('inbox'), load('workflow')]);
-initChannels($('#channels'), channels);
+let motion = null;
+const channelsApi = initChannels($('#channels'), channels, { onUserSelect: (i) => motion?.jumpToChannel(i) });
 initInbox($('#inbox'), inbox);
 initWorkflow($('#workflow'), workflow);
 initNetwork($('#system'));
 initImpact($('#impact'));
 if (!webgl) initFinale($('#demo'));
 initDepth();
-if (engine === 'morph') {
-  const { initDotFields, initMagnetic } = await import('./interact.js');
-  initDotFields('.channels, .workflow, .impact, .cta');
-  initMagnetic('.btn, .btn-link');
-}
+// High animation depth: scroll-driven sections, magnetic cursor, reactive dot grids.
+const { initMotion } = await import('./motion.js');
+motion = initMotion({ channels: channelsApi });
+const { initDotFields, initMagnetic } = await import('./interact.js');
+initDotFields('.channels, .workflow, .impact, .cta');
+initMagnetic('.btn, .btn-link, .nav-links a, .channel-tabs .name');
 
 ScrollTrigger.sort();
 ScrollTrigger.refresh();

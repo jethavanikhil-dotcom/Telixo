@@ -60,6 +60,10 @@ Edit copy in `index.html` and `assets/data/*.json`.
 
 ## Motion and accessibility
 
+Design settings: layout medium, information per screen medium, animation depth high
+(scroll-driven sections and magnetic cursor effects, in `assets/js/motion.js` and
+`assets/js/interact.js`).
+
 - Animation loops only run while their section is on screen.
 - With “reduce motion” turned on: no autoplay loops, parallax or intro animation.
   Scroll-linked states still follow the scroll position, and all content stays visible.

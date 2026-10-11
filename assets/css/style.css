@@ -683,3 +683,36 @@ svg { display: block; }
 .channels > .wrap, .workflow > .wrap, .workflow > .wf-scroll, .impact > .wrap, .cta > .wrap { position: relative; z-index: 1; }
 .nav-dark .gl-label.is-panel strong { color: var(--night-ink); }
 .nav-dark .gl-label.is-panel span { color: #98A2B3; }
+
+/* ==========================================================================
+   High animation depth
+   ========================================================================== */
+
+/* Channels: the grid holds while scrolling selects each channel. */
+@media (min-width: 900px) {
+  .motion-high .channels-scroll { height: 300vh; }
+  .motion-high .channels-sticky {
+    position: sticky; top: var(--nav-h);
+    height: calc(100svh - var(--nav-h));
+    display: flex; align-items: center;
+  }
+  .motion-high .channels-grid { width: 100%; }
+  .motion-high .channels { padding-bottom: clamp(48px, 6vw, 96px); }
+}
+
+/* Cursor ring */
+.cursor-ring {
+  position: fixed; left: 0; top: 0; z-index: 70;
+  width: 34px; height: 34px; margin: -17px 0 0 -17px;
+  border: 1.5px solid var(--accent); border-radius: 50%;
+  pointer-events: none; opacity: 0;
+  display: grid; place-items: center;
+  transition: width .35s var(--ease), height .35s var(--ease), margin .35s var(--ease), background .3s, opacity .3s, border-color .3s;
+}
+.cursor-ring.is-on { opacity: .85; }
+.cursor-ring.is-hover { width: 58px; height: 58px; margin: -29px 0 0 -29px; background: rgba(66, 91, 255, .08); }
+.cursor-ring.is-drag { width: 76px; height: 76px; margin: -38px 0 0 -38px; background: rgba(66, 91, 255, .1); }
+.cursor-ring.is-drag::after { content: "DRAG"; font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--accent); }
+.cursor-ring.is-press { width: 26px; height: 26px; margin: -13px 0 0 -13px; }
+.nav-dark .cursor-ring { border-color: #A9B5FF; }
+.channel-tabs .name { display: inline-block; will-change: transform; }
