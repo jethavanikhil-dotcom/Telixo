@@ -11,12 +11,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="../assets/vendor/lenis.css">
-  <link rel="stylesheet" href="site.css?v=2">
+  <link rel="stylesheet" href="site.css?v=3">
   <script>document.documentElement.classList.add('js');</script>
   <script src="../assets/vendor/gsap.min.js" defer></script>
   <script src="../assets/vendor/ScrollTrigger.min.js" defer></script>
   <script src="../assets/vendor/lenis.min.js" defer></script>
-  <script src="site.js?v=2" defer></script>
+  <script src="site.js?v=3" defer></script>
 </head>
 <body>
   <div class="loader" aria-hidden="true">
@@ -95,7 +95,7 @@
       </ul>
       <div class="nav-cta">
         <a class="login" href="/login" data-link="login">Log in</a>
-        <a class="pill-btn ghost sm" href="https://wa.me/910000000000" data-link="whatsapp" data-cursor="Chat" target="_blank" rel="noopener">Book a Demo</a>
+        <a class="pill-btn ghost sm" href="https://wa.me/910000000000" data-link="whatsapp" data-cursor="Chat" target="_blank" rel="noopener">Book a Demo<span class="sr-only"> (opens WhatsApp)</span></a>
         <a class="pill-btn brand sm" href="/signup" data-link="signup" data-cursor="Start">Start free</a>
       </div>
     </nav>
@@ -117,7 +117,8 @@
         <p class="lede">Telixo is the WhatsApp Business platform for businesses in India. Answer every chat from one shared inbox, send campaigns and broadcasts, and manage your team, with Twilio calling and Odoo contact sync.</p>
         <div class="hero-ctas">
           <a class="pill-btn brand" href="/signup" data-link="signup" data-cursor="Start">Start free <span aria-hidden="true">→</span></a>
-          <a class="pill-btn ghost" href="https://wa.me/910000000000" data-link="whatsapp" data-cursor="Chat" target="_blank" rel="noopener">Book a Demo</a>
+          <a class="pill-btn ghost" href="https://wa.me/910000000000" data-link="whatsapp" data-cursor="Chat" target="_blank" rel="noopener">Book a Demo<span class="sr-only"> (opens WhatsApp)</span></a>
+          <p class="hero-note mono">Works with Twilio and Odoo · Made for teams in India</p>
         </div>
         <a class="badge" href="#how" aria-label="See how Telixo works" data-cursor="Go">
           <svg viewBox="0 0 120 120" aria-hidden="true">
@@ -217,115 +218,35 @@
     <section class="why" aria-labelledby="why-title">
       <h2 class="h2" id="why-title">Why shared phones <em>fail.</em></h2>
       <ol class="why-list">
-        <li><p class="stat todo-stat" aria-label="Statistic to be added">00%</p><h3>Slow replies</h3><p>When one phone is passed around, every reply waits for whoever has it.</p></li>
-        <li><p class="stat todo-stat" aria-label="Statistic to be added">00%</p><h3>No accountability</h3><p>There is no record of who answered which customer, or what they promised.</p></li>
-        <li><p class="stat todo-stat" aria-label="Statistic to be added">00%</p><h3>Data on personal phones</h3><p>Customer chats and numbers sit on staff devices, and leave when people do.</p></li>
-        <li><p class="stat todo-stat" aria-label="Statistic to be added">00%</p><h3>No visibility</h3><p>Owners can’t see open chats, response times or who is overloaded.</p></li>
+        <li><p class="stat" aria-hidden="true">01</p><h3>Slow replies</h3><p>When one phone is passed around, every reply waits for whoever has it.</p></li>
+        <li><p class="stat" aria-hidden="true">02</p><h3>No accountability</h3><p>There is no record of who answered which customer, or what they promised.</p></li>
+        <li><p class="stat" aria-hidden="true">03</p><h3>Data on personal phones</h3><p>Customer chats and numbers sit on staff devices, and leave when people do.</p></li>
+        <li><p class="stat" aria-hidden="true">04</p><h3>No visibility</h3><p>Owners can’t see open chats, response times or who is overloaded.</p></li>
       </ol>
-      <p class="footnote mono">* Placeholder figures. Add 3–4 statistics the team can source, and name each source, before publishing.</p>
     </section>
 
-    <!-- 04 HOW IT WORKS: 4 steps (brief §6) -->
-    <section class="workflow" id="how">
-      <div class="wf-pin">
-        <div class="meta-row mono"><span>(04)</span><span>How it works</span><span class="wf-count"><b data-step-n>01</b> / 04</span></div>
-        <div class="wf-copy">
-          <h2 class="h2 small">How it works. <em>Four steps to a shared WhatsApp inbox.</em></h2>
-          <p class="lede">From your WhatsApp Business number to a team that replies, assigns and follows up together.</p>
-        </div>
-        <p class="wf-word" data-word>Connect</p>
-        <div class="wf-foot">
-          <ol class="wf-ticks mono" aria-hidden="true"><li class="on cur">Connect number</li><li>Add team</li><li>Organise contacts</li><li>Start messaging</li></ol>
-          <p class="wf-cap" data-cap>Connect your WhatsApp Business number to Telixo.</p>
-        </div>
+    <!-- 04 HOW IT WORKS: 4-step strip (brief §6) -->
+    <section class="steps" id="how" aria-labelledby="how-title">
+      <div class="meta-row mono"><span>(04)</span><span>How it works</span><span class="hide-sm">Four steps</span></div>
+      <div class="steps-head">
+        <h2 class="h2" id="how-title">How it works. <em>Four steps to a shared WhatsApp inbox.</em></h2>
+        <p class="lede">From your WhatsApp Business number to a team that replies, assigns and follows up together.</p>
+      </div>
+      <ol class="steps-list">
+        <li><span class="step-n mono">01</span><h3 class="step-w">Connect</h3><p>Connect your WhatsApp Business number to Telixo.</p></li>
+        <li><span class="step-n mono">02</span><h3 class="step-w">Add team</h3><p>Invite your team and choose what each person can see and do.</p></li>
+        <li><span class="step-n mono">03</span><h3 class="step-w">Organise</h3><p>Import your contacts, tag and group them, and keep them in sync with Odoo.</p></li>
+        <li><span class="step-n mono">04</span><h3 class="step-w brand-step">Message</h3><p>Reply together from one shared inbox, and send campaigns and broadcasts.</p></li>
+      </ol>
+      <div class="steps-cta">
+        <a class="pill-btn brand" href="/signup" data-link="signup" data-cursor="Start">Start free <span aria-hidden="true">→</span></a>
+        <a class="more mono" href="#tour">See the product tour →</a>
       </div>
     </section>
 
-    <!-- 05 FEATURES: each row links to its product page (brief §6) -->
-    <section class="channels" id="features">
-      <div class="meta-row mono"><span>(05)</span><span>Product</span><span class="hide-sm">Hover or tap a feature</span></div>
-      <h2 class="h2">Everything your team needs <em>to sell and support on WhatsApp.</em></h2>
-      <ul class="ch-list">
-        <li>
-          <button class="ch-row" type="button" aria-expanded="false" aria-controls="f-1" data-ch="inbox" data-cursor="Open">
-            <span class="ch-n mono">01</span>
-            <span class="ch-name"><span class="roll" data-text="Shared Inbox">Shared Inbox</span></span>
-            <span class="ch-role mono">One number, the whole team</span>
-          </button>
-          <div class="ch-detail" id="f-1"><div><p>Every WhatsApp conversation lands in one inbox your whole team works from. Assign chats so each customer gets one clear reply, and see who is handling what.</p><a class="more mono" href="product/inbox/" data-cursor="Go">Learn more about the Shared Inbox →</a></div></div>
-        </li>
-        <li>
-          <button class="ch-row" type="button" aria-expanded="false" aria-controls="f-2" data-ch="campaigns" data-cursor="Open">
-            <span class="ch-n mono">02</span>
-            <span class="ch-name"><span class="roll" data-text="Campaigns">Campaigns</span></span>
-            <span class="ch-role mono">Campaigns and broadcasts</span>
-          </button>
-          <div class="ch-detail" id="f-2"><div><p>Send offers, reminders and updates to the contacts who opted in, using WhatsApp-approved message templates.</p><a class="more mono" href="product/campaigns/" data-cursor="Go">Learn more about Campaigns and Broadcasts →</a></div></div>
-        </li>
-        <li>
-          <button class="ch-row" type="button" aria-expanded="false" aria-controls="f-3" data-ch="contacts" data-cursor="Open">
-            <span class="ch-n mono">03</span>
-            <span class="ch-name"><span class="roll" data-text="Contacts">Contacts</span></span>
-            <span class="ch-role mono">Contacts and CRM</span>
-          </button>
-          <div class="ch-detail" id="f-3"><div><p>Keep every customer’s details, tags and chat history in one place, and group contacts for the right campaign.</p><a class="more mono" href="product/contacts/" data-cursor="Go">Learn more about Contacts and CRM →</a></div></div>
-        </li>
-        <li>
-          <button class="ch-row" type="button" aria-expanded="false" aria-controls="f-4" data-ch="team" data-cursor="Open">
-            <span class="ch-n mono">04</span>
-            <span class="ch-name"><span class="roll" data-text="Team & Roles">Team &amp; Roles</span></span>
-            <span class="ch-role mono">Control who sees what</span>
-          </button>
-          <div class="ch-detail" id="f-4"><div><p>Add your team to one workspace and decide what each person can see and do.</p><a class="more mono" href="product/team/" data-cursor="Go">Learn more about Team and Roles →</a></div></div>
-        </li>
-        <li>
-          <button class="ch-row" type="button" aria-expanded="false" aria-controls="f-5" data-ch="calling" data-cursor="Open">
-            <span class="ch-n mono">05</span>
-            <span class="ch-name"><span class="roll" data-text="Calling">Calling</span></span>
-            <span class="ch-role mono">With Twilio</span>
-          </button>
-          <div class="ch-detail" id="f-5"><div><p>Call customers through Telixo’s Twilio integration, from the same place your team chats with them.</p><a class="more mono" href="product/calling/" data-cursor="Go">Learn more about Calling →</a></div></div>
-        </li>
-        <li>
-          <button class="ch-row" type="button" aria-expanded="false" aria-controls="f-6" data-ch="odoo" data-cursor="Open">
-            <span class="ch-n mono">06</span>
-            <span class="ch-name"><span class="roll" data-text="Odoo Sync">Odoo Sync</span></span>
-            <span class="ch-role mono">Contacts stay in sync</span>
-          </button>
-          <div class="ch-detail" id="f-6"><div><p>Keep contacts in sync between Telixo and Odoo, so customer details match in both tools.</p><a class="more mono" href="product/odoo/" data-cursor="Go">Learn more about Odoo Sync →</a></div></div>
-        </li>
-      </ul>
-      <div class="preview" aria-hidden="true">
-        <div class="pv" data-pv="inbox">
-          <svg viewBox="0 0 200 140"><rect x="20" y="18" width="160" height="26" rx="13" class="pv-soft"/><rect x="20" y="52" width="160" height="26" rx="13" class="pv-fill-brand"/><rect x="20" y="86" width="160" height="26" rx="13" class="pv-soft"/><circle cx="36" cy="65" r="7" fill="#fff"/><circle cx="36" cy="31" r="7" class="pv-ink"/><circle cx="36" cy="99" r="7" class="pv-ink"/><rect x="50" y="61" width="70" height="8" rx="4" fill="#fff"/></svg>
-          <p class="mono">3 teammates · 1 number</p>
-        </div>
-        <div class="pv" data-pv="campaigns">
-          <svg viewBox="0 0 200 140"><circle cx="46" cy="70" r="22" class="pv-fill-brand"/><circle cx="46" cy="70" r="22" class="pv-ring"/><circle cx="46" cy="70" r="22" class="pv-ring r2"/><rect x="90" y="24" width="90" height="20" rx="10" class="pv-soft"/><rect x="90" y="60" width="90" height="20" rx="10" class="pv-soft"/><rect x="90" y="96" width="90" height="20" rx="10" class="pv-soft"/></svg>
-          <p class="mono">Offer sent · opted-in contacts</p>
-        </div>
-        <div class="pv" data-pv="contacts">
-          <svg viewBox="0 0 200 140"><circle cx="60" cy="56" r="24" class="pv-ink"/><rect x="96" y="40" width="80" height="10" rx="5" class="pv-ink"/><rect x="96" y="58" width="56" height="10" rx="5" class="pv-soft"/><rect x="30" y="100" width="54" height="22" rx="11" class="pv-fill-mint"/><rect x="92" y="100" width="76" height="22" rx="11" class="pv-fill-brand"/></svg>
-          <p class="mono">Tags · history · segments</p>
-        </div>
-        <div class="pv" data-pv="team">
-          <svg viewBox="0 0 200 140"><circle cx="60" cy="60" r="20" class="pv-fill-brand"/><circle cx="100" cy="60" r="20" class="pv-ink"/><circle cx="140" cy="60" r="20" class="pv-fill-mint"/><rect x="40" y="100" width="120" height="22" rx="11" class="pv-soft"/></svg>
-          <p class="mono">Roles and permissions</p>
-        </div>
-        <div class="pv" data-pv="calling">
-          <svg viewBox="0 0 200 140"><circle cx="100" cy="62" r="34" class="pv-fill-brand"/><circle cx="100" cy="62" r="34" class="pv-ring"/><path d="M88 52c2 9 9 16 18 18l4-4c1-1 2-1 3-1l7 3c1 0 1 1 1 2v6c0 1-1 2-2 2-17-1-30-14-31-31 0-1 1-2 2-2h6c1 0 2 1 2 1l3 7c0 1 0 2-1 3z" fill="#fff"/><g class="pv-bars"><rect x="70" y="110" width="6" height="18" rx="3"/><rect x="82" y="106" width="6" height="26" rx="3"/><rect x="94" y="102" width="6" height="34" rx="3"/><rect x="106" y="106" width="6" height="26" rx="3"/><rect x="118" y="110" width="6" height="18" rx="3"/></g></svg>
-          <p class="mono">Call via Twilio</p>
-        </div>
-        <div class="pv" data-pv="odoo">
-          <svg viewBox="0 0 200 140"><rect x="20" y="40" width="60" height="60" rx="14" class="pv-fill-brand"/><rect x="120" y="40" width="60" height="60" rx="14" class="pv-ink"/><path d="M86 60h28m-6-6 6 6-6 6M114 80H86m6-6-6 6 6 6" class="pv-arrows"/></svg>
-          <p class="mono">Telixo ⇄ Odoo contacts</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 06 PRODUCT TOUR: features with product screenshots -->
+    <!-- 05 PRODUCT TOUR: features with product screenshots -->
     <section class="tour" id="tour" aria-labelledby="tour-title">
-      <div class="meta-row mono"><span>(06)</span><span>Product tour</span><span class="hide-sm">Scroll or pick a feature</span></div>
+      <div class="meta-row mono"><span>(05)</span><span>Product tour</span><span class="hide-sm">Scroll or pick a feature</span></div>
       <h2 class="h2" id="tour-title">See Telixo <em>in action.</em></h2>
       <div class="tour-grid">
         <div class="tour-steps">
@@ -495,10 +416,10 @@
       </div>
     </section>
 
-    <!-- 07 TESTIMONIALS: one quote each, a result headline per quote, link to stories (brief §6) -->
+    <!-- 06 TESTIMONIALS: one quote each, a result headline per quote, link to stories (brief §6) -->
     <section class="inbox" id="stories">
       <div class="inbox-pin">
-        <div class="meta-row mono"><span>(07)</span><span>Customer stories</span><span class="hide-sm">No repeated quotes</span></div>
+        <div class="meta-row mono"><span>(06)</span><span>Customer stories</span><span class="hide-sm">Salons · Restaurants · Real estate · Retail</span></div>
         <div class="parade">
           <div class="parade-intro">
             <h2 class="h2">Real businesses.<br><em>Real results.</em></h2>
@@ -514,9 +435,9 @@
       </div>
     </section>
 
-    <!-- 08 FAQ (brief §6: 6–8 questions) -->
+    <!-- 07 FAQ (brief §6: 6–8 questions) -->
     <section class="faq" id="faq" aria-labelledby="faq-title">
-      <div class="meta-row mono"><span>(08)</span><span>FAQ</span><span class="hide-sm">Questions before a demo</span></div>
+      <div class="meta-row mono"><span>(07)</span><span>FAQ</span><span class="hide-sm">Questions before a demo</span></div>
       <h2 class="h2" id="faq-title">Questions, <em>answered.</em></h2>
       <div class="faq-grid">
         <div class="faq-list">
@@ -563,9 +484,9 @@
       </div>
     </section>
 
-    <!-- 09 FINAL CTA BAND -->
+    <!-- 08 FINAL CTA BAND -->
     <section class="cta" id="start">
-      <div class="meta-row mono"><span>(09)</span><span>Get started</span><span class="hide-sm">Start free or book a demo</span></div>
+      <div class="meta-row mono"><span>(08)</span><span>Get started</span><span class="hide-sm">Start free or book a demo</span></div>
       <h2 class="h2">Bring your whole team <em>to WhatsApp.</em></h2>
       <p class="lede">Set up your shared inbox, invite your team and start replying together.</p>
       <a class="mega" href="/signup" data-link="signup" data-cursor="Start"><span class="mega-in" data-text="Start free →">Start free →</span></a>
@@ -603,5 +524,10 @@
     </div>
     <p class="foot-word" aria-hidden="true">Telixo</p>
   </footer>
+
+  <div class="dock" role="region" aria-label="Get started">
+    <a class="pill-btn brand" href="/signup" data-link="signup">Start free</a>
+    <a class="pill-btn ghost" href="https://wa.me/910000000000" data-link="whatsapp" target="_blank" rel="noopener">Book a Demo<span class="sr-only"> (opens WhatsApp)</span></a>
+  </div>
 </body>
 </html>

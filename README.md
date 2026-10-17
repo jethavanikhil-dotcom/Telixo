@@ -136,10 +136,15 @@ Analysis & UX/UI Design Brief* (§4 navigation, §6 homepage) in the Kinetic the
 Sections, in order: header with Product / Solutions / Integrations / Pricing /
 Resources / Company plus Log in, Book a Demo and Start free · hero with a product
 screenshot (HTML illustration) · trust strip · problem story and "Why shared phones
-fail" · 4-step How it works · feature rows with "Learn more" links · product tour
-(feature copy beside a screenshot that switches per feature) · testimonials
-with result headlines · FAQ (8 questions) · final CTA band · full footer with
-newsletter and address.
+fail" · 4-step How it works strip · product tour (each feature beside a screenshot
+that switches to match, with "Learn more" links) · testimonials with result
+headlines · FAQ (8 questions) · final CTA band · full footer with newsletter and
+address · sticky Start free / Book a Demo bar on phones.
+
+UX rules this page follows: scrolling is never taken over or locked; the intro
+loader is short and only shows on the first visit in a session; the normal
+pointer always shows; large green words use `--brand-text` (#149E6E, 3.3:1 on
+paper) while fills keep the brand green #20C28B.
 
 Links already point at the sitemap URLs from the brief (`pricing/`, `product/inbox/`,
 `solutions/retail/`, …); those pages are not built yet.
@@ -149,7 +154,8 @@ Links already point at the sitemap URLs from the brief (`pricing/`, `product/inb
 - `CONFIG` at the top of `site/site.js`: app login URL, app signup URL, WhatsApp number.
 - Trust strip: customer logos (with permission), Meta Business Partner badge (only if
   true), the number of businesses using Telixo.
-- "Why shared phones fail": 3–4 sourced statistics, with sources.
+- "Why shared phones fail": 3–4 sourced statistics, with sources (the block shows
+  numbers 01–04 until then; swap each `.stat` for the figure).
 - Testimonials: the real alpha-user quotes (each used once), names, businesses,
   cities and a result headline per quote.
 - FAQ answers marked for confirmation (API provider status, Meta setup, Twilio

@@ -1,7 +1,7 @@
 // Telixo — Homepage
 // Built to the website gap-analysis brief (§4 navigation, §6 homepage), in the
-// Kinetic theme: letters react to the cursor, scatter and reassemble on scroll,
-// and words rewrite themselves.
+// Kinetic theme: letters react to the cursor and scatter and reassemble on
+// scroll. Scrolling is never taken over: every section reads at the reader's pace.
 (() => {
   // Destinations the team still has to confirm (brief §5.12): one place to change them.
   const CONFIG = {
@@ -102,10 +102,8 @@
 
   // Smooth scroll (motion only); anchor links go through it.
   let lenis = null;
-  let wheelGate = null;
   if (motion && window.Lenis) {
-    // wheelGate lets a pinned section take over wheel/trackpad input (set below).
-    lenis = new Lenis({ lerp: 0.1, virtualScroll: (e) => (wheelGate ? wheelGate(e) : true) });
+    lenis = new Lenis({ lerp: 0.12 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -119,13 +117,6 @@
     if (lenis && target === 0) { e.preventDefault(); lenis.scrollTo(0, { duration: 1.4 }); return; }
     if (lenis) { e.preventDefault(); lenis.scrollTo(target, { duration: 1.4 }); }
   });
-
-  // Feature rows open on click (works everywhere).
-  const rows = $$('.ch-row');
-  rows.forEach((row) => row.addEventListener('click', () => {
-    const open = row.getAttribute('aria-expanded') !== 'true';
-    rows.forEach((r) => r.setAttribute('aria-expanded', r === row && open));
-  }));
 
   // ---------------------------------------------------------------- product tour
   // Feature copy scrolls on the left; the screenshot on the right follows it.
@@ -182,25 +173,21 @@
   let callS = 84;
   if (motion) setInterval(() => { if (tCur !== 4) return; callS += 1; callT.textContent = `${String(Math.floor(callS / 60)).padStart(2, '0')}:${String(callS % 60).padStart(2, '0')}`; }, 1000);
 
-  // How it works: the four steps from the brief.
-  const STEPS = [
-    ['Connect', 'Connect your WhatsApp Business number to Telixo.'],
-    ['Add team', 'Invite your team and choose what each person can see and do.'],
-    ['Organise', 'Import your contacts, tag and group them, and keep them in sync with Odoo.'],
-    ['Message', 'Reply together from one shared inbox, and send campaigns and broadcasts.'],
-  ];
-  const word = $('[data-word]');
-  const cap = $('[data-cap]');
-  word.removeAttribute('aria-live');
-  cap.setAttribute('aria-live', 'polite');
+  // ---------------------------------------------------------------- mobile CTA dock
+  // Appears once the hero buttons scroll away; hides at the final CTA band.
+  const dockSeen = { hero: true, end: false };
+  const dockIO = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { dockSeen[e.target === $('.hero-ctas') ? 'hero' : 'end'] = e.isIntersecting; });
+    document.body.classList.toggle('dock-on', !dockSeen.hero && !dockSeen.end);
+  });
+  dockIO.observe($('.hero-ctas'));
+  dockIO.observe($('#start'));
 
   // Static fallback: everything readable in place.
+  const stepItems = $$('.steps-list li');
   if (!motion) {
     loader.remove();
-    cap.innerHTML = `<ol>${STEPS.map(([w, c], i) => `<li><b>${String(i + 1).padStart(2, '0')} ${w}.</b> ${c}</li>`).join('')}</ol>`;
-    cap.removeAttribute('aria-live');
-    $$('.wf-ticks li').forEach((li) => li.classList.add('on'));
-    $$('[data-m]').forEach((m) => { m.style.display = ''; });
+    stepItems.forEach((li) => li.classList.add('on'));
     $('[data-typing]').style.display = 'none';
     return;
   }
@@ -284,29 +271,30 @@
   const mouse = { x: -9999, y: -9999 };
   let heroOn = true;
   ScrollTrigger.create({ trigger: '.hero', start: 'top bottom', end: 'bottom top', onToggle: (s) => { heroOn = s.isActive; } });
-  if (fine) window.addEventListener('pointermove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-  else {
-    // Touch: a slow wave of width moves through the letters instead.
-    gsap.ticker.add((t) => { mouse.x = (Math.sin(t * 0.6) * 0.5 + 0.5) * window.innerWidth; mouse.y = (Math.cos(t * 0.4) * 0.5 + 0.5) * window.innerHeight * 0.7 + 80; });
-  }
-  gsap.ticker.add(() => {
-    if (!heroOn) return;
+  // Mouse only: phones skip this work entirely, and it sleeps once settled.
+  let settled = true;
+  if (fine) window.addEventListener('pointermove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; settled = false; });
+  if (fine) gsap.ticker.add(() => {
+    if (!heroOn || settled) return;
+    let moving = 0;
     const r = Math.max(180, window.innerWidth * 0.16);
     allLetters.forEach((el, i) => {
       const b = el.getBoundingClientRect();
       const d = Math.hypot(mouse.x - (b.left + b.width / 2), mouse.y - (b.top + b.height / 2));
       const k = Math.max(0, 1 - d / r) ** 2;
       const s = state[i];
-      s.w += (BASE_W + (MAX_W - BASE_W) * k - s.w) * 0.14;
+      const dw = (BASE_W + (MAX_W - BASE_W) * k - s.w) * 0.14;
+      s.w += dw;
       s.g += (BASE_G + (MAX_G - BASE_G) * k - s.g) * 0.14;
+      moving = Math.max(moving, Math.abs(dw));
       el.style.setProperty('--w', s.w.toFixed(1));
       el.style.setProperty('--g', s.g.toFixed(0));
     });
+    if (moving < 0.02) settled = true;
   });
 
   // Scroll speed leans the lines over.
   const skew = gsap.quickTo(lines, 'skewX', { duration: 0.5, ease: 'power3.out' });
-  const bubSkew = gsap.quickTo('.bub', 'skewX', { duration: 0.6, ease: 'power3.out' });
   let vel = 0;
   ScrollTrigger.create({
     start: 0, end: 'max',
@@ -314,7 +302,6 @@
       vel = s.getVelocity();
       const k = gsap.utils.clamp(-12, 12, vel / -220);
       skew(k);
-      bubSkew(k * 0.6);
     },
   });
 
@@ -338,26 +325,30 @@
   chat.to({}, { duration: 2.6 });
 
   // ---------------------------------------------------------------- loader + intro
+  // Short, and only on the first visit in a session; repeat visits go straight in.
+  let seen = false;
+  try { seen = sessionStorage.getItem('telixo-intro') === '1'; sessionStorage.setItem('telixo-intro', '1'); } catch (e) { /* storage blocked */ }
   if (lenis) lenis.stop();
   window.scrollTo(0, 0);
   const count = $('[data-count]', loader);
   const n = { v: 0 };
   const intro = gsap.timeline({ paused: true })
-    .from(allLetters, { yPercent: 110, rotate: 10, autoAlpha: 0, duration: 1.1, ease: 'expo.out', stagger: { each: 0.018, from: 'random' } })
-    .from('.hero .meta-row, .hero-foot > *', { y: 24, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08 }, 0.4)
-    .from('.bar', { yPercent: -100, autoAlpha: 0, duration: 0.8, ease: 'power3.out', clearProps: 'transform' }, 0.3); // a leftover transform would trap the fixed mobile menu inside the bar
-  const ready = Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))]);
-  gsap.timeline()
-    .to(n, { v: 100, duration: 1.3, ease: 'power2.inOut', onUpdate: () => { count.textContent = String(Math.round(n.v)).padStart(3, '0'); } })
-    .add(() => {
-      ready.then(() => {
-        fitLines();
-        ScrollTrigger.refresh();
-        gsap.timeline({ onComplete: () => loader.remove() })
-          .to(loader, { clipPath: 'inset(0 0 100% 0)', duration: 0.9, ease: 'expo.inOut' })
-          .add(() => { intro.play(); if (lenis) lenis.start(); }, 0.35);
+    .from(allLetters, { yPercent: 110, rotate: 10, autoAlpha: 0, duration: 0.9, ease: 'expo.out', stagger: { each: 0.012, from: 'random' } })
+    .from('.hero .meta-row, .hero-foot > *', { y: 24, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, 0.25)
+    .from('.bar', { yPercent: -100, autoAlpha: 0, duration: 0.7, ease: 'power3.out', clearProps: 'transform' }, 0.2); // a leftover transform would trap the fixed mobile menu inside the bar
+  const ready = Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1500))]);
+  const start = () => { fitLines(); ScrollTrigger.refresh(); intro.play(); if (lenis) lenis.start(); };
+  if (seen) { loader.remove(); ready.then(start); } else {
+    gsap.timeline()
+      .to(n, { v: 100, duration: 0.5, ease: 'power2.inOut', onUpdate: () => { count.textContent = String(Math.round(n.v)).padStart(3, '0'); } })
+      .add(() => {
+        ready.then(() => {
+          gsap.timeline({ onComplete: () => loader.remove() })
+            .to(loader, { clipPath: 'inset(0 0 100% 0)', duration: 0.6, ease: 'expo.inOut' })
+            .add(start, 0.2);
+        });
       });
-    });
+  }
 
   // ---------------------------------------------------------------- story
   const phrases = $$('.phrase');
@@ -424,152 +415,29 @@
     .fromTo(tags[4], { ...tagSet(2), scale: 0, autoAlpha: 0 }, { ...tagSet(2), scale: 1.3, autoAlpha: 1, ease: 'back.out(2)', duration: 0.5 }, 4.6)
     .to({}, { duration: 0.6 });
 
-  // ---------------------------------------------------------------- features: floating preview
-  const preview = $('.preview');
-  const pvs = $$('.pv', preview);
-  if (fine) {
-    const px = gsap.quickTo(preview, 'left', { duration: 0.6, ease: 'power3.out' });
-    const py = gsap.quickTo(preview, 'top', { duration: 0.6, ease: 'power3.out' });
-    const list = $('.ch-list');
-    list.addEventListener('pointermove', (e) => {
-      const left = e.clientX > window.innerWidth * 0.6 ? e.clientX - 350 : e.clientX + 70;
-      px(left); py(e.clientY - 120);
-    });
-    rows.forEach((row) => row.addEventListener('pointerenter', () => {
-      pvs.forEach((p) => p.classList.toggle('is-on', p.dataset.pv === row.dataset.ch));
-      preview.classList.add('is-on');
-    }));
-    list.addEventListener('pointerleave', () => preview.classList.remove('is-on'));
-  }
-
-  // ---------------------------------------------------------------- testimonials: horizontal parade
-  gsap.matchMedia().add('(min-width: 901px)', () => {
-    const parade = $('.parade');
-    const dist = () => Math.max(0, parade.scrollWidth - window.innerWidth);
-    gsap.to(parade, {
-      x: () => -dist(), ease: 'none',
-      scrollTrigger: { trigger: '.inbox-pin', start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.6, invalidateOnRefresh: true },
-    });
-    gsap.from('.bub', {
-      rotate: (i) => (i % 2 ? 3 : -3), y: 50, ease: 'none', stagger: 0.1,
-      scrollTrigger: { trigger: '.inbox-pin', start: 'top top', end: () => `+=${dist()}`, scrub: 0.6 },
-    });
+  // ---------------------------------------------------------------- how it works
+  // Each step word rises letter by letter; the line fills as you scroll past.
+  const stepWords = $$('.step-w').map((el) => splitLetters(el));
+  gsap.from(stepWords.flat(), {
+    yPercent: 110, autoAlpha: 0, duration: 0.8, ease: 'expo.out', stagger: 0.025,
+    scrollTrigger: { trigger: '.steps-list', start: 'top 85%', once: true },
   });
-
-  // ---------------------------------------------------------------- workflow: the word rewrites itself
-  // All the step words are stacked in one clipped line. Scroll position drives
-  // every letter directly (no timed tweens), so each word always flips
-  // through in turn, at any scroll speed: letters roll up out of view one
-  // after another while the next word's letters roll in from below.
-  const ticks = $$('.wf-ticks li');
-  const stepN = $('[data-step-n]');
-  const foot = $('.wf-foot');
-  word.textContent = '';
-  word.setAttribute('aria-hidden', 'true');
-  const reel = STEPS.map(([txt], i) => {
-    const line = document.createElement('span');
-    line.className = `wf-line${i === STEPS.length - 1 ? ' is-last' : ''}`;
-    const ls = [...txt].map((c) => {
-      const sp = document.createElement('span');
-      sp.className = 'wl';
-      sp.textContent = c === ' ' ? '\u00a0' : c;
-      line.appendChild(sp);
-      return sp;
-    });
-    word.appendChild(line);
-    return ls;
-  });
-  const ease = gsap.parseEase('power2.inOut');
-  let step = -1;
-  const setStep = (i) => {
-    if (i === step) return;
-    step = i;
-    ticks.forEach((li, k) => { li.classList.toggle('on', k <= i); li.classList.toggle('cur', k === i); });
-    stepN.textContent = `0${i + 1}`;
-    cap.textContent = STEPS[i][1];
-    gsap.fromTo(cap, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out', overwrite: true });
-  };
-  const HOLD = 0.28; // each word holds still for this much of its slot either side
-  const drawReel = (pos) => {
-    reel.forEach((ls, i) => {
-      ls.forEach((el, k) => {
-        const t = pos - i - (k - ls.length / 2) * 0.03;
-        const a = Math.abs(t);
-        const m = a <= HOLD ? 0 : ease(Math.min(1, (a - HOLD) / (1 - 2 * HOLD)));
-        const dir = t > 0 ? -1 : 1;
-        el.style.transform = `translate3d(0,${(dir * m * 115).toFixed(2)}%,0) rotateX(${(-dir * m * 75).toFixed(1)}deg)`;
-        el.style.setProperty('--lw', (80 + 20 * Math.sin(pos * Math.PI * 2 + k * 0.8)).toFixed(1));
-      });
-    });
-  };
-  drawReel(0);
-  setStep(0);
-  // Each word gets an equal share of the pinned scroll (a short lead-in and
-  // lead-out either side), and when scrolling stops mid-change the page
-  // settles on the nearest word, so no step is skipped with a fast wheel.
-  const LEAD = 0.05;
-  const posOf = (p) => gsap.utils.clamp(0, 1, (p - LEAD) / (1 - 2 * LEAD)) * (STEPS.length - 1);
-  const wf = ScrollTrigger.create({
-    trigger: '.workflow', start: 'top top', end: 'bottom bottom',
+  const stepsList = $('.steps-list');
+  stepsList.style.setProperty('--p', 0);
+  stepItems.forEach((li) => li.classList.remove('on'));
+  ScrollTrigger.create({
+    trigger: stepsList, start: 'top 80%', end: 'bottom 55%', scrub: true,
     onUpdate: (s) => {
-      const pos = posOf(s.progress);
-      drawReel(pos);
-      setStep(Math.round(pos));
-      foot.style.setProperty('--p', s.progress.toFixed(4));
+      stepsList.style.setProperty('--p', s.progress.toFixed(3));
+      stepItems.forEach((li, i) => li.classList.toggle('on', s.progress >= i / stepItems.length));
     },
   });
-  const stepY = (k) => wf.start + (wf.end - wf.start) * (LEAD + (1 - 2 * LEAD) * k / (STEPS.length - 1));
-  // Touch and keyboard scrolling: settle on the nearest word when scrolling stops.
-  ScrollTrigger.addEventListener('scrollEnd', () => {
-    if (gateBusy()) return;
-    const y = window.scrollY;
-    if (y <= stepY(0) || y >= stepY(STEPS.length - 1)) return;
-    const ty = stepY(Math.round(posOf((y - wf.start) / (wf.end - wf.start))));
-    if (Math.abs(ty - y) < 3) return;
-    if (lenis) lenis.scrollTo(ty, { duration: 0.7 });
-    else window.scrollTo({ top: ty, behavior: 'smooth' });
-  });
 
-  // Wheel and trackpad: inside the section, one gesture = one word. A fast
-  // flick or trackpad momentum can no longer fly past the middle words; the
-  // next word only comes once the current one has been on screen and the
-  // gesture has paused (or after a beat, for continuous wheeling).
-  let stepping = false;
-  let stepAt = 0;
-  let lastWheel = 0;
-  const gateBusy = () => stepping || performance.now() - stepAt < 600;
-  const goTo = (y) => {
-    stepping = true;
-    stepAt = performance.now();
-    lenis.scrollTo(y, { duration: 0.9, lock: true, force: true, onComplete: () => { stepping = false; } });
-  };
-  wheelGate = (e) => {
-    if (!e.event.type.includes('wheel') || !e.deltaY) return true;
-    const now = performance.now();
-    const quiet = now - lastWheel > 160;
-    lastWheel = now;
-    const dir = Math.sign(e.deltaY);
-    const cur = lenis.targetScroll;
-    const first = stepY(0);
-    const last = stepY(STEPS.length - 1);
-    const inside = cur > first - 2 && cur < last + 2;
-    const block = () => { e.event.preventDefault(); return false; };
-    if (!inside) {
-      // Don't let one big flick jump over the whole section: stop at its edge.
-      if (dir > 0 && cur < first && cur + e.deltaY > first) { if (!stepping) goTo(first); return block(); }
-      if (dir < 0 && cur > last && cur + e.deltaY < last) { if (!stepping) goTo(last); return block(); }
-      return true;
-    }
-    const k = Math.round(posOf((cur - wf.start) / (wf.end - wf.start)));
-    // Leaving at either end is normal scrolling, once the end word has been seen.
-    if ((dir > 0 && k === STEPS.length - 1) || (dir < 0 && k === 0)) {
-      return gateBusy() || (!quiet && now - stepAt < 1200) ? block() : true;
-    }
-    if (stepping || !(quiet || now - stepAt > 1300) || now - stepAt < 600) return block();
-    goTo(stepY(k + dir));
-    return block();
-  };
-  gsap.from('.wf-word', { yPercent: 40, autoAlpha: 0, scrollTrigger: { trigger: '.workflow', start: 'top 70%', end: 'top top', scrub: 0.6 } });
+  // ---------------------------------------------------------------- testimonials
+  gsap.from('.parade > *', {
+    y: 50, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08,
+    scrollTrigger: { trigger: '.parade', start: 'top 85%', once: true },
+  });
 
   // ---------------------------------------------------------------- marquee: speed follows scroll
   const mqs = $$('.mq-row').map((row, i) => {
@@ -606,15 +474,10 @@
   });
 
   // Section headings: lines rise into place.
-  $$('.why .h2, .channels .h2, .faq .h2, .cta .h2').forEach((h) => gsap.from(h, {
+  $$('.why .h2, .steps .h2, .tour .h2, .faq .h2, .cta .h2').forEach((h) => gsap.from(h, {
     yPercent: 30, autoAlpha: 0, duration: 1, ease: 'expo.out',
     scrollTrigger: { trigger: h, start: 'top 85%', once: true },
   }));
-  gsap.from('.ch-list li', {
-    y: 40, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08,
-    scrollTrigger: { trigger: '.ch-list', start: 'top 85%', once: true },
-  });
-
   // ---------------------------------------------------------------- footer word
   const footLetters = splitLetters($('.foot-word'));
   gsap.from(footLetters, {
