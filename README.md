@@ -126,3 +126,33 @@ and weight axes.
 
 Uses `assets/vendor/lenis.min.js` for smooth scrolling. With reduced motion, every
 section is static and readable in place.
+
+## Homepage (`site/`) — built to the gap-analysis brief
+
+`site/index.html` is the new Telixo homepage, built from *Telixo.co — Website Gap
+Analysis & UX/UI Design Brief* (§4 navigation, §6 homepage) in the Kinetic theme
+(same fonts, brand colours, logo, loader, cursor and scroll animations).
+
+Sections, in order: header with Product / Solutions / Integrations / Pricing /
+Resources / Company plus Log in, Book a Demo and Start free · hero with a product
+screenshot (HTML illustration) · trust strip · problem story and "Why shared phones
+fail" · 4-step How it works · feature rows with "Learn more" links · testimonials
+with result headlines · FAQ (8 questions) · final CTA band · full footer with
+newsletter and address.
+
+Links already point at the sitemap URLs from the brief (`pricing/`, `product/inbox/`,
+`solutions/retail/`, …); those pages are not built yet.
+
+**To supply before launch** (marked on the page with a dashed green outline):
+
+- `CONFIG` at the top of `site/site.js`: app login URL, app signup URL, WhatsApp number.
+- Trust strip: customer logos (with permission), Meta Business Partner badge (only if
+  true), the number of businesses using Telixo.
+- "Why shared phones fail": 3–4 sourced statistics, with sources.
+- Testimonials: the real alpha-user quotes (each used once), names, businesses,
+  cities and a result headline per quote.
+- FAQ answers marked for confirmation (API provider status, Meta setup, Twilio
+  billing, Meta fees, security claims).
+- Footer: contact email, registered office address, social profile links, and a
+  newsletter provider (the form currently only shows a thank-you message).
+- Real product screenshots to replace the HTML illustration, when available.

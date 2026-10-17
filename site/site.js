@@ -1,0 +1,546 @@
+// Telixo — Homepage
+// Built to the website gap-analysis brief (§4 navigation, §6 homepage), in the
+// Kinetic theme: letters react to the cursor, scatter and reassemble on scroll,
+// and words rewrite themselves.
+(() => {
+  // Destinations the team still has to confirm (brief §5.12): one place to change them.
+  const CONFIG = {
+    login: '/login', // app login URL (app subdomain, confirm with the dev team)
+    signup: '/signup', // app signup URL for "Start free"
+    whatsapp: 'https://wa.me/910000000000?text=' + encodeURIComponent('Hi Telixo, I would like to book a demo.'), // replace 910000000000 with Telixo's WhatsApp number
+  };
+
+  const root = document.documentElement;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const motion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = window.matchMedia('(pointer: fine)').matches;
+  const loader = $('.loader');
+
+  $$('[data-link]').forEach((a) => { if (CONFIG[a.dataset.link]) a.href = CONFIG[a.dataset.link]; });
+
+  // Split an element's text into inline-block letters (and optional words).
+  const splitLetters = (el, cls = 'lt') => {
+    const text = el.textContent;
+    el.textContent = '';
+    return [...text].map((c) => {
+      const s = document.createElement('span');
+      s.className = cls;
+      s.textContent = c === ' ' ? ' ' : c;
+      el.appendChild(s);
+      return s;
+    });
+  };
+  const splitWords = (el) => {
+    const words = el.textContent.trim().split(/\s+/);
+    el.textContent = '';
+    const chars = [];
+    words.forEach((w, i) => {
+      const ws = document.createElement('span');
+      ws.className = 'w';
+      [...w].forEach((c) => {
+        const s = document.createElement('span');
+        s.className = 'ch';
+        s.textContent = c;
+        ws.appendChild(s);
+        chars.push(s);
+      });
+      el.appendChild(ws);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
+    });
+    return chars;
+  };
+
+  // ---------------------------------------------------------------- basics
+  $('#year').textContent = new Date().getFullYear();
+
+  const toggle = $('.bar-toggle');
+  const menus = $$('.has-menu');
+  const setMenu = (open) => {
+    document.body.classList.toggle('menu-open', open);
+    toggle.setAttribute('aria-expanded', open);
+    toggle.textContent = open ? 'Close' : 'Menu';
+    if (!open) closeMenus();
+  };
+  toggle.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
+
+  // Header dropdowns: hover on desktop, click/tap and keyboard everywhere.
+  const desktop = window.matchMedia('(min-width: 1101px)');
+  const openMenu = (li, open) => {
+    li.classList.toggle('open', open);
+    $('.nav-btn', li).setAttribute('aria-expanded', open);
+  };
+  const closeMenus = (except) => menus.forEach((li) => { if (li !== except) openMenu(li, false); });
+  menus.forEach((li) => {
+    let t;
+    $('.nav-btn', li).addEventListener('click', () => { const open = !li.classList.contains('open'); closeMenus(li); openMenu(li, open); });
+    li.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'mouse' || !desktop.matches) return; clearTimeout(t); closeMenus(li); openMenu(li, true); });
+    li.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'mouse' || !desktop.matches) return; t = setTimeout(() => openMenu(li, false), 160); });
+    li.addEventListener('focusout', (e) => { if (desktop.matches && !li.contains(e.relatedTarget)) openMenu(li, false); });
+  });
+  document.addEventListener('click', (e) => { if (!e.target.closest('.has-menu')) closeMenus(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const li = menus.find((m) => m.classList.contains('open'));
+    if (li) { openMenu(li, false); $('.nav-btn', li).focus(); } else setMenu(false);
+  });
+  $('#nav').addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+
+  // Newsletter: no list provider is connected yet.
+  const news = $('.news');
+  news.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!news.reportValidity()) return;
+    // TODO: send the address to the newsletter provider once one is chosen.
+    $('.news-row', news).outerHTML = '<p class="form-done">Thanks, you’re on the list.</p>';
+  });
+
+  if (!window.gsap || !window.ScrollTrigger) { loader.remove(); return; }
+  gsap.registerPlugin(ScrollTrigger);
+  if (!motion) root.classList.add('reduced');
+  if (fine && motion) root.classList.add('has-cursor');
+
+  // Smooth scroll (motion only); anchor links go through it.
+  let lenis = null;
+  let wheelGate = null;
+  if (motion && window.Lenis) {
+    // wheelGate lets a pinned section take over wheel/trackpad input (set below).
+    lenis = new Lenis({ lerp: 0.1, virtualScroll: (e) => (wheelGate ? wheelGate(e) : true) });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const target = a.getAttribute('href') === '#top' ? 0 : $(a.getAttribute('href'));
+    if (target === null) return;
+    setMenu(false);
+    if (lenis && target === 0) { e.preventDefault(); lenis.scrollTo(0, { duration: 1.4 }); return; }
+    if (lenis) { e.preventDefault(); lenis.scrollTo(target, { duration: 1.4 }); }
+  });
+
+  // Feature rows open on click (works everywhere).
+  const rows = $$('.ch-row');
+  rows.forEach((row) => row.addEventListener('click', () => {
+    const open = row.getAttribute('aria-expanded') !== 'true';
+    rows.forEach((r) => r.setAttribute('aria-expanded', r === row && open));
+  }));
+
+  // How it works: the four steps from the brief.
+  const STEPS = [
+    ['Connect', 'Connect your WhatsApp Business number to Telixo.'],
+    ['Add team', 'Invite your team and choose what each person can see and do.'],
+    ['Organise', 'Import your contacts, tag and group them, and keep them in sync with Odoo.'],
+    ['Message', 'Reply together from one shared inbox, and send campaigns and broadcasts.'],
+  ];
+  const word = $('[data-word]');
+  const cap = $('[data-cap]');
+  word.removeAttribute('aria-live');
+  cap.setAttribute('aria-live', 'polite');
+
+  // Static fallback: everything readable in place.
+  if (!motion) {
+    loader.remove();
+    cap.innerHTML = `<ol>${STEPS.map(([w, c], i) => `<li><b>${String(i + 1).padStart(2, '0')} ${w}.</b> ${c}</li>`).join('')}</ol>`;
+    cap.removeAttribute('aria-live');
+    $$('.wf-ticks li').forEach((li) => li.classList.add('on'));
+    $$('[data-m]').forEach((m) => { m.style.display = ''; });
+    $('[data-typing]').style.display = 'none';
+    return;
+  }
+
+  // ---------------------------------------------------------------- cursor
+  if (fine) {
+    const cur = $('.cursor');
+    const label = $('.cursor-label', cur);
+    const cx = gsap.quickTo(cur, 'x', { duration: 0.35, ease: 'power3.out' });
+    const cy = gsap.quickTo(cur, 'y', { duration: 0.35, ease: 'power3.out' });
+    window.addEventListener('pointermove', (e) => { cx(e.clientX); cy(e.clientY); });
+    document.addEventListener('pointerover', (e) => {
+      const t = e.target.closest('[data-cursor]');
+      cur.classList.toggle('is-big', !!t);
+      if (t) label.textContent = t.dataset.cursor;
+    });
+    document.addEventListener('pointerleave', () => gsap.to(cur, { autoAlpha: 0, duration: 0.2 }));
+    document.addEventListener('pointerenter', () => gsap.to(cur, { autoAlpha: 1, duration: 0.2 }));
+  }
+
+  // ---------------------------------------------------------------- hero
+  const kin = $('.kin');
+  const lines = $$('.kin-line', kin);
+  const letters = lines.map((l) => splitLetters(l));
+  const allLetters = letters.flat();
+
+  // Each line is sized so it spans the full measure.
+  const fitLines = () => {
+    const avail = kin.clientWidth - parseFloat(getComputedStyle(kin).paddingLeft) * 2;
+    lines.forEach((l) => {
+      l.style.fontSize = '100px';
+      l.style.display = 'inline-block';
+      const w = l.scrollWidth;
+      l.style.display = '';
+      l.style.fontSize = `${Math.min(100 * (avail * 0.96) / w, window.innerHeight * 0.115)}px`;
+    });
+    const fw = $('.foot-word');
+    fw.style.fontSize = '100px';
+    fw.style.display = 'inline-block';
+    const w = fw.scrollWidth;
+    fw.style.display = '';
+    fw.style.fontSize = `${100 * (window.innerWidth * 0.97) / w}px`;
+  };
+  fitLines();
+
+  // Letters near the cursor widen and get heavier.
+  const BASE_W = 72; const MAX_W = 112; const BASE_G = 820; const MAX_G = 900;
+  const state = allLetters.map(() => ({ w: BASE_W, g: BASE_G }));
+  const mouse = { x: -9999, y: -9999 };
+  let heroOn = true;
+  ScrollTrigger.create({ trigger: '.hero', start: 'top bottom', end: 'bottom top', onToggle: (s) => { heroOn = s.isActive; } });
+  if (fine) window.addEventListener('pointermove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  else {
+    // Touch: a slow wave of width moves through the letters instead.
+    gsap.ticker.add((t) => { mouse.x = (Math.sin(t * 0.6) * 0.5 + 0.5) * window.innerWidth; mouse.y = (Math.cos(t * 0.4) * 0.5 + 0.5) * window.innerHeight * 0.7 + 80; });
+  }
+  gsap.ticker.add(() => {
+    if (!heroOn) return;
+    const r = Math.max(180, window.innerWidth * 0.16);
+    allLetters.forEach((el, i) => {
+      const b = el.getBoundingClientRect();
+      const d = Math.hypot(mouse.x - (b.left + b.width / 2), mouse.y - (b.top + b.height / 2));
+      const k = Math.max(0, 1 - d / r) ** 2;
+      const s = state[i];
+      s.w += (BASE_W + (MAX_W - BASE_W) * k - s.w) * 0.14;
+      s.g += (BASE_G + (MAX_G - BASE_G) * k - s.g) * 0.14;
+      el.style.setProperty('--w', s.w.toFixed(1));
+      el.style.setProperty('--g', s.g.toFixed(0));
+    });
+  });
+
+  // Scroll: lines slide apart; scroll speed leans them over.
+  lines.forEach((l, i) => {
+    gsap.to(l, {
+      xPercent: i % 2 ? 14 : -14, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.4 },
+    });
+  });
+  const skew = gsap.quickTo(lines, 'skewX', { duration: 0.5, ease: 'power3.out' });
+  const bubSkew = gsap.quickTo('.bub', 'skewX', { duration: 0.6, ease: 'power3.out' });
+  let vel = 0;
+  ScrollTrigger.create({
+    start: 0, end: 'max',
+    onUpdate: (s) => {
+      vel = s.getVelocity();
+      const k = gsap.utils.clamp(-12, 12, vel / -220);
+      skew(k);
+      bubSkew(k * 0.6);
+    },
+  });
+
+  // ---------------------------------------------------------------- hero: product screenshot
+  // The screenshot tilts up into place as you scroll, and the chat plays on a loop.
+  gsap.fromTo('.shot', { rotateX: 16, scale: 0.94, y: 30 }, {
+    rotateX: 0, scale: 1, y: 0, ease: 'none',
+    scrollTrigger: { trigger: '.shot-wrap', start: 'top bottom', end: 'top 15%', scrub: 0.6 },
+  });
+  const msgs = $$('[data-m]');
+  const typing = $('[data-typing]');
+  const show = (el) => { el.style.display = ''; gsap.fromTo(el, { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: 'power3.out' }); };
+  const hide = (el) => { el.style.display = 'none'; };
+  const chat = gsap.timeline({ repeat: -1, repeatDelay: 2.2, delay: 2.4 })
+    .call(() => { msgs.forEach(hide); hide(typing); });
+  msgs.forEach((m, i) => {
+    const t = 0.4 + i * 1.6;
+    if (m.classList.contains('in')) chat.call(() => { typing.style.display = ''; }, null, t - 0.9).call(() => hide(typing), null, t);
+    chat.call(() => show(m), null, t);
+  });
+  chat.to({}, { duration: 2.6 });
+
+  // ---------------------------------------------------------------- loader + intro
+  if (lenis) lenis.stop();
+  window.scrollTo(0, 0);
+  const count = $('[data-count]', loader);
+  const n = { v: 0 };
+  const intro = gsap.timeline({ paused: true })
+    .from(allLetters, { yPercent: 110, rotate: 10, autoAlpha: 0, duration: 1.1, ease: 'expo.out', stagger: { each: 0.018, from: 'random' } })
+    .from('.hero .meta-row, .hero-foot > *', { y: 24, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08 }, 0.4)
+    .from('.bar', { yPercent: -100, autoAlpha: 0, duration: 0.8, ease: 'power3.out', clearProps: 'transform' }, 0.3); // a leftover transform would trap the fixed mobile menu inside the bar
+  const ready = Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))]);
+  gsap.timeline()
+    .to(n, { v: 100, duration: 1.3, ease: 'power2.inOut', onUpdate: () => { count.textContent = String(Math.round(n.v)).padStart(3, '0'); } })
+    .add(() => {
+      ready.then(() => {
+        fitLines();
+        ScrollTrigger.refresh();
+        gsap.timeline({ onComplete: () => loader.remove() })
+          .to(loader, { clipPath: 'inset(0 0 100% 0)', duration: 0.9, ease: 'expo.inOut' })
+          .add(() => { intro.play(); if (lenis) lenis.start(); }, 0.35);
+      });
+    });
+
+  // ---------------------------------------------------------------- story
+  const phrases = $$('.phrase');
+  const phraseChars = phrases.map((p) => splitWords($('.phrase-text', p)));
+  const subs = phrases.map((p) => $('.phrase-sub', p));
+  const phaseN = $('[data-phase-n]');
+  const rnd = gsap.utils.random;
+  // Function values so the scatter is re-rolled to the viewport on refresh.
+  const scatter = {
+    x: () => rnd(-window.innerWidth * 0.45, window.innerWidth * 0.45),
+    y: () => rnd(-window.innerHeight * 0.4, window.innerHeight * 0.4),
+    rotate: () => rnd(-160, 160), scale: () => rnd(0.4, 2.2), autoAlpha: 0,
+  };
+  const home = { x: 0, y: 0, rotate: 0, scale: 1, autoAlpha: 1 };
+  phraseChars.forEach((c, i) => { if (i) gsap.set(c, { autoAlpha: 0 }); });
+  gsap.set(subs, { autoAlpha: 0, y: 20 });
+
+  const tags = $$('.tag');
+  const tagBox = $('.tags');
+  // Layouts per phase, as fractions of the pinned frame.
+  const tagAt = (phase, i) => {
+    const W = tagBox.clientWidth; const H = tagBox.clientHeight; const sm = W < 700;
+    if (phase === 0) {
+      const spots = sm ? [[0.22, 0.2], [0.78, 0.24], [0.24, 0.86], [0.76, 0.82], [0.5, 0.86]]
+        : [[0.12, 0.26], [0.86, 0.22], [0.16, 0.8], [0.82, 0.78], [0.5, 0.86]];
+      return { x: spots[i][0] * W, y: spots[i][1] * H };
+    }
+    if (phase === 1) {
+      const gap = sm ? 0.22 : 0.11;
+      return { x: W / 2 + (i - 1.5) * gap * W, y: H * (sm ? 0.84 : 0.82) };
+    }
+    return { x: W / 2, y: H * 0.86 }; // every role merges into one shared inbox
+  };
+  const tagSet = (phase) => ({ x: (i) => tagAt(phase, i).x, y: (i) => tagAt(phase, i).y });
+  gsap.set(tags, { xPercent: -50, yPercent: -50, ...tagSet(0), autoAlpha: 0 });
+
+  const st = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: '.story', start: 'top top', end: 'bottom bottom', scrub: 0.8, invalidateOnRefresh: true,
+      onUpdate: (s) => { phaseN.textContent = `0${s.progress < 0.36 ? 1 : s.progress < 0.7 ? 2 : 3}`; },
+    },
+  });
+  // Phase 1: assembles out of chaos.
+  // (fromTo throughout: the timeline is invalidated on refresh, and a plain
+  // from() would re-record its end state mid-animation.)
+  st.fromTo(phraseChars[0], scatter, { ...home, ease: 'power3.out', stagger: { each: 0.004, from: 'random' }, duration: 1 }, 0)
+    .to(subs[0], { autoAlpha: 1, y: 0, duration: 0.3 }, 0.7)
+    .fromTo(tags.slice(0, 4), { ...tagSet(0), scale: 0, autoAlpha: 0 }, { ...tagSet(0), scale: 1, autoAlpha: 1, stagger: 0.08, duration: 0.4 }, 0.3)
+    // ...and blows apart.
+    .to(phraseChars[0], { y: () => rnd(-window.innerHeight * 0.6, -window.innerHeight * 0.2), rotate: () => rnd(-90, 90), autoAlpha: 0, stagger: { each: 0.004, from: 'random' }, duration: 0.6 }, 1.8)
+    .to(subs[0], { autoAlpha: 0, y: -20, duration: 0.2 }, 1.8)
+    // Phase 2: rises in line by line, tags fall into a row.
+    .fromTo(phraseChars[1], { yPercent: 120, autoAlpha: 0, rotateX: -80 }, { yPercent: 0, autoAlpha: 1, rotateX: 0, stagger: 0.02, duration: 0.6 }, 2.2)
+    .to(subs[1], { autoAlpha: 1, y: 0, duration: 0.3 }, 2.6)
+    .to(tags.slice(0, 4), { ...tagSet(1), duration: 0.8 }, 2.1)
+    .to(phraseChars[1], { yPercent: -120, autoAlpha: 0, stagger: 0.012, duration: 0.5 }, 3.6)
+    .to(subs[1], { autoAlpha: 0, y: -20, duration: 0.2 }, 3.6)
+    // Phase 3: compresses together; the channels merge into one outcome.
+    .fromTo(phraseChars[2], { scaleX: 3, autoAlpha: 0, x: (i) => (i % 2 ? 1 : -1) * 120 }, { scaleX: 1, autoAlpha: 1, x: 0, stagger: { each: 0.01, from: 'center' }, duration: 0.7 }, 4.0)
+    .to(subs[2], { autoAlpha: 1, y: 0, duration: 0.3 }, 4.5)
+    .to(tags.slice(0, 4), { ...tagSet(2), scale: 0.6, duration: 0.7 }, 4.0)
+    .to(tags.slice(0, 4), { autoAlpha: 0, duration: 0.2 }, 4.6)
+    .fromTo(tags[4], { ...tagSet(2), scale: 0, autoAlpha: 0 }, { ...tagSet(2), scale: 1.3, autoAlpha: 1, ease: 'back.out(2)', duration: 0.5 }, 4.6)
+    .to({}, { duration: 0.6 });
+
+  // ---------------------------------------------------------------- features: floating preview
+  const preview = $('.preview');
+  const pvs = $$('.pv', preview);
+  if (fine) {
+    const px = gsap.quickTo(preview, 'left', { duration: 0.6, ease: 'power3.out' });
+    const py = gsap.quickTo(preview, 'top', { duration: 0.6, ease: 'power3.out' });
+    const list = $('.ch-list');
+    list.addEventListener('pointermove', (e) => {
+      const left = e.clientX > window.innerWidth * 0.6 ? e.clientX - 350 : e.clientX + 70;
+      px(left); py(e.clientY - 120);
+    });
+    rows.forEach((row) => row.addEventListener('pointerenter', () => {
+      pvs.forEach((p) => p.classList.toggle('is-on', p.dataset.pv === row.dataset.ch));
+      preview.classList.add('is-on');
+    }));
+    list.addEventListener('pointerleave', () => preview.classList.remove('is-on'));
+  }
+
+  // ---------------------------------------------------------------- testimonials: horizontal parade
+  gsap.matchMedia().add('(min-width: 901px)', () => {
+    const parade = $('.parade');
+    const dist = () => Math.max(0, parade.scrollWidth - window.innerWidth);
+    gsap.to(parade, {
+      x: () => -dist(), ease: 'none',
+      scrollTrigger: { trigger: '.inbox-pin', start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.6, invalidateOnRefresh: true },
+    });
+    gsap.from('.bub', {
+      rotate: (i) => (i % 2 ? 3 : -3), y: 50, ease: 'none', stagger: 0.1,
+      scrollTrigger: { trigger: '.inbox-pin', start: 'top top', end: () => `+=${dist()}`, scrub: 0.6 },
+    });
+  });
+
+  // ---------------------------------------------------------------- workflow: the word rewrites itself
+  // All the step words are stacked in one clipped line. Scroll position drives
+  // every letter directly (no timed tweens), so each word always flips
+  // through in turn, at any scroll speed: letters roll up out of view one
+  // after another while the next word's letters roll in from below.
+  const ticks = $$('.wf-ticks li');
+  const stepN = $('[data-step-n]');
+  const foot = $('.wf-foot');
+  word.textContent = '';
+  word.setAttribute('aria-hidden', 'true');
+  const reel = STEPS.map(([txt], i) => {
+    const line = document.createElement('span');
+    line.className = `wf-line${i === STEPS.length - 1 ? ' is-last' : ''}`;
+    const ls = [...txt].map((c) => {
+      const sp = document.createElement('span');
+      sp.className = 'wl';
+      sp.textContent = c === ' ' ? '\u00a0' : c;
+      line.appendChild(sp);
+      return sp;
+    });
+    word.appendChild(line);
+    return ls;
+  });
+  const ease = gsap.parseEase('power2.inOut');
+  let step = -1;
+  const setStep = (i) => {
+    if (i === step) return;
+    step = i;
+    ticks.forEach((li, k) => { li.classList.toggle('on', k <= i); li.classList.toggle('cur', k === i); });
+    stepN.textContent = `0${i + 1}`;
+    cap.textContent = STEPS[i][1];
+    gsap.fromTo(cap, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out', overwrite: true });
+  };
+  const HOLD = 0.28; // each word holds still for this much of its slot either side
+  const drawReel = (pos) => {
+    reel.forEach((ls, i) => {
+      ls.forEach((el, k) => {
+        const t = pos - i - (k - ls.length / 2) * 0.03;
+        const a = Math.abs(t);
+        const m = a <= HOLD ? 0 : ease(Math.min(1, (a - HOLD) / (1 - 2 * HOLD)));
+        const dir = t > 0 ? -1 : 1;
+        el.style.transform = `translate3d(0,${(dir * m * 115).toFixed(2)}%,0) rotateX(${(-dir * m * 75).toFixed(1)}deg)`;
+        el.style.setProperty('--lw', (80 + 20 * Math.sin(pos * Math.PI * 2 + k * 0.8)).toFixed(1));
+      });
+    });
+  };
+  drawReel(0);
+  setStep(0);
+  // Each word gets an equal share of the pinned scroll (a short lead-in and
+  // lead-out either side), and when scrolling stops mid-change the page
+  // settles on the nearest word, so no step is skipped with a fast wheel.
+  const LEAD = 0.05;
+  const posOf = (p) => gsap.utils.clamp(0, 1, (p - LEAD) / (1 - 2 * LEAD)) * (STEPS.length - 1);
+  const wf = ScrollTrigger.create({
+    trigger: '.workflow', start: 'top top', end: 'bottom bottom',
+    onUpdate: (s) => {
+      const pos = posOf(s.progress);
+      drawReel(pos);
+      setStep(Math.round(pos));
+      foot.style.setProperty('--p', s.progress.toFixed(4));
+    },
+  });
+  const stepY = (k) => wf.start + (wf.end - wf.start) * (LEAD + (1 - 2 * LEAD) * k / (STEPS.length - 1));
+  // Touch and keyboard scrolling: settle on the nearest word when scrolling stops.
+  ScrollTrigger.addEventListener('scrollEnd', () => {
+    if (gateBusy()) return;
+    const y = window.scrollY;
+    if (y <= stepY(0) || y >= stepY(STEPS.length - 1)) return;
+    const ty = stepY(Math.round(posOf((y - wf.start) / (wf.end - wf.start))));
+    if (Math.abs(ty - y) < 3) return;
+    if (lenis) lenis.scrollTo(ty, { duration: 0.7 });
+    else window.scrollTo({ top: ty, behavior: 'smooth' });
+  });
+
+  // Wheel and trackpad: inside the section, one gesture = one word. A fast
+  // flick or trackpad momentum can no longer fly past the middle words; the
+  // next word only comes once the current one has been on screen and the
+  // gesture has paused (or after a beat, for continuous wheeling).
+  let stepping = false;
+  let stepAt = 0;
+  let lastWheel = 0;
+  const gateBusy = () => stepping || performance.now() - stepAt < 600;
+  const goTo = (y) => {
+    stepping = true;
+    stepAt = performance.now();
+    lenis.scrollTo(y, { duration: 0.9, lock: true, force: true, onComplete: () => { stepping = false; } });
+  };
+  wheelGate = (e) => {
+    if (!e.event.type.includes('wheel') || !e.deltaY) return true;
+    const now = performance.now();
+    const quiet = now - lastWheel > 160;
+    lastWheel = now;
+    const dir = Math.sign(e.deltaY);
+    const cur = lenis.targetScroll;
+    const first = stepY(0);
+    const last = stepY(STEPS.length - 1);
+    const inside = cur > first - 2 && cur < last + 2;
+    const block = () => { e.event.preventDefault(); return false; };
+    if (!inside) {
+      // Don't let one big flick jump over the whole section: stop at its edge.
+      if (dir > 0 && cur < first && cur + e.deltaY > first) { if (!stepping) goTo(first); return block(); }
+      if (dir < 0 && cur > last && cur + e.deltaY < last) { if (!stepping) goTo(last); return block(); }
+      return true;
+    }
+    const k = Math.round(posOf((cur - wf.start) / (wf.end - wf.start)));
+    // Leaving at either end is normal scrolling, once the end word has been seen.
+    if ((dir > 0 && k === STEPS.length - 1) || (dir < 0 && k === 0)) {
+      return gateBusy() || (!quiet && now - stepAt < 1200) ? block() : true;
+    }
+    if (stepping || !(quiet || now - stepAt > 1300) || now - stepAt < 600) return block();
+    goTo(stepY(k + dir));
+    return block();
+  };
+  gsap.from('.wf-word', { yPercent: 40, autoAlpha: 0, scrollTrigger: { trigger: '.workflow', start: 'top 70%', end: 'top top', scrub: 0.6 } });
+
+  // ---------------------------------------------------------------- marquee: speed follows scroll
+  const mqs = $$('.mq-row').map((row, i) => {
+    const inner = $('.mq-in', row);
+    row.appendChild(inner.cloneNode(true));
+    return { els: $$('.mq-in', row), dir: i ? 1 : -1, pos: 0 };
+  });
+  let mqDir = 1;
+  gsap.ticker.add((t, dt) => {
+    if (Math.abs(vel) > 5) mqDir = vel > 0 ? 1 : -1;
+    const boost = Math.min(Math.abs(vel) / 60, 40);
+    mqs.forEach((m) => {
+      const w = m.els[0].offsetWidth;
+      if (!w) return;
+      m.pos += m.dir * mqDir * (1.2 + boost) * (dt / 16.7);
+      const x = gsap.utils.wrap(-w, 0, m.pos);
+      m.els.forEach((el) => { el.style.transform = `translate3d(${x}px,0,0)`; });
+    });
+    vel *= 0.92;
+  });
+
+  // ---------------------------------------------------------------- reveals
+  gsap.from('.why-list li', {
+    y: 50, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.1,
+    scrollTrigger: { trigger: '.why-list', start: 'top 85%', once: true },
+  });
+  gsap.from('.faq details', {
+    y: 30, autoAlpha: 0, duration: 0.7, ease: 'power3.out', stagger: 0.06,
+    scrollTrigger: { trigger: '.faq-list', start: 'top 85%', once: true },
+  });
+  gsap.from('.trust-row > *', {
+    y: 30, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+    scrollTrigger: { trigger: '.trust-row', start: 'top 90%', once: true },
+  });
+
+  // Section headings: lines rise into place.
+  $$('.why .h2, .channels .h2, .faq .h2, .cta .h2').forEach((h) => gsap.from(h, {
+    yPercent: 30, autoAlpha: 0, duration: 1, ease: 'expo.out',
+    scrollTrigger: { trigger: h, start: 'top 85%', once: true },
+  }));
+  gsap.from('.ch-list li', {
+    y: 40, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.08,
+    scrollTrigger: { trigger: '.ch-list', start: 'top 85%', once: true },
+  });
+
+  // ---------------------------------------------------------------- footer word
+  const footLetters = splitLetters($('.foot-word'));
+  gsap.from(footLetters, {
+    yPercent: 100, ease: 'none', stagger: 0.06,
+    scrollTrigger: { trigger: '.foot', start: 'top bottom', end: 'bottom bottom', scrub: 0.6 },
+  });
+
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { fitLines(); ScrollTrigger.refresh(); }, 150); });
+})();

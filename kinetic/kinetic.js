@@ -217,7 +217,7 @@
   const intro = gsap.timeline({ paused: true })
     .from(allLetters, { yPercent: 110, rotate: 10, autoAlpha: 0, duration: 1.1, ease: 'expo.out', stagger: { each: 0.018, from: 'random' } })
     .from('.hero .meta-row, .hero-foot > *', { y: 24, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08 }, 0.4)
-    .from('.bar', { yPercent: -100, autoAlpha: 0, duration: 0.8, ease: 'power3.out' }, 0.3);
+    .from('.bar', { yPercent: -100, autoAlpha: 0, duration: 0.8, ease: 'power3.out', clearProps: 'transform' }, 0.3); // a leftover transform would trap the fixed mobile menu inside the bar
   const ready = Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))]);
   gsap.timeline()
     .to(n, { v: 100, duration: 1.3, ease: 'power2.inOut', onUpdate: () => { count.textContent = String(Math.round(n.v)).padStart(3, '0'); } })
