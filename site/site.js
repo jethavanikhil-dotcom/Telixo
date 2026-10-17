@@ -516,7 +516,7 @@
     if (y <= stepY(0) || y >= stepY(STEPS.length - 1)) return;
     const ty = stepY(Math.round(posOf((y - wf.start) / (wf.end - wf.start))));
     if (Math.abs(ty - y) < 3) return;
-    if (lenis) lenis.scrollTo(ty, { duration: 0.45 });
+    if (lenis) lenis.scrollTo(ty, { duration: 0.3 });
     else window.scrollTo({ top: ty, behavior: 'smooth' });
   });
 
@@ -527,16 +527,16 @@
   let stepping = false;
   let stepAt = 0;
   let lastWheel = 0;
-  const gateBusy = () => stepping || performance.now() - stepAt < 300;
+  const gateBusy = () => stepping || performance.now() - stepAt < 220;
   const goTo = (y) => {
     stepping = true;
     stepAt = performance.now();
-    lenis.scrollTo(y, { duration: 0.5, lock: true, force: true, onComplete: () => { stepping = false; } });
+    lenis.scrollTo(y, { duration: 0.35, lock: true, force: true, onComplete: () => { stepping = false; } });
   };
   wheelGate = (e) => {
     if (!e.event.type.includes('wheel') || !e.deltaY) return true;
     const now = performance.now();
-    const quiet = now - lastWheel > 120;
+    const quiet = now - lastWheel > 80;
     lastWheel = now;
     const dir = Math.sign(e.deltaY);
     const cur = lenis.targetScroll;
@@ -553,9 +553,9 @@
     const k = Math.round(posOf((cur - wf.start) / (wf.end - wf.start)));
     // Leaving at either end is normal scrolling, once the end word has been seen.
     if ((dir > 0 && k === STEPS.length - 1) || (dir < 0 && k === 0)) {
-      return gateBusy() || (!quiet && now - stepAt < 600) ? block() : true;
+      return gateBusy() || (!quiet && now - stepAt < 450) ? block() : true;
     }
-    if (stepping || !(quiet || now - stepAt > 650) || now - stepAt < 300) return block();
+    if (stepping || !(quiet || now - stepAt > 480) || now - stepAt < 220) return block();
     goTo(stepY(k + dir));
     return block();
   };

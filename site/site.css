@@ -341,7 +341,7 @@ svg { display: block; }
   .parade { flex-direction: column; align-items: stretch; width: auto; padding-block: 32px; transform: none !important; }
   .parade-intro { width: auto; }
   .bub { width: 100%; min-height: 0; border-radius: 36px; }
-  .workflow { height: 260vh; }
+  .workflow { height: 220vh; }
   .wf-copy, .wf-foot { grid-template-columns: 1fr; }
   .wf-cap { justify-self: start; }
   .outcomes { grid-template-columns: 1fr; }
@@ -479,7 +479,7 @@ svg { display: block; }
 .why-list p:not(.stat) { color: var(--muted); font-size: 15px; }
 
 /* ---------- How it works: 4 steps ---------- */
-.workflow { height: 260vh; }
+.workflow { height: 220vh; }
 
 /* ---------- Feature rows ---------- */
 .ch-detail .more { align-self: start; margin-top: 6px; }
@@ -565,7 +565,7 @@ svg { display: block; }
   .trust-row { grid-template-columns: 1fr; }
   .why-list { grid-template-columns: 1fr 1fr; gap: 28px 0; }
   .why-list li:nth-child(3) { padding-left: 0; border-left: 0; }
-  .workflow { height: 240vh; }
+  .workflow { height: 210vh; }
   .faq-grid { grid-template-columns: 1fr; }
   .faq-card { position: static; }
   .faq summary { padding-right: 48px; }
