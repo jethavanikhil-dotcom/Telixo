@@ -1,0 +1,15 @@
+{
+  "name": "telixo-sylva-hero",
+  "private": true,
+  "description": "Builds the ThreeUI <SylvaHero variant=\"living-green\" /> into static files for this static site.",
+  "scripts": {
+    "build": "esbuild src/main.tsx --bundle --minify --format=esm --target=es2019 --jsx=automatic --loader:.css=css --outdir=dist --entry-names=sylva-hero --define:process.env.NODE_ENV=\\\"production\\\""
+  },
+  "devDependencies": {
+    "@designcodeio/threeui": "1.2.0",
+    "esbuild": "0.24.2",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.165.0"
+  }
+}

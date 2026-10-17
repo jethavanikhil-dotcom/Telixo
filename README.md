@@ -164,3 +164,28 @@ Links already point at the sitemap URLs from the brief (`pricing/`, `product/inb
 - Footer: contact email, registered office address, social profile links, and a
   newsletter provider (the form currently only shows a thank-you message).
 - Real product screenshots to replace the HTML illustrations (hero and product tour), when available.
+
+## Sylva hero (ThreeUI `<SylvaHero variant="living-green" />`)
+
+`sylva/` renders the ThreeUI **SylvaHero — Living Green** component from its exact
+published source (`@designcodeio/threeui@1.2.0`, MIT), using the configured usage in
+`sylva/src/Scene.tsx`. Open `/sylva/`.
+
+- `sylva/src/` — the configured usage (`Scene.tsx`) and the mount (`main.tsx`).
+- `sylva/dist/` — the built static bundle (React + the package's `SylvaHero`,
+  `LandingPageFrame`, `pageTypography`, `pageRecipes` and `style.css`).
+  Rebuild with `cd sylva && npm install && npm run build`.
+- `landing-pages/inner-green-3d.html` and `landing-pages/inner-green-assets/` — the
+  canonical scene and its local Three.js runtime, fonts and images, copied
+  byte-for-byte from the package. `SylvaHero` loads them from `/landing-pages/…`,
+  so the site must be served from the repository root.
+
+Verified SHA-256 (match the ThreeUI source registry):
+
+| File | SHA-256 |
+| --- | --- |
+| `landing-pages/inner-green-3d.html` | `69c3694bd63f44ef9f007ebe4dac57a83e4402e0cdf6b54dd10b96dd4f05e197` |
+| `landing-pages/inner-green-assets/three.min.js` | `8a5f7249903b54d30f79f708699d2fed2d6a1d0741a4cd41377d1f01bb5a2271` |
+| `landing-pages/inner-green-assets/card-ecostove.jpg` | `70ce084084902bc502f00c366405b661ecdff90dee95d363b36a6e146829e433` |
+| `landing-pages/inner-green-assets/card-ethos.jpg` | `337627390f499b3ae272cec9e2f83c817694a82f42e1aa10a7b26a2c7d679dff` |
+| `landing-pages/inner-green-assets/lexend-latin.woff2` | `1ec8f6ee2750554b4bc59ff0b507d316a82a7ba37e0e5bebc41d3bd9b9faad46` |
