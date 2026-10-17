@@ -127,6 +127,61 @@
     rows.forEach((r) => r.setAttribute('aria-expanded', r === row && open));
   }));
 
+  // ---------------------------------------------------------------- product tour
+  // Feature copy scrolls on the left; the screenshot on the right follows it.
+  // Tabs jump straight to a feature. Plain scrolling, nothing is locked.
+  const tSteps = $$('.tour-step');
+  const tTabs = $$('.tour-tabs [data-tab]');
+  const tScrs = $$('.scr');
+  const tTitle = $('[data-scr-title]');
+  const T_TITLES = ['Shared inbox', 'Campaigns', 'Contacts', 'Team and roles', 'Calling', 'Odoo sync'];
+  let tCur = -1;
+  const setScr = (i) => {
+    if (i === tCur) return;
+    tCur = i;
+    tScrs.forEach((el, k) => el.classList.toggle('is-on', k === i));
+    tSteps.forEach((el, k) => el.classList.toggle('is-on', k === i));
+    tTabs.forEach((b, k) => { b.setAttribute('aria-selected', k === i); b.tabIndex = k === i ? 0 : -1; });
+    tTitle.textContent = `Telixo · ${T_TITLES[i]}`;
+    const tab = tTabs[i];
+    tab.parentElement.scrollTo({ left: tab.offsetLeft - 16, behavior: 'smooth' });
+  };
+  setScr(0);
+  const phone = window.matchMedia('(max-width: 900px)');
+  let tIO;
+  const watchSteps = () => {
+    if (tIO) tIO.disconnect();
+    // Desktop: the step crossing the middle of the screen. Phones: the step
+    // just below the sticky screenshot.
+    tIO = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) setScr(+e.target.dataset.step); }),
+      { rootMargin: phone.matches ? '-62% 0px -30% 0px' : '-48% 0px -48% 0px' });
+    tSteps.forEach((el) => tIO.observe(el));
+  };
+  watchSteps();
+  phone.addEventListener('change', watchSteps);
+  const goStep = (i) => {
+    setScr(i);
+    const el = tSteps[i];
+    const r = el.getBoundingClientRect();
+    const y = window.scrollY + r.top - (phone.matches ? window.innerHeight * 0.62 - 20 : (window.innerHeight - r.height) / 2);
+    if (lenis) lenis.scrollTo(y, { duration: 1 });
+    else window.scrollTo({ top: y, behavior: motion ? 'smooth' : 'auto' });
+  };
+  tTabs.forEach((b, i) => {
+    b.addEventListener('click', () => goStep(i));
+    b.addEventListener('keydown', (e) => {
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (!d) return;
+      const j = (i + d + tTabs.length) % tTabs.length;
+      goStep(j);
+      tTabs[j].focus();
+    });
+  });
+  // The call timer on the Calling screen.
+  const callT = $('[data-call-time]');
+  let callS = 84;
+  if (motion) setInterval(() => { if (tCur !== 4) return; callS += 1; callT.textContent = `${String(Math.floor(callS / 60)).padStart(2, '0')}:${String(callS % 60).padStart(2, '0')}`; }, 1000);
+
   // How it works: the four steps from the brief.
   const STEPS = [
     ['Connect', 'Connect your WhatsApp Business number to Telixo.'],
@@ -169,19 +224,51 @@
   // ---------------------------------------------------------------- hero
   const kin = $('.kin');
   const lines = $$('.kin-line', kin);
-  const letters = lines.map((l) => splitLetters(l));
+  // Split into words (so the sentence wraps between words on phones) and
+  // letters, keeping inner spans such as the green "team.".
+  const splitKin = (el) => {
+    const out = [];
+    [...el.childNodes].forEach((node) => {
+      if (node.nodeType === 1) { out.push(...splitKin(node)); return; }
+      const parts = node.textContent.split(/(\s+)/);
+      const frag = document.createDocumentFragment();
+      parts.forEach((part) => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+        const w = document.createElement('span');
+        w.className = 'kw';
+        [...part].forEach((c) => {
+          const lt = document.createElement('span');
+          lt.className = 'lt';
+          lt.textContent = c;
+          w.appendChild(lt);
+          out.push(lt);
+        });
+        frag.appendChild(w);
+      });
+      node.replaceWith(frag);
+    });
+    return out;
+  };
+  const letters = lines.map((l) => splitKin(l));
   const allLetters = letters.flat();
 
-  // Each line is sized so it spans the full measure.
+  // Both lines share one size, set so the longer line spans the measure.
+  // On phones the sentence simply wraps (CSS size).
   const fitLines = () => {
     const avail = kin.clientWidth - parseFloat(getComputedStyle(kin).paddingLeft) * 2;
-    lines.forEach((l) => {
-      l.style.fontSize = '100px';
-      l.style.display = 'inline-block';
-      const w = l.scrollWidth;
-      l.style.display = '';
-      l.style.fontSize = `${Math.min(100 * (avail * 0.96) / w, window.innerHeight * 0.115)}px`;
-    });
+    if (window.innerWidth <= 700) lines.forEach((l) => { l.style.fontSize = ''; });
+    else {
+      const widest = Math.max(...lines.map((l) => {
+        l.style.fontSize = '100px';
+        l.style.display = 'inline-block';
+        const w = l.scrollWidth;
+        l.style.display = '';
+        return w;
+      }));
+      const size = Math.min(100 * (avail * 0.97) / widest, window.innerHeight * 0.2);
+      lines.forEach((l) => { l.style.fontSize = `${size}px`; });
+    }
     const fw = $('.foot-word');
     fw.style.fontSize = '100px';
     fw.style.display = 'inline-block';
@@ -217,13 +304,7 @@
     });
   });
 
-  // Scroll: lines slide apart; scroll speed leans them over.
-  lines.forEach((l, i) => {
-    gsap.to(l, {
-      xPercent: i % 2 ? 14 : -14, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.4 },
-    });
-  });
+  // Scroll speed leans the lines over.
   const skew = gsap.quickTo(lines, 'skewX', { duration: 0.5, ease: 'power3.out' });
   const bubSkew = gsap.quickTo('.bub', 'skewX', { duration: 0.6, ease: 'power3.out' });
   let vel = 0;

@@ -136,7 +136,8 @@ Analysis & UX/UI Design Brief* (§4 navigation, §6 homepage) in the Kinetic the
 Sections, in order: header with Product / Solutions / Integrations / Pricing /
 Resources / Company plus Log in, Book a Demo and Start free · hero with a product
 screenshot (HTML illustration) · trust strip · problem story and "Why shared phones
-fail" · 4-step How it works · feature rows with "Learn more" links · testimonials
+fail" · 4-step How it works · feature rows with "Learn more" links · product tour
+(feature copy beside a screenshot that switches per feature) · testimonials
 with result headlines · FAQ (8 questions) · final CTA band · full footer with
 newsletter and address.
 
@@ -155,4 +156,4 @@ Links already point at the sitemap URLs from the brief (`pricing/`, `product/inb
   billing, Meta fees, security claims).
 - Footer: contact email, registered office address, social profile links, and a
   newsletter provider (the form currently only shows a thank-you message).
-- Real product screenshots to replace the HTML illustration, when available.
+- Real product screenshots to replace the HTML illustrations (hero and product tour), when available.

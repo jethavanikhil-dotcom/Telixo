@@ -11,12 +11,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="../assets/vendor/lenis.css">
-  <link rel="stylesheet" href="site.css?v=1">
+  <link rel="stylesheet" href="site.css?v=2">
   <script>document.documentElement.classList.add('js');</script>
   <script src="../assets/vendor/gsap.min.js" defer></script>
   <script src="../assets/vendor/ScrollTrigger.min.js" defer></script>
   <script src="../assets/vendor/lenis.min.js" defer></script>
-  <script src="site.js?v=1" defer></script>
+  <script src="site.js?v=2" defer></script>
 </head>
 <body>
   <div class="loader" aria-hidden="true">
@@ -44,7 +44,7 @@
               <a href="product/calling/"><b>Calling (Twilio)</b><span>Call customers from the same workspace</span></a>
               <a href="product/odoo/"><b>Odoo Sync</b><span>Keep contacts in sync with Odoo</span></a>
             </div>
-            <a class="menu-foot mono" href="#how">New to Telixo? See how it works →</a>
+            <a class="menu-foot mono" href="#tour">See the product tour →</a>
           </div>
         </li>
         <li class="has-menu">
@@ -110,10 +110,8 @@
         <span>(01)</span><span>WhatsApp Business platform for India</span><span class="hide-sm">Shared inbox · Campaigns · Team</span>
       </div>
       <h1 class="kin" aria-label="One WhatsApp number. Your whole team.">
-        <span class="kin-line l1" aria-hidden="true">One WhatsApp</span>
-        <span class="kin-line l2" aria-hidden="true">number.</span>
-        <span class="kin-line l3 outline" aria-hidden="true">Your whole</span>
-        <span class="kin-line l4 brand" aria-hidden="true">team.</span>
+        <span class="kin-line l1" aria-hidden="true">One WhatsApp number.</span>
+        <span class="kin-line l2" aria-hidden="true">Your whole <span class="brand">team.</span></span>
       </h1>
       <div class="hero-foot">
         <p class="lede">Telixo is the WhatsApp Business platform for businesses in India. Answer every chat from one shared inbox, send campaigns and broadcasts, and manage your team, with Twilio calling and Odoo contact sync.</p>
@@ -325,10 +323,182 @@
       </div>
     </section>
 
-    <!-- 06 TESTIMONIALS: one quote each, a result headline per quote, link to stories (brief §6) -->
+    <!-- 06 PRODUCT TOUR: features with product screenshots -->
+    <section class="tour" id="tour" aria-labelledby="tour-title">
+      <div class="meta-row mono"><span>(06)</span><span>Product tour</span><span class="hide-sm">Scroll or pick a feature</span></div>
+      <h2 class="h2" id="tour-title">See Telixo <em>in action.</em></h2>
+      <div class="tour-grid">
+        <div class="tour-steps">
+          <article class="tour-step" data-step="0">
+            <p class="mono tour-n">01 · Shared Inbox</p>
+            <h3>Every chat, one inbox.</h3>
+            <p>All WhatsApp conversations on your number arrive in one inbox. Assign each chat to the right person and keep the whole team on the same page.</p>
+            <a class="more mono" href="product/inbox/" data-cursor="Go">Learn more →</a>
+          </article>
+          <article class="tour-step" data-step="1">
+            <p class="mono tour-n">02 · Campaigns and Broadcasts</p>
+            <h3>Send offers people want.</h3>
+            <p>Choose an audience of opted-in contacts, pick an approved message template and schedule your campaign or broadcast.</p>
+            <a class="more mono" href="product/campaigns/" data-cursor="Go">Learn more →</a>
+          </article>
+          <article class="tour-step" data-step="2">
+            <p class="mono tour-n">03 · Contacts and CRM</p>
+            <h3>Know every customer.</h3>
+            <p>Contacts, tags and chat history in one place, ready to group for your next campaign.</p>
+            <a class="more mono" href="product/contacts/" data-cursor="Go">Learn more →</a>
+          </article>
+          <article class="tour-step" data-step="3">
+            <p class="mono tour-n">04 · Team and Roles</p>
+            <h3>The right access for everyone.</h3>
+            <p>Invite your team and decide what each person can see and do.</p>
+            <a class="more mono" href="product/team/" data-cursor="Go">Learn more →</a>
+          </article>
+          <article class="tour-step" data-step="4">
+            <p class="mono tour-n">05 · Calling (Twilio)</p>
+            <h3>Call without switching apps.</h3>
+            <p>When a chat needs a call, call the customer through Twilio from the same workspace.</p>
+            <a class="more mono" href="product/calling/" data-cursor="Go">Learn more →</a>
+          </article>
+          <article class="tour-step" data-step="5">
+            <p class="mono tour-n">06 · Odoo Sync</p>
+            <h3>Contacts that match everywhere.</h3>
+            <p>Telixo keeps contacts in sync with Odoo, so your team works from the same customer details.</p>
+            <a class="more mono" href="product/odoo/" data-cursor="Go">Learn more →</a>
+          </article>
+        </div>
+
+        <div class="tour-stage">
+          <div class="tour-tabs mono" role="tablist" aria-label="Product screens">
+            <button type="button" role="tab" aria-selected="true" data-tab="0">Inbox</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="1">Campaigns</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="2">Contacts</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="3">Team</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="4">Calling</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="5">Odoo</button>
+          </div>
+          <figure class="tour-frame" aria-live="polite">
+            <div class="shot-top" aria-hidden="true"><i></i><i></i><i></i><span class="mono" data-scr-title>Telixo · Shared inbox</span></div>
+            <div class="scr-wrap">
+
+              <!-- Inbox: assigning a chat -->
+              <div class="scr is-on" data-scr="0" role="img" aria-label="Shared inbox screen: an unassigned chat about a flat listing is being assigned to Priya from Sales.">
+                <div class="sc-split">
+                  <aside class="sc-side">
+                    <div class="s-tabs mono"><span>All</span><span>Mine</span><b>Unassigned</b></div>
+                    <div class="sc-item is-on"><span class="av" style="--a:#252525">VS</span><div><b>Vikram Shah</b><p>Is the 2BHK in Baner still available?</p></div></div>
+                    <div class="sc-item"><span class="av" style="--a:#8FE3C5">AN</span><div><b>Arjun Nair</b><p>Table for 6 tonight?</p></div></div>
+                    <div class="sc-item"><span class="av" style="--a:#6E6E73">SQ</span><div><b>Sana Qureshi</b><p>Can I change the colour?</p></div></div>
+                  </aside>
+                  <div class="sc-main">
+                    <div class="sc-bar"><b>Vikram Shah</b><span class="chip on">Assign ▾</span></div>
+                    <div class="sc-pop">
+                      <p class="mono">Assign to</p>
+                      <span class="pick on"><span class="av sm" style="--a:#20C28B">P</span>Priya · Sales <i>✓</i></span>
+                      <span class="pick"><span class="av sm" style="--a:#252525">R</span>Rohit · Support</span>
+                      <span class="pick"><span class="av sm" style="--a:#0E8A5F">M</span>Meera · Front desk</span>
+                    </div>
+                    <div class="sc-thread">
+                      <p class="m in">Hi, is the 2BHK in Baner still available?</p>
+                      <p class="m note"><span class="mono">Internal note · Rohit</span>@Priya this one is your listing.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Campaigns: building a scheduled campaign -->
+              <div class="scr" data-scr="1" role="img" aria-label="Campaign screen: a Saturday offer to opted-in repeat customers, using an approved template, scheduled for Saturday 10:00, with a WhatsApp message preview.">
+                <div class="sc-split even">
+                  <div class="sc-form">
+                    <label class="mono">Campaign name</label><span class="field">Saturday offer</span>
+                    <label class="mono">Audience</label><span class="field">Tag: Repeat customer · <b class="ok">opted in</b></span>
+                    <label class="mono">Template</label><span class="field">saturday_offer <span class="chip ok">Approved</span></span>
+                    <label class="mono">Schedule</label><span class="field">Saturday · 10:00</span>
+                    <span class="btn">Schedule campaign</span>
+                  </div>
+                  <div class="sc-phone">
+                    <div class="wa">
+                      <div class="wa-img"></div>
+                      <p>Hi Ananya, this Saturday get a free hair spa with any haircut at Glow Studio. Reply BOOK to reserve a slot.</p>
+                      <span class="wa-btn">Book now</span>
+                      <span class="wa-btn">Stop promotions</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Contacts: tagged list with Odoo status -->
+              <div class="scr" data-scr="2" role="img" aria-label="Contacts screen: a list of customers with phone numbers, tags, owners and Odoo sync status, filtered to repeat customers.">
+                <div class="sc-toolbar"><span class="chip on">Segment: Repeat customers</span><span class="chip">+ Add filter</span><span class="btn sm">Import contacts</span></div>
+                <div class="sc-table">
+                  <div class="tr th mono"><span>Name</span><span>Phone</span><span>Tags</span><span>Owner</span><span>Odoo</span></div>
+                  <div class="tr"><span><span class="av sm" style="--a:#20C28B">AR</span>Ananya Rao</span><span class="mono">+91 98••• ••421</span><span><i class="tg">Haircut</i><i class="tg">Repeat</i></span><span>Priya</span><span class="ok">✓</span></div>
+                  <div class="tr"><span><span class="av sm" style="--a:#0E8A5F">NK</span>Neha Kapoor</span><span class="mono">+91 99••• ••108</span><span><i class="tg">Repeat</i></span><span>Rohit</span><span class="ok">✓</span></div>
+                  <div class="tr"><span><span class="av sm" style="--a:#252525">VS</span>Vikram Shah</span><span class="mono">+91 97••• ••560</span><span><i class="tg">Buyer</i><i class="tg">Repeat</i></span><span>Priya</span><span class="ok">✓</span></div>
+                  <div class="tr"><span><span class="av sm" style="--a:#8FE3C5">AN</span>Arjun Nair</span><span class="mono">+91 90••• ••233</span><span><i class="tg">Repeat</i></span><span>Meera</span><span class="ok">✓</span></div>
+                </div>
+              </div>
+
+              <!-- Team and roles -->
+              <div class="scr" data-scr="3" role="img" aria-label="Team screen: team members with their roles, and the permissions for the Agent role.">
+                <div class="sc-split even">
+                  <div class="sc-members">
+                    <div class="mem"><span class="av" style="--a:#252525">K</span><div><b>Karan</b><p>Owner</p></div><span class="chip">Admin</span></div>
+                    <div class="mem"><span class="av" style="--a:#20C28B">P</span><div><b>Priya</b><p>Sales</p></div><span class="chip">Manager</span></div>
+                    <div class="mem is-on"><span class="av" style="--a:#0E8A5F">R</span><div><b>Rohit</b><p>Support</p></div><span class="chip on">Agent ▾</span></div>
+                    <div class="mem"><span class="av" style="--a:#8FE3C5">M</span><div><b>Meera</b><p>Front desk</p></div><span class="chip">Agent</span></div>
+                  </div>
+                  <div class="sc-perms">
+                    <p class="mono">Agent can</p>
+                    <span class="perm">See assigned chats<i class="tog on"></i></span>
+                    <span class="perm">Reply to customers<i class="tog on"></i></span>
+                    <span class="perm">Send campaigns<i class="tog"></i></span>
+                    <span class="perm">Export contacts<i class="tog"></i></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Calling via Twilio -->
+              <div class="scr" data-scr="4" role="img" aria-label="Calling screen: a call to Vikram Shah through Twilio is in progress, shown on the same chat timeline.">
+                <div class="sc-main solo">
+                  <div class="sc-bar"><b>Vikram Shah</b><span class="chip">☏ Call via Twilio</span></div>
+                  <div class="sc-thread">
+                    <p class="m in">Can we see the flat on Sunday?</p>
+                    <p class="m out">Sure! Calling you now to fix a time.</p>
+                    <div class="call">
+                      <span class="call-dot"></span>
+                      <div><b>On call · Vikram Shah</b><p class="mono">Twilio · <span data-call-time>01:24</span></p></div>
+                      <div class="call-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                      <span class="call-end">End</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Odoo sync -->
+              <div class="scr" data-scr="5" role="img" aria-label="Odoo sync screen: the same contact shown in Telixo and Odoo with matching details, and a list of recent sync updates.">
+                <div class="sc-sync">
+                  <div class="card"><p class="mono">Telixo</p><b>Ananya Rao</b><span>+91 98••• ••421</span><span>ananya@example.com</span><span class="tg">Repeat customer</span></div>
+                  <div class="sync-mid"><span class="sync-ic">⇄</span><span class="mono ok">In sync</span></div>
+                  <div class="card dark"><p class="mono">Odoo</p><b>Ananya Rao</b><span>+91 98••• ••421</span><span>ananya@example.com</span><span class="tg">Repeat customer</span></div>
+                </div>
+                <div class="sync-log mono">
+                  <span><i class="ok">●</i> Ananya Rao · updated</span>
+                  <span><i class="ok">●</i> Neha Kapoor · created</span>
+                  <span><i class="ok">●</i> Vikram Shah · updated</span>
+                </div>
+              </div>
+
+            </div>
+          </figure>
+          <p class="tour-note mono">Illustrative screens. Replace with real product screenshots when available.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 TESTIMONIALS: one quote each, a result headline per quote, link to stories (brief §6) -->
     <section class="inbox" id="stories">
       <div class="inbox-pin">
-        <div class="meta-row mono"><span>(06)</span><span>Customer stories</span><span class="hide-sm">No repeated quotes</span></div>
+        <div class="meta-row mono"><span>(07)</span><span>Customer stories</span><span class="hide-sm">No repeated quotes</span></div>
         <div class="parade">
           <div class="parade-intro">
             <h2 class="h2">Real businesses.<br><em>Real results.</em></h2>
@@ -344,9 +514,9 @@
       </div>
     </section>
 
-    <!-- 07 FAQ (brief §6: 6–8 questions) -->
+    <!-- 08 FAQ (brief §6: 6–8 questions) -->
     <section class="faq" id="faq" aria-labelledby="faq-title">
-      <div class="meta-row mono"><span>(07)</span><span>FAQ</span><span class="hide-sm">Questions before a demo</span></div>
+      <div class="meta-row mono"><span>(08)</span><span>FAQ</span><span class="hide-sm">Questions before a demo</span></div>
       <h2 class="h2" id="faq-title">Questions, <em>answered.</em></h2>
       <div class="faq-grid">
         <div class="faq-list">
@@ -393,9 +563,9 @@
       </div>
     </section>
 
-    <!-- 08 FINAL CTA BAND -->
+    <!-- 09 FINAL CTA BAND -->
     <section class="cta" id="start">
-      <div class="meta-row mono"><span>(08)</span><span>Get started</span><span class="hide-sm">Start free or book a demo</span></div>
+      <div class="meta-row mono"><span>(09)</span><span>Get started</span><span class="hide-sm">Start free or book a demo</span></div>
       <h2 class="h2">Bring your whole team <em>to WhatsApp.</em></h2>
       <p class="lede">Set up your shared inbox, invite your team and start replying together.</p>
       <a class="mega" href="/signup" data-link="signup" data-cursor="Start"><span class="mega-in" data-text="Start free →">Start free →</span></a>
