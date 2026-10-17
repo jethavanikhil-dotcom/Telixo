@@ -718,33 +718,6 @@ svg { display: block; }
 
 .hero-note { flex-basis: 100%; color: var(--muted); font-size: 12px; }
 
-/* How it works: a plain four-step strip */
-.steps { padding-block: clamp(90px, 12vw, 170px) clamp(40px, 6vw, 80px); }
-.steps-head { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 24px; align-items: end; padding: 0 var(--pad); }
-.steps-head .h2 { padding: 0; }
-.steps-list { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: clamp(40px, 6vw, 80px) var(--pad) 0; padding-top: 28px; }
-.steps-list::before, .steps-list::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--line); }
-.steps-list::after { background: var(--brand); transform: scaleX(var(--p, 1)); transform-origin: left; }
-.steps-list li { position: relative; display: grid; gap: 14px; align-content: start; }
-.steps-list li::before { content: ""; position: absolute; left: 0; top: -34px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); box-shadow: inset 0 0 0 2px var(--line); transition: background .4s, box-shadow .4s; }
-.steps-list li.on::before { background: var(--brand); box-shadow: none; }
-.step-n { color: var(--brand-deep); }
-.step-w { font-size: clamp(40px, 5vw, 92px); line-height: .86; letter-spacing: -.03em; text-transform: uppercase; white-space: nowrap; font-variation-settings: "wdth" 72, "wght" 880; transition: font-variation-settings .6s var(--ease); }
-.step-w .lt { display: inline-block; }
-.steps-list li:hover .step-w { font-variation-settings: "wdth" 88, "wght" 900; }
-.brand-step { color: var(--brand-text); }
-.steps-list p { color: var(--muted); font-size: 17px; max-width: 30ch; }
-.steps-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin: clamp(36px, 5vw, 64px) var(--pad) 0; }
-
-/* Testimonials: a readable grid of bubbles instead of a pinned sideways scroll */
-.inbox-pin { height: auto; overflow: visible; padding-top: 0; }
-.inbox { padding-block: clamp(90px, 12vw, 170px) 20px; }
-.parade { display: grid; grid-template-columns: 1fr 1fr; width: auto; gap: clamp(28px, 3vw, 44px) clamp(20px, 2.4vw, 36px); align-items: stretch; padding-block: clamp(28px, 4vw, 48px) 0; }
-.parade-intro { grid-column: 1 / -1; width: auto; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: end; }
-.parade-intro .h2 { grid-row: span 2; }
-.bub { width: auto; min-height: 280px; }
-.b-end { grid-column: 1 / -1; min-height: 0; flex-direction: row; align-items: center; justify-content: space-between; }
-
 /* Sticky CTAs on phones (brief §3: sticky "Try for free" / "Talk to sales") */
 .dock { display: none; }
 @media (max-width: 900px) {
@@ -758,17 +731,5 @@ svg { display: block; }
   .dock-on .dock { transform: none; }
   .menu-open .dock { transform: translateY(140%); }
   .foot { padding-bottom: 76px; }
-  .steps-head { grid-template-columns: 1fr; }
-  .steps-list { grid-template-columns: 1fr 1fr; gap: 40px 20px; }
-  .parade { grid-template-columns: 1fr; }
-  .parade-intro { grid-template-columns: 1fr; }
-  .bub { min-height: 0; }
-  .b-end { flex-direction: column; align-items: flex-start; }
-}
-@media (max-width: 560px) {
-  .steps-list { grid-template-columns: 1fr; padding-top: 0; padding-left: 28px; }
-  .steps-list::before, .steps-list::after { left: 6px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; }
-  .steps-list::after { transform: scaleY(var(--p, 1)); transform-origin: top; }
-  .steps-list li::before { left: -28px; top: 4px; }
 }
 .reduced .dock { transition: none; }

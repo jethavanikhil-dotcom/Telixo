@@ -11,12 +11,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&display=swap">
   <link rel="stylesheet" href="../assets/vendor/lenis.css">
-  <link rel="stylesheet" href="site.css?v=3">
+  <link rel="stylesheet" href="site.css?v=4">
   <script>document.documentElement.classList.add('js');</script>
   <script src="../assets/vendor/gsap.min.js" defer></script>
   <script src="../assets/vendor/ScrollTrigger.min.js" defer></script>
   <script src="../assets/vendor/lenis.min.js" defer></script>
-  <script src="site.js?v=3" defer></script>
+  <script src="site.js?v=4" defer></script>
 </head>
 <body>
   <div class="loader" aria-hidden="true">
@@ -225,22 +225,19 @@
       </ol>
     </section>
 
-    <!-- 04 HOW IT WORKS: 4-step strip (brief §6) -->
-    <section class="steps" id="how" aria-labelledby="how-title">
-      <div class="meta-row mono"><span>(04)</span><span>How it works</span><span class="hide-sm">Four steps</span></div>
-      <div class="steps-head">
-        <h2 class="h2" id="how-title">How it works. <em>Four steps to a shared WhatsApp inbox.</em></h2>
-        <p class="lede">From your WhatsApp Business number to a team that replies, assigns and follows up together.</p>
-      </div>
-      <ol class="steps-list">
-        <li><span class="step-n mono">01</span><h3 class="step-w">Connect</h3><p>Connect your WhatsApp Business number to Telixo.</p></li>
-        <li><span class="step-n mono">02</span><h3 class="step-w">Add team</h3><p>Invite your team and choose what each person can see and do.</p></li>
-        <li><span class="step-n mono">03</span><h3 class="step-w">Organise</h3><p>Import your contacts, tag and group them, and keep them in sync with Odoo.</p></li>
-        <li><span class="step-n mono">04</span><h3 class="step-w brand-step">Message</h3><p>Reply together from one shared inbox, and send campaigns and broadcasts.</p></li>
-      </ol>
-      <div class="steps-cta">
-        <a class="pill-btn brand" href="/signup" data-link="signup" data-cursor="Start">Start free <span aria-hidden="true">→</span></a>
-        <a class="more mono" href="#tour">See the product tour →</a>
+    <!-- 04 HOW IT WORKS: 4 steps (brief §6) -->
+    <section class="workflow" id="how">
+      <div class="wf-pin">
+        <div class="meta-row mono"><span>(04)</span><span>How it works</span><span class="wf-count"><b data-step-n>01</b> / 04</span></div>
+        <div class="wf-copy">
+          <h2 class="h2 small">How it works. <em>Four steps to a shared WhatsApp inbox.</em></h2>
+          <p class="lede">From your WhatsApp Business number to a team that replies, assigns and follows up together.</p>
+        </div>
+        <p class="wf-word" data-word>Connect</p>
+        <div class="wf-foot">
+          <ol class="wf-ticks mono" aria-hidden="true"><li class="on cur">Connect number</li><li>Add team</li><li>Organise contacts</li><li>Start messaging</li></ol>
+          <p class="wf-cap" data-cap>Connect your WhatsApp Business number to Telixo.</p>
+        </div>
       </div>
     </section>
 
@@ -419,7 +416,7 @@
     <!-- 06 TESTIMONIALS: one quote each, a result headline per quote, link to stories (brief §6) -->
     <section class="inbox" id="stories">
       <div class="inbox-pin">
-        <div class="meta-row mono"><span>(06)</span><span>Customer stories</span><span class="hide-sm">Salons · Restaurants · Real estate · Retail</span></div>
+        <div class="meta-row mono"><span>(06)</span><span>Customer stories</span><span class="hide-sm">No repeated quotes</span></div>
         <div class="parade">
           <div class="parade-intro">
             <h2 class="h2">Real businesses.<br><em>Real results.</em></h2>

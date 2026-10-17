@@ -136,13 +136,14 @@ Analysis & UX/UI Design Brief* (§4 navigation, §6 homepage) in the Kinetic the
 Sections, in order: header with Product / Solutions / Integrations / Pricing /
 Resources / Company plus Log in, Book a Demo and Start free · hero with a product
 screenshot (HTML illustration) · trust strip · problem story and "Why shared phones
-fail" · 4-step How it works strip · product tour (each feature beside a screenshot
+fail" · 4-step How it works word reel · product tour (each feature beside a screenshot
 that switches to match, with "Learn more" links) · testimonials with result
 headlines · FAQ (8 questions) · final CTA band · full footer with newsletter and
 address · sticky Start free / Book a Demo bar on phones.
 
-UX rules this page follows: scrolling is never taken over or locked; the intro
-loader is short and only shows on the first visit in a session; the normal
+UX rules this page follows: in How it works, each wheel or trackpad gesture moves
+exactly one step so no word is skipped; the intro loader is short and only shows
+on the first visit in a session; the normal
 pointer always shows; large green words use `--brand-text` (#149E6E, 3.3:1 on
 paper) while fills keep the brand green #20C28B.
 

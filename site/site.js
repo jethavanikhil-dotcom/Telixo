@@ -1,7 +1,7 @@
 // Telixo — Homepage
 // Built to the website gap-analysis brief (§4 navigation, §6 homepage), in the
-// Kinetic theme: letters react to the cursor and scatter and reassemble on
-// scroll. Scrolling is never taken over: every section reads at the reader's pace.
+// Kinetic theme: letters react to the cursor, scatter and reassemble on scroll,
+// and words rewrite themselves.
 (() => {
   // Destinations the team still has to confirm (brief §5.12): one place to change them.
   const CONFIG = {
@@ -102,8 +102,10 @@
 
   // Smooth scroll (motion only); anchor links go through it.
   let lenis = null;
+  let wheelGate = null;
   if (motion && window.Lenis) {
-    lenis = new Lenis({ lerp: 0.12 });
+    // wheelGate lets the "How it works" reel step one word per wheel gesture (set below).
+    lenis = new Lenis({ lerp: 0.12, virtualScroll: (e) => (wheelGate ? wheelGate(e) : true) });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -183,11 +185,24 @@
   dockIO.observe($('.hero-ctas'));
   dockIO.observe($('#start'));
 
+  // How it works: the four steps from the brief.
+  const STEPS = [
+    ['Connect', 'Connect your WhatsApp Business number to Telixo.'],
+    ['Add team', 'Invite your team and choose what each person can see and do.'],
+    ['Organise', 'Import your contacts, tag and group them, and keep them in sync with Odoo.'],
+    ['Message', 'Reply together from one shared inbox, and send campaigns and broadcasts.'],
+  ];
+  const word = $('[data-word]');
+  const cap = $('[data-cap]');
+  word.removeAttribute('aria-live');
+  cap.setAttribute('aria-live', 'polite');
+
   // Static fallback: everything readable in place.
-  const stepItems = $$('.steps-list li');
   if (!motion) {
     loader.remove();
-    stepItems.forEach((li) => li.classList.add('on'));
+    cap.innerHTML = `<ol>${STEPS.map(([w, c], i) => `<li><b>${String(i + 1).padStart(2, '0')} ${w}.</b> ${c}</li>`).join('')}</ol>`;
+    cap.removeAttribute('aria-live');
+    $$('.wf-ticks li').forEach((li) => li.classList.add('on'));
     $('[data-typing]').style.display = 'none';
     return;
   }
@@ -295,6 +310,7 @@
 
   // Scroll speed leans the lines over.
   const skew = gsap.quickTo(lines, 'skewX', { duration: 0.5, ease: 'power3.out' });
+  const bubSkew = gsap.quickTo('.bub', 'skewX', { duration: 0.6, ease: 'power3.out' });
   let vel = 0;
   ScrollTrigger.create({
     start: 0, end: 'max',
@@ -302,6 +318,7 @@
       vel = s.getVelocity();
       const k = gsap.utils.clamp(-12, 12, vel / -220);
       skew(k);
+      bubSkew(k * 0.6);
     },
   });
 
@@ -415,29 +432,134 @@
     .fromTo(tags[4], { ...tagSet(2), scale: 0, autoAlpha: 0 }, { ...tagSet(2), scale: 1.3, autoAlpha: 1, ease: 'back.out(2)', duration: 0.5 }, 4.6)
     .to({}, { duration: 0.6 });
 
-  // ---------------------------------------------------------------- how it works
-  // Each step word rises letter by letter; the line fills as you scroll past.
-  const stepWords = $$('.step-w').map((el) => splitLetters(el));
-  gsap.from(stepWords.flat(), {
-    yPercent: 110, autoAlpha: 0, duration: 0.8, ease: 'expo.out', stagger: 0.025,
-    scrollTrigger: { trigger: '.steps-list', start: 'top 85%', once: true },
-  });
-  const stepsList = $('.steps-list');
-  stepsList.style.setProperty('--p', 0);
-  stepItems.forEach((li) => li.classList.remove('on'));
-  ScrollTrigger.create({
-    trigger: stepsList, start: 'top 80%', end: 'bottom 55%', scrub: true,
-    onUpdate: (s) => {
-      stepsList.style.setProperty('--p', s.progress.toFixed(3));
-      stepItems.forEach((li, i) => li.classList.toggle('on', s.progress >= i / stepItems.length));
-    },
+  // ---------------------------------------------------------------- testimonials: horizontal parade
+  gsap.matchMedia().add('(min-width: 901px)', () => {
+    const parade = $('.parade');
+    const dist = () => Math.max(0, parade.scrollWidth - window.innerWidth);
+    gsap.to(parade, {
+      x: () => -dist(), ease: 'none',
+      scrollTrigger: { trigger: '.inbox-pin', start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 0.6, invalidateOnRefresh: true },
+    });
+    gsap.from('.bub', {
+      rotate: (i) => (i % 2 ? 3 : -3), y: 50, ease: 'none', stagger: 0.1,
+      scrollTrigger: { trigger: '.inbox-pin', start: 'top top', end: () => `+=${dist()}`, scrub: 0.6 },
+    });
   });
 
-  // ---------------------------------------------------------------- testimonials
-  gsap.from('.parade > *', {
-    y: 50, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08,
-    scrollTrigger: { trigger: '.parade', start: 'top 85%', once: true },
+  // ---------------------------------------------------------------- workflow: the word rewrites itself
+  // All the step words are stacked in one clipped line. Scroll position drives
+  // every letter directly (no timed tweens), so each word always flips
+  // through in turn, at any scroll speed: letters roll up out of view one
+  // after another while the next word's letters roll in from below.
+  const ticks = $$('.wf-ticks li');
+  const stepN = $('[data-step-n]');
+  const foot = $('.wf-foot');
+  word.textContent = '';
+  word.setAttribute('aria-hidden', 'true');
+  const reel = STEPS.map(([txt], i) => {
+    const line = document.createElement('span');
+    line.className = `wf-line${i === STEPS.length - 1 ? ' is-last' : ''}`;
+    const ls = [...txt].map((c) => {
+      const sp = document.createElement('span');
+      sp.className = 'wl';
+      sp.textContent = c === ' ' ? '\u00a0' : c;
+      line.appendChild(sp);
+      return sp;
+    });
+    word.appendChild(line);
+    return ls;
   });
+  const ease = gsap.parseEase('power2.inOut');
+  let step = -1;
+  const setStep = (i) => {
+    if (i === step) return;
+    step = i;
+    ticks.forEach((li, k) => { li.classList.toggle('on', k <= i); li.classList.toggle('cur', k === i); });
+    stepN.textContent = `0${i + 1}`;
+    cap.textContent = STEPS[i][1];
+    gsap.fromTo(cap, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out', overwrite: true });
+  };
+  const HOLD = 0.28; // each word holds still for this much of its slot either side
+  const drawReel = (pos) => {
+    reel.forEach((ls, i) => {
+      ls.forEach((el, k) => {
+        const t = pos - i - (k - ls.length / 2) * 0.03;
+        const a = Math.abs(t);
+        const m = a <= HOLD ? 0 : ease(Math.min(1, (a - HOLD) / (1 - 2 * HOLD)));
+        const dir = t > 0 ? -1 : 1;
+        el.style.transform = `translate3d(0,${(dir * m * 115).toFixed(2)}%,0) rotateX(${(-dir * m * 75).toFixed(1)}deg)`;
+        el.style.setProperty('--lw', (80 + 20 * Math.sin(pos * Math.PI * 2 + k * 0.8)).toFixed(1));
+      });
+    });
+  };
+  drawReel(0);
+  setStep(0);
+  // Each word gets an equal share of the pinned scroll (a short lead-in and
+  // lead-out either side), and when scrolling stops mid-change the page
+  // settles on the nearest word, so no step is skipped with a fast wheel.
+  const LEAD = 0.05;
+  const posOf = (p) => gsap.utils.clamp(0, 1, (p - LEAD) / (1 - 2 * LEAD)) * (STEPS.length - 1);
+  const wf = ScrollTrigger.create({
+    trigger: '.workflow', start: 'top top', end: 'bottom bottom',
+    onUpdate: (s) => {
+      const pos = posOf(s.progress);
+      drawReel(pos);
+      setStep(Math.round(pos));
+      foot.style.setProperty('--p', s.progress.toFixed(4));
+    },
+  });
+  const stepY = (k) => wf.start + (wf.end - wf.start) * (LEAD + (1 - 2 * LEAD) * k / (STEPS.length - 1));
+  // Touch and keyboard scrolling: settle on the nearest word when scrolling stops.
+  ScrollTrigger.addEventListener('scrollEnd', () => {
+    if (gateBusy()) return;
+    const y = window.scrollY;
+    if (y <= stepY(0) || y >= stepY(STEPS.length - 1)) return;
+    const ty = stepY(Math.round(posOf((y - wf.start) / (wf.end - wf.start))));
+    if (Math.abs(ty - y) < 3) return;
+    if (lenis) lenis.scrollTo(ty, { duration: 0.7 });
+    else window.scrollTo({ top: ty, behavior: 'smooth' });
+  });
+
+  // Wheel and trackpad: inside the section, one gesture = one word. A fast
+  // flick or trackpad momentum can no longer fly past the middle words; the
+  // next word only comes once the current one has been on screen and the
+  // gesture has paused (or after a beat, for continuous wheeling).
+  let stepping = false;
+  let stepAt = 0;
+  let lastWheel = 0;
+  const gateBusy = () => stepping || performance.now() - stepAt < 600;
+  const goTo = (y) => {
+    stepping = true;
+    stepAt = performance.now();
+    lenis.scrollTo(y, { duration: 0.9, lock: true, force: true, onComplete: () => { stepping = false; } });
+  };
+  wheelGate = (e) => {
+    if (!e.event.type.includes('wheel') || !e.deltaY) return true;
+    const now = performance.now();
+    const quiet = now - lastWheel > 160;
+    lastWheel = now;
+    const dir = Math.sign(e.deltaY);
+    const cur = lenis.targetScroll;
+    const first = stepY(0);
+    const last = stepY(STEPS.length - 1);
+    const inside = cur > first - 2 && cur < last + 2;
+    const block = () => { e.event.preventDefault(); return false; };
+    if (!inside) {
+      // Don't let one big flick jump over the whole section: stop at its edge.
+      if (dir > 0 && cur < first && cur + e.deltaY > first) { if (!stepping) goTo(first); return block(); }
+      if (dir < 0 && cur > last && cur + e.deltaY < last) { if (!stepping) goTo(last); return block(); }
+      return true;
+    }
+    const k = Math.round(posOf((cur - wf.start) / (wf.end - wf.start)));
+    // Leaving at either end is normal scrolling, once the end word has been seen.
+    if ((dir > 0 && k === STEPS.length - 1) || (dir < 0 && k === 0)) {
+      return gateBusy() || (!quiet && now - stepAt < 1200) ? block() : true;
+    }
+    if (stepping || !(quiet || now - stepAt > 1300) || now - stepAt < 600) return block();
+    goTo(stepY(k + dir));
+    return block();
+  };
+  gsap.from('.wf-word', { yPercent: 40, autoAlpha: 0, scrollTrigger: { trigger: '.workflow', start: 'top 70%', end: 'top top', scrub: 0.6 } });
 
   // ---------------------------------------------------------------- marquee: speed follows scroll
   const mqs = $$('.mq-row').map((row, i) => {
@@ -474,7 +596,7 @@
   });
 
   // Section headings: lines rise into place.
-  $$('.why .h2, .steps .h2, .tour .h2, .faq .h2, .cta .h2').forEach((h) => gsap.from(h, {
+  $$('.why .h2, .tour .h2, .faq .h2, .cta .h2').forEach((h) => gsap.from(h, {
     yPercent: 30, autoAlpha: 0, duration: 1, ease: 'expo.out',
     scrollTrigger: { trigger: h, start: 'top 85%', once: true },
   }));
