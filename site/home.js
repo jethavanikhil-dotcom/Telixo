@@ -1,124 +1,12 @@
-// Telixo — Homepage
-// Built to the website gap-analysis brief (§4 navigation, §6 homepage), in the
-// Kinetic theme: letters react to the cursor, scatter and reassemble on scroll,
-// and words rewrite themselves.
+// Telixo — homepage only (runs after core.js, which provides window.TX).
+// Kinetic hero, the problem story, the product tour, the How it works reel
+// and the testimonial parade.
 (() => {
-  // Destinations the team still has to confirm (brief §5.12): one place to change them.
-  const CONFIG = {
-    login: '/login', // app login URL (app subdomain, confirm with the dev team)
-    signup: '/signup', // app signup URL for "Start free"
-    whatsapp: 'https://wa.me/910000000000?text=' + encodeURIComponent('Hi Telixo, I would like to book a demo.'), // replace 910000000000 with Telixo's WhatsApp number
-  };
-
-  const root = document.documentElement;
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-  const motion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const fine = window.matchMedia('(pointer: fine)').matches;
+  const TX = window.TX;
+  const { $, $$, motion, fine, splitLetters, splitWords } = TX;
   const loader = $('.loader');
-
-  $$('[data-link]').forEach((a) => { if (CONFIG[a.dataset.link]) a.href = CONFIG[a.dataset.link]; });
-
-  // Split an element's text into inline-block letters (and optional words).
-  const splitLetters = (el, cls = 'lt') => {
-    const text = el.textContent;
-    el.textContent = '';
-    return [...text].map((c) => {
-      const s = document.createElement('span');
-      s.className = cls;
-      s.textContent = c === ' ' ? ' ' : c;
-      el.appendChild(s);
-      return s;
-    });
-  };
-  const splitWords = (el) => {
-    const words = el.textContent.trim().split(/\s+/);
-    el.textContent = '';
-    const chars = [];
-    words.forEach((w, i) => {
-      const ws = document.createElement('span');
-      ws.className = 'w';
-      [...w].forEach((c) => {
-        const s = document.createElement('span');
-        s.className = 'ch';
-        s.textContent = c;
-        ws.appendChild(s);
-        chars.push(s);
-      });
-      el.appendChild(ws);
-      if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
-    });
-    return chars;
-  };
-
-  // ---------------------------------------------------------------- basics
-  $('#year').textContent = new Date().getFullYear();
-
-  const toggle = $('.bar-toggle');
-  const menus = $$('.has-menu');
-  const setMenu = (open) => {
-    document.body.classList.toggle('menu-open', open);
-    toggle.setAttribute('aria-expanded', open);
-    toggle.textContent = open ? 'Close' : 'Menu';
-    if (!open) closeMenus();
-  };
-  toggle.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
-
-  // Header dropdowns: hover on desktop, click/tap and keyboard everywhere.
-  const desktop = window.matchMedia('(min-width: 1101px)');
-  const openMenu = (li, open) => {
-    li.classList.toggle('open', open);
-    $('.nav-btn', li).setAttribute('aria-expanded', open);
-  };
-  const closeMenus = (except) => menus.forEach((li) => { if (li !== except) openMenu(li, false); });
-  menus.forEach((li) => {
-    let t;
-    $('.nav-btn', li).addEventListener('click', () => { const open = !li.classList.contains('open'); closeMenus(li); openMenu(li, open); });
-    li.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'mouse' || !desktop.matches) return; clearTimeout(t); closeMenus(li); openMenu(li, true); });
-    li.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'mouse' || !desktop.matches) return; t = setTimeout(() => openMenu(li, false), 160); });
-    li.addEventListener('focusout', (e) => { if (desktop.matches && !li.contains(e.relatedTarget)) openMenu(li, false); });
-  });
-  document.addEventListener('click', (e) => { if (!e.target.closest('.has-menu')) closeMenus(); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-    const li = menus.find((m) => m.classList.contains('open'));
-    if (li) { openMenu(li, false); $('.nav-btn', li).focus(); } else setMenu(false);
-  });
-  $('#nav').addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
-
-  // Newsletter: no list provider is connected yet.
-  const news = $('.news');
-  news.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (!news.reportValidity()) return;
-    // TODO: send the address to the newsletter provider once one is chosen.
-    $('.news-row', news).outerHTML = '<p class="form-done">Thanks, you’re on the list.</p>';
-  });
-
-  if (!window.gsap || !window.ScrollTrigger) { loader.remove(); return; }
-  gsap.registerPlugin(ScrollTrigger);
-  if (!motion) root.classList.add('reduced');
-  if (fine && motion) root.classList.add('has-cursor');
-
-  // Smooth scroll (motion only); anchor links go through it.
-  let lenis = null;
-  let wheelGate = null;
-  if (motion && window.Lenis) {
-    // wheelGate lets the "How it works" reel step one word per wheel gesture (set below).
-    lenis = new Lenis({ lerp: 0.12, virtualScroll: (e) => (wheelGate ? wheelGate(e) : true) });
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((t) => lenis.raf(t * 1000));
-    gsap.ticker.lagSmoothing(0);
-  }
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href^="#"]');
-    if (!a) return;
-    const target = a.getAttribute('href') === '#top' ? 0 : $(a.getAttribute('href'));
-    if (target === null) return;
-    setMenu(false);
-    if (lenis && target === 0) { e.preventDefault(); lenis.scrollTo(0, { duration: 1.4 }); return; }
-    if (lenis) { e.preventDefault(); lenis.scrollTo(target, { duration: 1.4 }); }
-  });
+  const lenis = TX.lenis;
+  if (!window.gsap || !window.ScrollTrigger) { loader?.remove(); return; }
 
   // ---------------------------------------------------------------- product tour
   // Feature copy scrolls on the left; the screenshot on the right follows it.
@@ -175,16 +63,6 @@
   let callS = 84;
   if (motion) setInterval(() => { if (tCur !== 4) return; callS += 1; callT.textContent = `${String(Math.floor(callS / 60)).padStart(2, '0')}:${String(callS % 60).padStart(2, '0')}`; }, 1000);
 
-  // ---------------------------------------------------------------- mobile CTA dock
-  // Appears once the hero buttons scroll away; hides at the final CTA band.
-  const dockSeen = { hero: true, end: false };
-  const dockIO = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { dockSeen[e.target === $('.hero-ctas') ? 'hero' : 'end'] = e.isIntersecting; });
-    document.body.classList.toggle('dock-on', !dockSeen.hero && !dockSeen.end);
-  });
-  dockIO.observe($('.hero-ctas'));
-  dockIO.observe($('#start'));
-
   // How it works: the four steps from the brief.
   const STEPS = [
     ['Connect', 'Connect your WhatsApp Business number to Telixo.'],
@@ -205,22 +83,6 @@
     $$('.wf-ticks li').forEach((li) => li.classList.add('on'));
     $('[data-typing]').style.display = 'none';
     return;
-  }
-
-  // ---------------------------------------------------------------- cursor
-  if (fine) {
-    const cur = $('.cursor');
-    const label = $('.cursor-label', cur);
-    const cx = gsap.quickTo(cur, 'x', { duration: 0.35, ease: 'power3.out' });
-    const cy = gsap.quickTo(cur, 'y', { duration: 0.35, ease: 'power3.out' });
-    window.addEventListener('pointermove', (e) => { cx(e.clientX); cy(e.clientY); });
-    document.addEventListener('pointerover', (e) => {
-      const t = e.target.closest('[data-cursor]');
-      cur.classList.toggle('is-big', !!t);
-      if (t) label.textContent = t.dataset.cursor;
-    });
-    document.addEventListener('pointerleave', () => gsap.to(cur, { autoAlpha: 0, duration: 0.2 }));
-    document.addEventListener('pointerenter', () => gsap.to(cur, { autoAlpha: 1, duration: 0.2 }));
   }
 
   // ---------------------------------------------------------------- hero
@@ -271,12 +133,6 @@
       const size = Math.min(100 * (avail * 0.97) / widest, window.innerHeight * 0.2);
       lines.forEach((l) => { l.style.fontSize = `${size}px`; });
     }
-    const fw = $('.foot-word');
-    fw.style.fontSize = '100px';
-    fw.style.display = 'inline-block';
-    const w = fw.scrollWidth;
-    fw.style.display = '';
-    fw.style.fontSize = `${100 * (window.innerWidth * 0.97) / w}px`;
   };
   fitLines();
 
@@ -352,7 +208,7 @@
   const intro = gsap.timeline({ paused: true })
     .from(allLetters, { yPercent: 110, rotate: 10, autoAlpha: 0, duration: 0.9, ease: 'expo.out', stagger: { each: 0.012, from: 'random' } })
     .from('.hero .meta-row, .hero-foot > *', { y: 24, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.06 }, 0.25)
-    .from('.bar', { yPercent: -100, autoAlpha: 0, duration: 0.7, ease: 'power3.out', clearProps: 'transform' }, 0.2); // a leftover transform would trap the fixed mobile menu inside the bar
+    .from('.hdr-in', { y: -30, autoAlpha: 0, duration: 0.7, ease: 'power3.out', clearProps: 'transform,opacity,visibility' }, 0.2);
   const ready = Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1500))]);
   const start = () => { fitLines(); ScrollTrigger.refresh(); intro.play(); if (lenis) lenis.start(); };
   if (seen) { loader.remove(); ready.then(start); } else {
@@ -533,7 +389,7 @@
     stepAt = performance.now();
     lenis.scrollTo(y, { duration: 0.35, lock: true, force: true, onComplete: () => { stepping = false; } });
   };
-  wheelGate = (e) => {
+  TX.wheelGate = (e) => {
     if (!e.event.type.includes('wheel') || !e.deltaY) return true;
     const now = performance.now();
     const quiet = now - lastWheel > 80;
@@ -600,13 +456,6 @@
     yPercent: 30, autoAlpha: 0, duration: 1, ease: 'expo.out',
     scrollTrigger: { trigger: h, start: 'top 85%', once: true },
   }));
-  // ---------------------------------------------------------------- footer word
-  const footLetters = splitLetters($('.foot-word'));
-  gsap.from(footLetters, {
-    yPercent: 100, ease: 'none', stagger: 0.06,
-    scrollTrigger: { trigger: '.foot', start: 'top bottom', end: 'bottom bottom', scrub: 0.6 },
-  });
-
   let rt;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { fitLines(); ScrollTrigger.refresh(); }, 150); });
 })();

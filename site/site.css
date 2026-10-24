@@ -72,26 +72,6 @@ svg { display: block; }
 .loader-count { font-size: clamp(120px, 24vw, 420px); line-height: .78; font-variation-settings: "wdth" 62, "wght" 900; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
 .no-js .loader, .reduced .loader { display: none; }
 
-/* ---------- Bar ---------- */
-.bar {
-  position: fixed; inset: 0 0 auto; z-index: 60;
-  display: flex; align-items: center; gap: 28px; padding: 14px var(--pad);
-  color: var(--ink);
-}
-/* Frosted backdrop on a pseudo-element: backdrop-filter on .bar itself would
-   trap the fixed mobile menu inside the bar's box. */
-.bar::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(250, 250, 247, .86); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
-.logo { display: block; line-height: 0; }
-.logo img { display: block; height: 32px; width: auto; }
-.bar-links { display: flex; gap: 22px; margin-left: auto; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
-.bar-links a { position: relative; }
-.bar-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease); }
-.bar-links a:hover::after { transform: scaleX(1); transform-origin: left; }
-.bar-cta, .bar-toggle { height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid currentColor; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; transition: background .3s, color .3s; }
-.bar-cta { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.bar-cta:hover { background: var(--brand); border-color: var(--brand); color: var(--ink); }
-.bar-toggle { display: none; }
-
 /* ==========================================================================
    01 Hero — kinetic type
    ========================================================================== */
@@ -320,15 +300,6 @@ svg { display: block; }
    ========================================================================== */
 @media (max-width: 900px) {
   .hide-sm { display: none; }
-  .bar-links {
-    position: fixed; inset: 0; z-index: -1; flex-direction: column; justify-content: center; gap: 6px; padding: var(--pad);
-    background: var(--paper); color: var(--ink); font-family: var(--display); font-size: 13vw; text-transform: uppercase;
-    font-variation-settings: "wdth" 75, "wght" 850; letter-spacing: -.02em; line-height: 1;
-    clip-path: inset(0 0 100% 0); transition: clip-path .6s var(--ease);
-  }
-  .menu-open .bar-links { clip-path: inset(0 0 0 0); }
-  .bar-toggle { display: inline-block; margin-left: auto; }
-  .bar-cta { display: none; }
   .hero-foot { grid-template-columns: 1fr; }
   .badge { display: none; }
   .story { height: 200vh; }
@@ -373,36 +344,6 @@ svg { display: block; }
 .todo { background: repeating-linear-gradient(-45deg, rgba(32, 194, 139, .14) 0 6px, rgba(32, 194, 139, .06) 6px 12px); outline: 1px dashed var(--brand-deep); outline-offset: 1px; border-radius: 4px; padding: 0 4px; color: var(--brand-deep); }
 .todo-box { border: 1px dashed var(--brand-deep); border-radius: 18px; padding: 16px 18px; color: var(--muted); font-size: 15px; background: rgba(32, 194, 139, .05); }
 .todo-box .mono { display: block; color: var(--brand-deep); margin-bottom: 6px; }
-
-/* ---------- Header with dropdowns ---------- */
-.bar { gap: 20px; }
-.nav { display: flex; align-items: center; gap: 22px; flex: 1; }
-.nav-list { display: flex; align-items: center; gap: 4px; margin: 0 auto; }
-.nav-btn, .nav-link { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 12px; border-radius: 999px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; transition: background .3s; }
-.nav-btn::after { content: ""; width: 6px; height: 6px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: translateY(-2px) rotate(45deg); transition: transform .35s var(--ease); }
-.nav-btn:hover, .nav-link:hover, .has-menu.open .nav-btn { background: var(--paper-2); }
-.has-menu.open .nav-btn::after { transform: translateY(1px) rotate(-135deg); }
-.has-menu { position: relative; }
-.menu {
-  position: absolute; left: 50%; top: calc(100% + 14px); width: 560px; padding: 14px; border-radius: 22px;
-  background: #fff; box-shadow: 0 0 0 1px var(--line), 0 30px 60px -30px rgba(37, 37, 37, .4);
-  opacity: 0; visibility: hidden; transform: translate(-50%, -8px); transition: opacity .25s, transform .4s var(--ease), visibility 0s .4s;
-}
-.menu::before { content: ""; position: absolute; left: 0; right: 0; top: -16px; height: 16px; } /* hover bridge */
-.menu.narrow { width: 260px; }
-.has-menu.open .menu { opacity: 1; visibility: visible; transform: translate(-50%, 0); transition: opacity .25s, transform .4s var(--ease); }
-.menu-grid { display: grid; gap: 2px; }
-.menu-grid.two { grid-template-columns: 1fr 1fr; }
-.menu-cols { display: grid; grid-template-columns: 1.3fr 1fr; gap: 8px; }
-.menu-label { color: var(--muted); padding: 6px 12px 4px; }
-.menu a:not(.menu-foot) { display: grid; gap: 2px; padding: 10px 12px; border-radius: 14px; transition: background .25s; }
-.menu a:not(.menu-foot):hover { background: var(--paper); }
-.menu a b { font-size: 16px; font-variation-settings: "wdth" 86, "wght" 700; }
-.menu a span { color: var(--muted); font-size: 13px; line-height: 1.35; }
-.menu-foot { display: block; margin-top: 8px; padding: 12px; border-top: 1px solid var(--line); color: var(--brand-deep); }
-.nav-cta { display: flex; align-items: center; gap: 10px; }
-.login { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; padding: 0 6px; }
-.login:hover { color: var(--brand-deep); }
 
 /* ---------- Hero: kinetic type + product screenshot ---------- */
 .hero { min-height: 0; grid-template-rows: auto auto auto auto; overflow: visible; }
@@ -539,25 +480,6 @@ svg { display: block; }
 .foot-cols address { font-style: normal; line-height: 1.5; }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 1100px) {
-  .nav {
-    position: fixed; inset: 0; z-index: -1; display: flex; flex-direction: column; align-items: stretch; gap: 24px;
-    padding: 84px var(--pad) 28px; overflow-y: auto; background: var(--paper);
-    clip-path: inset(0 0 100% 0); transition: clip-path .6s var(--ease); visibility: hidden;
-  }
-  .menu-open .nav { clip-path: inset(0 0 0 0); visibility: visible; }
-  .nav-list { flex-direction: column; align-items: stretch; gap: 0; margin: 0; border-top: 1px solid var(--line); }
-  .nav-list > li { border-bottom: 1px solid var(--line); }
-  .nav-btn, .nav-link { width: 100%; height: auto; justify-content: space-between; padding: 14px 0; border-radius: 0; font-family: var(--display); font-size: clamp(28px, 7vw, 44px); letter-spacing: -.01em; font-variation-settings: "wdth" 76, "wght" 840; }
-  .nav-btn:hover, .nav-link:hover, .has-menu.open .nav-btn { background: none; }
-  .nav-btn::after { width: 10px; height: 10px; }
-  .menu, .menu.narrow { position: static; width: auto; padding: 0 0 12px; border-radius: 0; background: none; box-shadow: none; transform: none; opacity: 1; visibility: visible; display: none; transition: none; }
-  .has-menu.open .menu { display: block; transform: none; }
-  .menu-grid.two, .menu-cols { grid-template-columns: 1fr; }
-  .menu a:not(.menu-foot) { padding: 8px 0; }
-  .nav-cta { flex-wrap: wrap; }
-  .bar-toggle { display: inline-block; margin-left: auto; height: 36px; padding: 0 16px; border-radius: 999px; border: 1px solid currentColor; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
-}
 @media (max-width: 900px) {
   .shot-body { grid-template-columns: minmax(0, 1fr); height: 440px; }
   .s-list, .s-side { display: none; }
@@ -713,7 +635,6 @@ svg { display: block; }
 .has-cursor a, .has-cursor button, .has-cursor summary { cursor: pointer; }
 .has-cursor .cursor { opacity: 0; }
 .has-cursor .cursor.is-big { opacity: 1; width: 72px; height: 72px; margin: -36px 0 0 -36px; }
-.nav-btn, .nav-link, .login { font-size: 13px; }
 .lede { max-width: 38ch; }
 
 .hero-note { flex-basis: 100%; color: var(--muted); font-size: 12px; }
