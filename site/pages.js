@@ -308,4 +308,31 @@
   }
 
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
+
+  // ---------------------------------------------------------------- slot headline
+  // One word in a heading spins through a list, like a slot reel.
+  $$('[data-slot]').forEach((el) => {
+    const words = el.dataset.slot.split('|');
+    if (!motion || words.length < 2) return;
+    el.textContent = '';
+    const reel = document.createElement('span');
+    reel.className = 'slot-reel';
+    words.concat(words[0]).forEach((w) => { const s = document.createElement('span'); s.textContent = w; reel.append(s); });
+    el.append(reel);
+    const items = [...reel.children];
+    let n = 0;
+    const fitW = () => { el.style.width = `${items[n % words.length].offsetWidth}px`; };
+    fitW();
+    document.fonts?.ready.then(fitW);
+    setInterval(() => {
+      if (document.hidden) return;
+      n += 1;
+      reel.style.transition = '';
+      reel.style.transform = `translateY(${-n * 100 / items.length}%)`;
+      el.style.width = `${items[n].offsetWidth}px`;
+      if (n === words.length) {
+        setTimeout(() => { reel.style.transition = 'none'; n = 0; reel.style.transform = 'none'; }, 700);
+      }
+    }, 2200);
+  });
 })();

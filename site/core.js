@@ -121,17 +121,25 @@
     openKey = key;
     const panel = panels.find((p) => p.dataset.panel === key);
     const dir = prev ? Math.sign(order.indexOf(key) - order.indexOf(prev)) : 0;
+    // Directional swap (after 21st.dev "Directional Menu"): the new panel slides
+    // in from the side you are heading to while the old one slides out the other way.
     panels.forEach((p) => {
       const on = p === panel;
+      clearTimeout(p._outT);
       if (on) {
         p.hidden = false;
-        p.style.setProperty('--from', `${dir * 40}px`);
+        p.classList.remove('is-out');
+        p.style.setProperty('--from', `${dir * 100}px`);
         p.classList.remove('is-on');
         void p.offsetWidth;
         p.classList.add('is-on');
       } else if (!p.hidden) {
         p.classList.remove('is-on');
-        p.hidden = true;
+        if (dir && motion) {
+          p.style.setProperty('--to', `${-dir * 100}px`);
+          p.classList.add('is-out');
+          p._outT = setTimeout(() => { p.classList.remove('is-out'); p.hidden = true; }, 350);
+        } else p.hidden = true;
       }
     });
     triggers.forEach((t) => t.setAttribute('aria-expanded', t.dataset.mega === key));
@@ -147,9 +155,9 @@
     openKey = null;
     hdr.classList.remove('mega-open');
     triggers.forEach((t) => t.setAttribute('aria-expanded', 'false'));
-    setTimeout(() => { if (!openKey) panels.forEach((p) => { p.hidden = true; p.classList.remove('is-on'); }); }, 260);
+    setTimeout(() => { if (!openKey) panels.forEach((p) => { p.hidden = true; p.classList.remove('is-on', 'is-out'); }); }, 260);
   };
-  const laterClose = () => { clearTimeout(closeT); closeT = setTimeout(closeMega, 180); };
+  const laterClose = () => { clearTimeout(closeT); closeT = setTimeout(closeMega, 120); };
   triggers.forEach((t) => {
     t.addEventListener('click', () => (openKey === t.dataset.mega ? closeMega() : openMega(t.dataset.mega)));
     t.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && desktop.matches) openMega(t.dataset.mega); });
@@ -324,6 +332,75 @@
         my((e.clientY - r.top - r.height / 2) * 0.35);
       });
       el.addEventListener('pointerleave', () => { mx(0); my(0); });
+    });
+  }
+
+  // ---------------------------------------------------------------- letter swap
+  // After 21st.dev "Letter Swap": each letter rolls up and a copy rolls in from
+  // below, one after another. Screen readers get the plain label.
+  const swapText = (el) => {
+    const node = [...el.childNodes].find((n) => n.nodeType === 3 && n.textContent.trim());
+    if (!node || el.querySelector('.sw')) return;
+    const text = node.textContent.trim();
+    const sr = document.createElement('span');
+    sr.className = 'sr-only';
+    sr.textContent = text;
+    const sw = document.createElement('span');
+    sw.className = 'sw';
+    sw.setAttribute('aria-hidden', 'true');
+    [...text].forEach((ch, i) => {
+      const c = ch === ' ' ? ' ' : ch;
+      const cell = document.createElement('span');
+      cell.className = 'sw-c';
+      cell.style.setProperty('--i', i);
+      cell.innerHTML = '<span></span><span></span>';
+      cell.firstChild.textContent = c;
+      cell.lastChild.textContent = c;
+      sw.append(cell);
+    });
+    node.replaceWith(sr, sw);
+  };
+  if (fine && motion) {
+    $$('.hdr-link, .hdr-cta .login, .pill-btn, .mg-item b, .foot-cols a, .mnav-cta a').forEach(swapText);
+  }
+
+  // ---------------------------------------------------------------- scramble
+  // Mono arrow links decode through random glyphs on hover.
+  if (fine && motion) {
+    const glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*+/<>=';
+    $$('.mg-go, .more, [data-scramble]').forEach((el) => {
+      const node = [...el.childNodes].find((n) => n.nodeType === 3 && n.textContent.trim());
+      if (!node) return;
+      const text = node.textContent;
+      let raf = 0;
+      el.closest('a, button, .mg-item, .mg-feature, article')?.addEventListener('pointerenter', () => {
+        cancelAnimationFrame(raf);
+        const t0 = performance.now();
+        const tick = (now) => {
+          const done = Math.floor((now - t0) / 28);
+          node.textContent = [...text].map((ch, i) => (i < done || ch === ' ' ? ch : glyphs[(Math.random() * glyphs.length) | 0])).join('');
+          if (done < text.length) raf = requestAnimationFrame(tick);
+          else node.textContent = text;
+        };
+        raf = requestAnimationFrame(tick);
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------- spotlight
+  // A soft green glow follows the pointer across cards, with a lit edge.
+  if (fine && motion) {
+    $$('.rel a, .bx, .int-card, .tool-card, .plan, .val, .cs-tpl article, .hs-card, .ct-card, .bn-cell, .mg-item').forEach((el) => {
+      el.classList.add('spot');
+      const g = document.createElement('i');
+      g.className = 'spot-glow';
+      g.setAttribute('aria-hidden', 'true');
+      el.append(g);
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        el.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
     });
   }
 

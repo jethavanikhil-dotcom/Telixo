@@ -284,7 +284,7 @@ def footer(p):
 </div>'''
 
 
-VERSION = "8"
+VERSION = "9"
 # Hosts that do not serve folder/index.html need explicit index.html links (preview builds).
 INDEX_LINKS = os.environ.get("INDEX_LINKS") == "1"
 

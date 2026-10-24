@@ -456,6 +456,44 @@
     yPercent: 30, autoAlpha: 0, duration: 1, ease: 'expo.out',
     scrollTrigger: { trigger: h, start: 'top 85%', once: true },
   }));
+  // ---------------------------------------------------------------- trail: text along a path
+  // The line draws itself, the sentence travels along it and a dot leads the way.
+  const trail = $('.trail');
+  if (trail && motion) {
+    const path = $('#trail-path', trail);
+    const tp = $('textPath', trail);
+    const dot = $('.trail-dot', trail);
+    const steps = $$('.trail-steps li', trail);
+    const len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    const set = (p) => {
+      path.style.strokeDashoffset = len * (1 - Math.min(1, p * 1.6));
+      tp.setAttribute('startOffset', `${60 - p * 120}%`);
+      const pt = path.getPointAtLength(len * Math.min(1, p * 1.6));
+      dot.setAttribute('cx', pt.x);
+      dot.setAttribute('cy', pt.y);
+      steps.forEach((li, i) => li.classList.toggle('on', p * 1.6 >= i / (steps.length - 1) - 0.02));
+    };
+    set(0);
+    ScrollTrigger.create({ trigger: trail, start: 'top 80%', end: 'bottom 20%', scrub: true, onUpdate: (st) => set(st.progress) });
+  }
+
+  // ---------------------------------------------------------------- zoom: everything around one inbox
+  // Starts zoomed into the inbox; scrolling pulls back to the whole product.
+  const zoom = $('.zoom');
+  if (zoom && motion) {
+    const mm = gsap.matchMedia();
+    mm.add('(min-width: 901px)', () => {
+      const scales = [3.4, 2.6, 2.9, 3.2, 2.4, 2.8, 3, 2.2];
+      const tl = gsap.timeline({ scrollTrigger: { trigger: zoom, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
+      $$('.zp-l', zoom).forEach((l, i) => {
+        tl.fromTo(l, { scale: scales[i] }, { scale: 1, ease: 'power2.inOut', duration: 1 }, 0);
+        if (i) tl.fromTo(l, { autoAlpha: 0 }, { autoAlpha: 1, ease: 'none', duration: 0.4 }, 0.15 + i * 0.03);
+      });
+      tl.fromTo('.zoom-h', { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.3 }, 0.7);
+    });
+  }
+
   let rt;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { fitLines(); ScrollTrigger.refresh(); }, 150); });
 })();

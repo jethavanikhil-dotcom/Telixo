@@ -178,6 +178,24 @@ to the app; the header links go to the URLs in `CONFIG` at the top of `core.js`)
 - Privacy policy and terms text from telixo.co; the refund policy text.
 - Real product screenshots to replace the HTML illustrations.
 
+### Interaction layer (patterns from 21st.dev)
+
+Rebuilt in plain JS/CSS in the Kinetic theme (no React, no new dependencies):
+
+- **Directional mega menu**: moving between menus slides the old panel out one way and the
+  new one in from the other, while the shell resizes (`core.js` `openMega`, `ui.css` `mgIn`/`mgOut`).
+- **Letter swap**: header links, buttons, menu titles and footer links roll each letter up
+  on hover (`.sw`). Screen readers get the plain label.
+- **Scramble**: mono arrow links (`.mg-go`, `.more`, `[data-scramble]`) decode on hover.
+- **Spotlight**: cards get a green glow and lit edge that follow the pointer (`.spot`).
+- **Homepage, "Every chat gets a clear path"**: a sentence travels along a wavy line as you
+  scroll, the line draws itself and a dot marks the step (`.trail`).
+- **Homepage, "It starts with one inbox"**: pinned zoom-out from the shared inbox to all the
+  product areas (`.zoom`). Phones and tablets get a plain grid.
+- **Solutions hero**: the headline cycles through industries and teams (`[data-slot]`).
+
+All of it is mouse-only or skipped under `prefers-reduced-motion`.
+
 ## Sylva hero (ThreeUI `<SylvaHero variant="living-green" />`)
 
 `sylva/` renders the ThreeUI **SylvaHero — Living Green** component from its exact

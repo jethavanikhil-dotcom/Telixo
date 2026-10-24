@@ -255,7 +255,7 @@ def overview(p):
         return '<ul class="hl">' + "".join(
             f'<li><a href="{p.u(h)}" data-cursor="Open"><span class="ch-n mono">{i:02d}</span><span class="ch-name"><span class="roll" data-text="{t.replace(" and ", " & ")}">{t.replace(" and ", " & ")}</span></span><span class="ch-role mono">{d}</span></a></li>'
             for i, (h, _, t, d) in enumerate(items, start)) + '</ul>'
-    body = hero_word("Solutions", "Solutions", 'Telixo for <span class="brand">your business.</span>',
+    body = hero_word("Solutions", "Solutions", 'Telixo for <span class="sr-only">your business.</span><span class="slot brand" aria-hidden="true" data-slot="your business.|retail.|real estate.|clinics.|schools.|restaurants.|salons.|sales teams.|support teams.|marketing teams.">your business.</span>',
                      "Pick your industry or your team to see how a shared WhatsApp inbox fits the way you work.")
     body += sec(2, "By industry", head("By <em>industry.</em>", "Your testimonials already span these businesses. Each has its own page.") + hl(INDUSTRIES, 1), "Hover a row")
     body += sec(3, "By team", head("By <em>team.</em>", small=True) + hl(TEAMS, 6), "Hover a row")
