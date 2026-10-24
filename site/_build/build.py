@@ -3,9 +3,11 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SITE = os.path.dirname(HERE)
+SITE = os.environ.get("OUT") or os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
+import re  # noqa: E402
+import lib  # noqa: E402
 from lib import Page, render  # noqa: E402
 import pages_product  # noqa: E402
 import pages_solutions  # noqa: E402
@@ -26,8 +28,13 @@ def main():
         out = getattr(p, "outfile", None)
         target = os.path.join(SITE, out) if out else os.path.join(SITE, p.path, "index.html")
         os.makedirs(os.path.dirname(target), exist_ok=True)
+        html = render(p)
+        if lib.INDEX_LINKS:
+            # Relative folder links → explicit index.html (for hosts without folder indexes).
+            html = re.sub(r'href="((?:\.\./)*[a-z0-9\-/]*/|\./)(#[^"]*)?"',
+                          lambda m: f'href="{"" if m.group(1) == "./" else m.group(1)}index.html{m.group(2) or ""}"', html)
         with open(target, "w", encoding="utf-8") as f:
-            f.write(render(p))
+            f.write(html)
     print(f"Built {len(pages)} pages")
 
 

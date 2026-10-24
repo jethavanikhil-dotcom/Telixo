@@ -4,6 +4,7 @@
    ========================================================================== */
 :root { --annc: 0px; --hdr-h: 64px; }
 html { scroll-padding-top: 90px; }
+[hidden] { display: none !important; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ---------- Announcement bar ---------- */
@@ -333,14 +334,14 @@ html:not(.pt-enter):not(.pt-leave) .pt { transform: translateY(-101%); transitio
 .cmp-handle button { position: absolute; top: 50%; left: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; background: var(--brand); color: var(--ink); display: grid; place-items: center; font: 500 16px var(--mono); box-shadow: 0 10px 30px -10px rgba(37, 37, 37, .5); cursor: ew-resize; }
 
 /* Orbit diagram */
-.orb { position: relative; width: min(100%, 560px); aspect-ratio: 1; margin-inline: auto; max-width: 100%; }
+.orb { --orb: min(560px, 84vw); position: relative; width: var(--orb); aspect-ratio: 1; margin-inline: auto; max-width: 100%; }
 .orb-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed var(--line); }
 .orb-ring.r2 { inset: 18%; }
 .orb-core { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 34%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 14px rgba(32, 194, 139, .12), 0 0 0 30px rgba(32, 194, 139, .06); }
 .orb-core img { width: 64%; filter: invert(1) brightness(1.4); }
 .orb-spin { position: absolute; inset: 0; animation: spin 40s linear infinite; }
-.orb-node { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: rotate(var(--a)) translate(var(--r)) rotate(calc(-1 * var(--a))); }
-.orb-node > span { position: absolute; left: 0; top: 0; display: grid; place-items: center; gap: 4px; min-width: 96px; padding: 12px 14px; border-radius: 18px; transform: translate(-50%, -50%); background: #fff; box-shadow: 0 0 0 1px var(--line), 0 20px 40px -24px rgba(37, 37, 37, .4); font-variation-settings: "wdth" 86, "wght" 700; animation: spin 40s linear infinite reverse; }
+.orb-node { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: rotate(var(--a)) translate(calc(var(--orb) * .5)) rotate(calc(-1 * var(--a))); }
+.orb-node > span { position: absolute; left: 0; top: 0; display: grid; place-items: center; gap: 4px; min-width: 96px; padding: 12px 14px; border-radius: 18px; translate: -50% -50%; background: #fff; box-shadow: 0 0 0 1px var(--line), 0 20px 40px -24px rgba(37, 37, 37, .4); font-variation-settings: "wdth" 86, "wght" 700; animation: spin 40s linear infinite reverse; }
 .orb-node.soon > span { background: transparent; box-shadow: none; border: 1.5px dashed var(--line); color: var(--muted); font: 500 11px var(--mono); text-transform: uppercase; }
 .orb-node .ic { width: 22px; height: 22px; color: var(--brand-deep); }
 .reduced .orb-spin, .reduced .orb-node > span { animation: none; }
@@ -381,7 +382,8 @@ html:not(.pt-enter):not(.pt-leave) .pt { transform: translateY(-101%); transitio
 .hl li { border-bottom: 1px solid var(--line); }
 .hl a { display: grid; grid-template-columns: 70px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 12px var(--pad); transition: opacity .4s; }
 .hl:hover a:not(:hover) { opacity: .3; }
-.hl .ch-name { font-size: clamp(44px, 8vw, 150px); }
+.hl .ch-name { font-size: clamp(36px, 6.4vw, 124px); }
+.hl .roll { white-space: nowrap; }
 .hl .ch-role { justify-self: end; }
 .hl a:hover .roll { transform: translateY(-100%); font-variation-settings: "wdth" 112, "wght" 900; }
 
@@ -781,10 +783,10 @@ a.ct-card:hover { background: var(--brand-deep); }
 .post p { color: var(--muted); }
 .todo-chip { justify-self: start; border: 1px dashed var(--brand-deep); background: transparent; color: var(--brand-deep); }
 .shelf { display: flex; align-items: flex-end; gap: 8px; height: 440px; padding: 20px 20px 0; border-bottom: 10px solid var(--ink); border-radius: 0 0 6px 6px; overflow-x: auto; }
-.spine { position: relative; flex: none; width: 64px; height: calc(300px + (var(--i) * 13px) % 60px); border-radius: 8px 8px 2px 2px; background: var(--ink); color: var(--paper); overflow: hidden; transition: width .6s var(--ease), background .4s; }
+.spine { position: relative; flex: none; width: 64px; height: 320px; border-radius: 8px 8px 2px 2px; background: var(--ink); color: var(--paper); overflow: hidden; transition: width .6s var(--ease), background .4s; }
 .spine:nth-child(3n+2) { background: var(--brand); color: var(--ink); }
 .spine:nth-child(3n) { background: var(--paper-2); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
-.spine-t { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%) rotate(-90deg); transform-origin: 50% 50%; white-space: nowrap; font-size: 16px; text-transform: uppercase; font-variation-settings: "wdth" 80, "wght" 800; width: 260px; text-align: left; translate: 0 -110px; }
+.spine-t { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%) rotate(-90deg); transform-origin: 50% 50%; white-space: nowrap; font-size: 13px; text-transform: uppercase; font-variation-settings: "wdth" 80, "wght" 800; width: 250px; text-align: left; translate: 0 -105px; }
 .spine-open { position: absolute; inset: 0; display: grid; align-content: end; gap: 10px; padding: 22px; text-align: left; opacity: 0; transition: opacity .3s; }
 .spine-open b { font-size: 26px; line-height: .95; text-transform: uppercase; font-variation-settings: "wdth" 78, "wght" 840; }
 .spine-open .mono { font-size: 11px; }

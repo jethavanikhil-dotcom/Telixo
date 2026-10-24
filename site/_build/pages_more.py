@@ -25,7 +25,7 @@ def integrations(p):
     p.section = "integrations"
     nodes = [("phone", "Twilio", "0deg", ""), ("sync", "Odoo", "180deg", ""), ("plus", "Your tool?", "90deg", "soon"), ("plus", "Request", "270deg", "soon")]
     orb = '<div class="orb" aria-hidden="true"><div class="orb-ring"></div><div class="orb-ring r2"></div><div class="orb-spin">' + "".join(
-        f'<div class="orb-node {s}" style="--a:{a};--r:calc(min(560px,100%) * .5)"><span>{icon(ic) if ic != "plus" else ""}{t}</span></div>' for ic, t, a, s in nodes) + \
+        f'<div class="orb-node {s}" style="--a:{a}"><span>{icon(ic) if ic != "plus" else ""}{t}</span></div>' for ic, t, a, s in nodes) + \
         f'</div><div class="orb-core"><img src="{p.u("assets/img/telixo-logo.png")}" alt=""></div></div>'
     cards = "".join(f'''<a class="int-card" href="{p.u(h)}" data-item data-tags="{tag}" data-cursor="Open">
   <span class="int-logo">{icon(ic)}</span><span class="chip-s">{cat}</span><b>{name}</b><p>{d}</p><span class="mg-go">Details {icon("arrow")}</span></a>''' for h, ic, name, tag, cat, d in INTS)
@@ -349,7 +349,8 @@ GUIDES = [
 
 def guides(p):
     p.section = "resources"
-    spines = "".join(f'<button type="button" class="spine" style="--i:{i}" aria-expanded="false"><span class="spine-t">{t}</span><span class="spine-open"><span class="mono">{k}</span><b>{t}</b><span class="chip-s todo-chip">Planned guide</span></span></button>' for i, (k, t) in enumerate(GUIDES))
+    heights = [330, 300, 350, 310, 340, 296]
+    spines = "".join(f'<button type="button" class="spine" style="--i:{i};height:{heights[i]}px" aria-expanded="false"><span class="spine-t">{t}</span><span class="spine-open"><span class="mono">{k}</span><b>{t}</b><span class="chip-s todo-chip">Planned guide</span></span></button>' for i, (k, t) in enumerate(GUIDES))
     body = hero_split("Resources · Guides", 'Step-by-step <span class="brand">help.</span>', "Guides for Indian businesses moving their WhatsApp to a team inbox. Pick a book off the shelf.",
                       f'<div class="shelf" data-shelf>{spines}</div>' + ill_note("Planned guides. Replace with published ones."), buttons=False)
     body += sec(2, "How guides work", head("Read, <em>then do.</em>", "Each guide ends with a checklist you can follow in Telixo.", small=True) + steps([

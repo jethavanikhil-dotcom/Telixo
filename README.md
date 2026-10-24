@@ -127,43 +127,56 @@ and weight axes.
 Uses `assets/vendor/lenis.min.js` for smooth scrolling. With reduced motion, every
 section is static and readable in place.
 
-## Homepage (`site/`) — built to the gap-analysis brief
+## Telixo website (`site/`) — built to the gap-analysis brief
 
-`site/index.html` is the new Telixo homepage, built from *Telixo.co — Website Gap
-Analysis & UX/UI Design Brief* (§4 navigation, §6 homepage) in the Kinetic theme
-(same fonts, brand colours, logo, loader, cursor and scroll animations).
+`site/` is the full Telixo marketing site from *Telixo.co — Website Gap Analysis & UX/UI
+Design Brief*, in the Kinetic theme (Archivo + IBM Plex Mono, paper / charcoal #252525 /
+green #20C28B). It is self-contained: deploy the `site/` folder as the web root.
 
-Sections, in order: header with Product / Solutions / Integrations / Pricing /
-Resources / Company plus Log in, Book a Demo and Start free · hero with a product
-screenshot (HTML illustration) · trust strip · problem story and "Why shared phones
-fail" · 4-step How it works word reel · product tour (each feature beside a screenshot
-that switches to match, with "Learn more" links) · testimonials with result
-headlines · FAQ (8 questions) · final CTA band · full footer with newsletter and
-address · sticky Start free / Book a Demo bar on phones.
+**Build:** pages are generated, so the header and footer stay identical everywhere.
 
-UX rules this page follows: in How it works, each wheel or trackpad gesture moves
-exactly one step so no word is skipped; the intro loader is short and only shows
-on the first visit in a session; the normal
-pointer always shows; large green words use `--brand-text` (#149E6E, 3.3:1 on
-paper) while fills keep the brand green #20C28B.
+```
+python3 site/_build/build.py          # writes site/**/index.html and site/404.html
+```
 
-Links already point at the sitemap URLs from the brief (`pricing/`, `product/inbox/`,
-`solutions/retail/`, …); those pages are not built yet.
+- `_build/lib.py` — navigation data, icons, the header (mega menus) and footer, page layout.
+- `_build/comp.py` — section building blocks (heroes, rows, steps, stacks, timelines, …).
+- `_build/pages_product.py`, `pages_solutions.py`, `pages_more.py` — page content.
+- `_build/home_body.html` — the homepage body.
+- `site.css` (theme + homepage), `ui.css` (header + components), `core.js` (header,
+  smooth scroll, cursor, page transitions), `pages.js` (scroll animations), `widgets.js`
+  (interactive widgets), `home.js` (homepage only).
 
-**To supply before launch** (marked on the page with a dashed green outline):
+**Header (brief §4):** Product · Solutions · Integrations · Pricing · Resources · Company,
+plus Log in, Book a Demo (WhatsApp) and Start free. One mega-menu shell morphs between
+panels; Solutions has a nested By industry / By team menu; Resources includes the free
+tools; Company includes the legal pages. Announcement bar, scroll progress line,
+hide-on-scroll, full-screen mobile menu.
 
-- `CONFIG` at the top of `site/site.js`: app login URL, app signup URL, WhatsApp number.
-- Trust strip: customer logos (with permission), Meta Business Partner badge (only if
-  true), the number of businesses using Telixo.
-- "Why shared phones fail": 3–4 sourced statistics, with sources (the block shows
-  numbers 01–04 until then; swap each `.stat` for the figure).
-- Testimonials: the real alpha-user quotes (each used once), names, businesses,
-  cities and a result headline per quote.
-- FAQ answers marked for confirmation (API provider status, Meta setup, Twilio
-  billing, Meta fees, security claims).
-- Footer: contact email, registered office address, social profile links, and a
-  newsletter provider (the form currently only shows a thank-you message).
-- Real product screenshots to replace the HTML illustrations (hero and product tour), when available.
+**Pages (35):** home · 6 product pages · solutions overview + 5 industries + 3 teams ·
+integrations + Twilio + Odoo · pricing · FAQ · contact · about · careers · security ·
+blog · guides · customer stories · free tools + WhatsApp link generator + QR code
+generator · privacy policy · terms · refund and cancellation policy · 404.
+
+Not built: compare pages and a docs site (brief P2), and login/signup screens (they belong
+to the app; the header links go to the URLs in `CONFIG` at the top of `core.js`).
+
+**To supply before launch** (marked on the pages with a dashed green outline):
+
+- `CONFIG` in `site/core.js`: app login URL, app signup URL, WhatsApp number.
+- Pricing: real plans, prices, seat limits, features per plan, annual saving, Meta fees note.
+- Testimonials and customer stories: real quotes, names, results (each quote used once).
+- "Why shared phones fail": 3–4 sourced statistics (homepage).
+- Logos / customer count / Meta Business Partner badge (only if true).
+- FAQ and product answers marked for confirmation (Meta setup, Twilio billing, Odoo
+  sync fields and direction, setup steps, data storage, DPDP).
+- Security claims (only what can be proved), status page link.
+- About: team photos, names and roles; the Digipine Infotech LLP relationship.
+- Careers: hiring email and process; blog, guides: real posts (topics shown are suggestions).
+- Contact: reply time, office address and hours, email; social links; form and newsletter
+  endpoints (forms show a success message but send nothing yet).
+- Privacy policy and terms text from telixo.co; the refund policy text.
+- Real product screenshots to replace the HTML illustrations.
 
 ## Sylva hero (ThreeUI `<SylvaHero variant="living-green" />`)
 

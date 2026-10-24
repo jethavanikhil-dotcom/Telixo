@@ -3,6 +3,7 @@
 Pages are written as Python functions in pages_*.py and rendered by build.py.
 All internal links are relative, so the site works from any folder.
 """
+import os
 from html import escape
 
 # Destinations the team still has to confirm. core.js applies the same values
@@ -117,6 +118,8 @@ class Page:
         up = "../" * self.depth
         if target.startswith(("http", "#", "/", "mailto:")):
             return target
+        if INDEX_LINKS and (target == "" or target.endswith("/")):
+            target += "index.html"
         return (up + target) or "./"
 
 
@@ -281,7 +284,9 @@ def footer(p):
 </div>'''
 
 
-VERSION = "7"
+VERSION = "8"
+# Hosts that do not serve folder/index.html need explicit index.html links (preview builds).
+INDEX_LINKS = os.environ.get("INDEX_LINKS") == "1"
 
 
 def render(p):

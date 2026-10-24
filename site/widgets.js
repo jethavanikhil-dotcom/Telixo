@@ -280,7 +280,11 @@
       [cc, num, msg].forEach((el) => el.addEventListener('input', update));
       update();
     }
-    if (kind === 'qr' && window.qrcode) {
+    // The QR library is the page's own script and may load after this file.
+    if (kind === 'qr') {
+      if (window.qrcode) initQr(); else window.addEventListener('load', initQr);
+    }
+    function initQr() {
       const canvas = $('#qr-canvas', tool);
       const dl = $('[data-qr-dl]', tool);
       const outText = $('[data-t-out-text]', tool);

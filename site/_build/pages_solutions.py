@@ -253,7 +253,7 @@ def marketing(p):
 def overview(p):
     def hl(items, start):
         return '<ul class="hl">' + "".join(
-            f'<li><a href="{p.u(h)}" data-cursor="Open"><span class="ch-n mono">{i:02d}</span><span class="ch-name"><span class="roll" data-text="{t}">{t}</span></span><span class="ch-role mono">{d}</span></a></li>'
+            f'<li><a href="{p.u(h)}" data-cursor="Open"><span class="ch-n mono">{i:02d}</span><span class="ch-name"><span class="roll" data-text="{t.replace(" and ", " & ")}">{t.replace(" and ", " & ")}</span></span><span class="ch-role mono">{d}</span></a></li>'
             for i, (h, _, t, d) in enumerate(items, start)) + '</ul>'
     body = hero_word("Solutions", "Solutions", 'Telixo for <span class="brand">your business.</span>',
                      "Pick your industry or your team to see how a shared WhatsApp inbox fits the way you work.")
